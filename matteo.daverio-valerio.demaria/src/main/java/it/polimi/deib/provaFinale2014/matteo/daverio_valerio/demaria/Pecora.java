@@ -24,8 +24,26 @@ public class Pecora {
 	}
 	
 	
+	// getter e setter
 	
+	public int getPosizione()
+	{
+		return posizione;
+	}
 	
+	public int getTipoPecora()
+	{
+		return tipoPecora;
+	}
 	
+	public void setPosizione(int pos)
+	{
+		posizione=pos;
+	}
+	
+	public void setTipoPecora(int tipo)
+	{
+		tipoPecora=tipo;
+	}
 	
 }
