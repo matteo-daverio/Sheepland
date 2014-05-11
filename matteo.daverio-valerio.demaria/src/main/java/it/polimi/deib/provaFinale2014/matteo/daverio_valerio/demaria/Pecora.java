@@ -18,7 +18,7 @@ public class Pecora {
 	public Pecora(int posizione) // costruttore per pecora che sceglie a random
 									// se sarà pecora, montone o agnello
 	{
-		this(posizione, (int) Math.random() * 3);
+		this(posizione, (int) (Math.random() * 3));
 	}
 
 	public Pecora() // costruttore vuoto che crea la pecora a Sheepburg
