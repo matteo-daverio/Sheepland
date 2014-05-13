@@ -6,13 +6,15 @@ public class Pastore {
 	
 	private int posizione;
 	private int denaro;
-	private ArrayList<Tessera> tessere;
+	private ArrayList<Tessera> tessere=null;
+	private String nomeGiocatore;
 	
 	// costruttore
 	
-	public Pastore()
+	public Pastore(String nomeGiocatore)
 	{
-		posizione=(int)Math.random()*Costanti.NUMERO_STRADE;
+		this.nomeGiocatore=nomeGiocatore;
+		posizione=(int)(Math.random()*Costanti.NUMERO_STRADE);
 		denaro=20;
 	}
 	
@@ -42,6 +44,9 @@ public class Pastore {
 		tessere.add(tessera);
 	}
 	
-	
+	public String getNomeGiocatore()
+	{
+		return nomeGiocatore;
+	}
 	
 }

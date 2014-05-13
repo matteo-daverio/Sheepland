@@ -4,6 +4,7 @@ public class Pecora {
 
 	private int tipoPecora;
 	private int posizione;
+	private int turno=0;
 
 	// costruttori
 
@@ -18,12 +19,12 @@ public class Pecora {
 	public Pecora(int posizione) // costruttore per pecora che sceglie a random
 									// se sarà pecora, montone o agnello
 	{
-		this(posizione, (int) (Math.random() * 3));
+		this(posizione, (int) (Math.random() * Costanti.NUMERO_PECORE));
 	}
 
-	public Pecora() // costruttore vuoto che crea la pecora a Sheepburg
+	public Pecora() // costruttore vuoto che crea l'animale random in posizione random
 	{
-		this(0, Costanti.TIPO_PECORA_PECORA);
+		this((int) (Math.random() * Costanti.NUMERO_REGIONI), (int) (Math.random() * Costanti.NUMERO_PECORE));
 	}
 
 	// getter e setter
@@ -44,4 +45,13 @@ public class Pecora {
 		tipoPecora = tipo;
 	}
 
+	public void incrementaTurno()
+	{
+		turno++;
+	}
+	
+	public int getTurno()
+	{
+		return turno;
+	}
 }

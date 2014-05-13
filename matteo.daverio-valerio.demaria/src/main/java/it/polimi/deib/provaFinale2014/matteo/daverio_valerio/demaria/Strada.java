@@ -13,7 +13,7 @@ public class Strada {
 	
 	// costruttori
 	
-	public Strada(int posizione, int terrenoDestra, int terrenoSinistra, int numeroDado)
+	public Strada(int posizione, int terrenoDestra, int terrenoSinistra, int numeroDado)  // da modificare quando creeremo il metodo inizializzazione
 	{
 		recinto=false;
 		this.posizione=posizione;

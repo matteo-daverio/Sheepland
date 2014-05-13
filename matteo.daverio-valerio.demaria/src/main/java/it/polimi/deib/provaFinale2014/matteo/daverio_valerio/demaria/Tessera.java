@@ -2,16 +2,16 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 
 public class Tessera {
 	
-	private final int tipo;
+	private final String tipo;
 	private final int costo;
 	
-	public Tessera(int tipo, int costo)
+	public Tessera(String tipo, int costo)
 	{
 		this.tipo=tipo;
 		this.costo=costo;
 	}
 	
-	public int getTipo()
+	public String getTipo()
 	{
 		return tipo;
 	}
