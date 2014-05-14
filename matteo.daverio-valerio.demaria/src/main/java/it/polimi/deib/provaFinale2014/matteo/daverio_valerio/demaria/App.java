@@ -10,7 +10,11 @@ public class App {
 
 	private int port;
 	private int contatore = 0;
-	private boolean erroreCreazioneSocket=false;
+	private boolean erroreCreazioneSocket = false;
+	private boolean timeout = false;
+	private Partita partita;
+
+	// costruttore
 
 	public App(int port) {
 		this.port = port;
@@ -20,7 +24,10 @@ public class App {
 
 		App server = new App(Costanti.PORTA);
 		server.startServer();
+
 	}
+
+	// avvio del server
 
 	public void startServer() {
 		ExecutorService executor = Executors.newCachedThreadPool();
@@ -34,26 +41,33 @@ public class App {
 
 		System.out.println("server pronto");
 
+		// attesa client
+
 		while (true) {
-			while (contatore<6) {
+
+			// generazione partita
+			partita = new Partita();
+			while (contatore < 6 || !timeout) { // attesa client della partita
 				try {
 					Socket socket = serverSocket.accept();
-					executor.submit(new Server(new Partita(), socket));
-					contatore ++;
+					executor.submit(new Server(partita, socket));
+					contatore++;
 				} catch (IOException e) {
-					erroreCreazioneSocket=true;
+					erroreCreazioneSocket = true;
 					break;
 				}
 			}
-				if(!erroreCreazioneSocket){					
-					contatore=0;	
-				}
-				else
-					break;
+			
+			// controllo che le connessioni ai client siano andate a buon fine
+			if (!erroreCreazioneSocket) {
+				partita.setNumeroGiocatori(contatore);
+				contatore = 0;
+			} else
+				break;
 		}
-		
+
 		executor.shutdown();
-		
+
 	}
 
 }
