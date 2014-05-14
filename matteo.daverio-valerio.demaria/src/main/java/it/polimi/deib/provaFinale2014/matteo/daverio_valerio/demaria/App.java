@@ -76,6 +76,7 @@ public class App {
 			// controllo che le connessioni ai client siano andate a buon fine
 			if (!erroreCreazioneSocket) {
 				partita.setNumeroGiocatori(contatore);
+				partita.start();
 				contatore = 0;
 				timeout = false;
 			} else
