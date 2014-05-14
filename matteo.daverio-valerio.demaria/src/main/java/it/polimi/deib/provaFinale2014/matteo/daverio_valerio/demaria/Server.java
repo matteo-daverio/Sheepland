@@ -6,10 +6,12 @@ public class Server implements Runnable {
 
 	Socket socket;
 	Partita partita;
+	int turnoGiocatore;
 
-	public Server(Partita partita, Socket socket) {
+	public Server(Partita partita, Socket socket, int turnoGiocatore) {
 		this.partita = partita;
 		this.socket = socket;
+		this.turnoGiocatore=turnoGiocatore;
 	}
 
 	public void run() {

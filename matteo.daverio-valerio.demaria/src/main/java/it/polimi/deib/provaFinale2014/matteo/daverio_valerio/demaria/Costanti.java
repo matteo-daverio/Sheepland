@@ -4,9 +4,10 @@ public class Costanti {
 
 	// costanti per il server
 	public static final int PORTA=3000;
+	public static final long PERIODO_TICK_TIMER = 1000;
 	
 	// costanti per le pecore
-	public static final int TIPO_PECORA_AGNELLO = 0;
+	public static final int TIPO_PECORA_AGNELLO = 0;	
 	public static final int TIPO_PECORA_PECORA = 1;
 	public static final int TIPO_PECORA_MONTONE = 2;
 	public static final int TIPO_PECORA_PECORANERA = 4;
