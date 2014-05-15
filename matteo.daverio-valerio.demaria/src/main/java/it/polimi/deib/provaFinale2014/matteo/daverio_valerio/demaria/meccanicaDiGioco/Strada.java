@@ -6,19 +6,19 @@ public class Strada {
 	
 	private final int posizione;
 	private final int numeroDado; // numero da fare con il dado per passare
-	private final int terrenoDestra;
-	private final int terrenoSinistra;
+	private final int regioneDestra;
+	private final int regioneSinistra;
 	private boolean recinto;
 	private ArrayList<Direzione> strade;
 	
 	// costruttori
 	
-	public Strada(int posizione, int terrenoDestra, int terrenoSinistra, int numeroDado)  // da modificare quando creeremo il metodo inizializzazione
+	public Strada(int posizione, int regioneDestra, int regioneSinistra, int numeroDado)  // da modificare quando creeremo il metodo inizializzazione
 	{
 		recinto=false;
 		this.posizione=posizione;
-		this.terrenoDestra=terrenoDestra;
-		this.terrenoSinistra=terrenoSinistra;
+		this.regioneDestra=regioneDestra;
+		this.regioneSinistra=regioneSinistra;
 		this.numeroDado=numeroDado;
 	}
 
@@ -46,12 +46,12 @@ public class Strada {
 		return posizione;
 	}
 
-	public int getTerrenoDestra() {
-		return terrenoDestra;
+	public int getRegioneDestra() {
+		return regioneDestra;
 	}
 
-	public int getTerrenoSinistra() {
-		return terrenoSinistra;
+	public int getRegioneSinistra() {
+		return regioneSinistra;
 	}
 	
 	public int getNumeroDado() {
