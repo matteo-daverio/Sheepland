@@ -1,4 +1,6 @@
-package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
+package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
+
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
 import java.util.ArrayList;
 
@@ -8,12 +10,14 @@ public class Pastore {
 	private int denaro;
 	private ArrayList<Tessera> tessere=null;
 	private String nomeGiocatore;
+	private int turnoDiGioco;
 	
 	// costruttore
 	
-	public Pastore(String nomeGiocatore)
+	public Pastore(String nomeGiocatore, int turnoDiGioco)
 	{
 		this.nomeGiocatore=nomeGiocatore;
+		this.turnoDiGioco=turnoDiGioco;
 		posizione=(int)(Math.random()*Costanti.NUMERO_STRADE);
 		denaro=20;
 	}
@@ -22,6 +26,11 @@ public class Pastore {
 	
 	public int getPosizione() {
 		return posizione;
+	}
+	
+	public int getTurnoDiGioco()
+	{
+		return turnoDiGioco;
 	}
 	
 	public void setPosizione(int posizione) {

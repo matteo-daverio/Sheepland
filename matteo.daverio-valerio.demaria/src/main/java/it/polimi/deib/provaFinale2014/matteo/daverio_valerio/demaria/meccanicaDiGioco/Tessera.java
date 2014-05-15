@@ -1,4 +1,4 @@
-package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
+package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
 public class Tessera {
 	

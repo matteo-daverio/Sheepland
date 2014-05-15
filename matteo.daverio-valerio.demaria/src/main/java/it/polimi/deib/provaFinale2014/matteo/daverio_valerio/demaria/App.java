@@ -1,5 +1,8 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.Server;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -76,7 +79,7 @@ public class App {
 			// controllo che le connessioni ai client siano andate a buon fine
 			if (!erroreCreazioneSocket) {
 				partita.setNumeroGiocatori(contatore);
-				partita.start();
+				
 				contatore = 0;
 				timeout = false;
 			} else

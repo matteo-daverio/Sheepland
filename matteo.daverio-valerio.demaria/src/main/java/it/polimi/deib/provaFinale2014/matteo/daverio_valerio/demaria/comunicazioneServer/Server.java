@@ -1,4 +1,6 @@
-package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
+package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
+
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,8 +31,6 @@ public class Server implements Runnable {
 			in = new Scanner(socket.getInputStream());
 			out = new PrintWriter(socket.getOutputStream());
 
-			partita.addGiocatore(this);
-			
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			//devo comunicare alla classe App che non sono riuscito a creare 
