@@ -56,4 +56,11 @@ public class Pecora {
 	{
 		return turno;
 	}
+	
+	
+	
+	
+	// movimento pecora
+	
+	
 }

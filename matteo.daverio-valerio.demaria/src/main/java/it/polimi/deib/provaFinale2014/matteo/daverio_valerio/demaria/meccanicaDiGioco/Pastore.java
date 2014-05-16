@@ -22,8 +22,7 @@ public class Pastore {
 		denaro=20;
 	}
 	
-	// getter e setter
-	
+// getter e setter
 	public int getPosizione() {
 		return posizione;
 	}
@@ -57,5 +56,8 @@ public class Pastore {
 	{
 		return nomeGiocatore;
 	}
+
+	
+	
 	
 }

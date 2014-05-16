@@ -3,7 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
 public class PecoraNera extends Pecora {
-	private static PecoraNera instance;
+	private static PecoraNera instance=null;
 
 	// costruttore privato
 	private PecoraNera() 
@@ -18,5 +18,8 @@ public class PecoraNera extends Pecora {
 			instance = new PecoraNera();
 		return instance;
 	}
+	
+	
+	
 
 }
