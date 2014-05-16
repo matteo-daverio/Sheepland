@@ -25,7 +25,7 @@ public class Strada {
 	
 	// getter e setter 
 	
-	public boolean isRecinto() {
+	public boolean recintata() {
 		return recinto;
 	}
 

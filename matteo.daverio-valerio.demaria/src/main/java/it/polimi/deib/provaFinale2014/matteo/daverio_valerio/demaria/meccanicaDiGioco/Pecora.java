@@ -62,5 +62,11 @@ public class Pecora {
 	
 	// movimento pecora
 	
-	
+	public void muoviPecora(Strada strada)
+	{
+		if(posizione==strada.getRegioneDestra())
+			posizione=strada.getRegioneSinistra();
+		else
+			posizione=strada.getRegioneDestra();
+	}
 }

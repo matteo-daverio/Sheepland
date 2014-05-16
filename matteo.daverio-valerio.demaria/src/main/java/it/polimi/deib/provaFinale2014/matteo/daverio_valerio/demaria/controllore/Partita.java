@@ -12,8 +12,9 @@ import java.util.ArrayList;
 public class Partita {
 	
 	private int numeroGiocatori;
+	private int turno;
 	private ArrayList<Pastore> pastori;
-	private ArrayList<Strada> strade;
+	private static ArrayList<Strada> strade;
 	private ArrayList<Regione> regioni;
 	
 	
@@ -21,7 +22,7 @@ public class Partita {
 	
 	public Partita()  // costruttore vuoto
 	{
-		
+		turno=1;
 	}
 	
 	// getter e setter
@@ -36,16 +37,31 @@ public class Partita {
 		return numeroGiocatori;
 	}
 	
-	// metodi di partita
+	public static ArrayList<Strada> getStrade()
+	{
+		return strade;
+	}
+	
+	/*
+	 * 
+	 *  
+	 *  
+	 *  METODI DI PARTITA
+	 *  
+	 *  
+	 *  
+	 *  
+	 *  
+	 */
 	
 	
 	// inizializzazione della classe
-	public void inizializza()
+	private void inizializza()
 	{
 		creaMappa();	
 	}
 	
-	public void creaMappa()
+	private void creaMappa()
 	{
 		//strade
 		strade.add(new Strada(0,9,8,1));   
@@ -307,11 +323,28 @@ public class Partita {
 	}
 	
 	
-	
 	// movimento pastore
-	public void muoviPastore()
+	private void muoviPastore()
 	{
 		
+	}
+	
+	
+	/*
+	 * 
+	 *
+	 * 
+	 *  METODI DI SERVIZIO
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	 
+	
+	private int lancioDado()
+	{
+		return (int)(Math.random()*6);
 	}
 	
 }
