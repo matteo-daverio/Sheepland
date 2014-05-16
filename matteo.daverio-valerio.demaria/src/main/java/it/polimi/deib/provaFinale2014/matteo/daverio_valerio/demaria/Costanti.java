@@ -7,6 +7,7 @@ public class Costanti {
 	public static final long PERIODO_TICK_TIMER = 1000;
 	
 	// costanti per le pecore
+
 	public static final int TIPO_PECORA_AGNELLO = 0;	
 	public static final int TIPO_PECORA_PECORA = 1;
 	public static final int TIPO_PECORA_MONTONE = 2;
@@ -20,4 +21,5 @@ public class Costanti {
 	// costanti per i terreni
 	public static final int POSIZIONE_SHEEPBURG = 0;
 	public static final int NUMERO_REGIONI = 18;
+
 }

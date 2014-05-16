@@ -1,6 +1,9 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Regione;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ public class Partita {
 	private int numeroGiocatori;
 	private ArrayList<Pastore> pastori;
 	private ArrayList<Strada> strade;
+	private ArrayList<Regione> regioni;
+	
 	
 	// costruttori
 	
@@ -271,9 +276,30 @@ public class Partita {
 		strade.get(41).aggiungiStrade(32, "nord-ovest");
 		strade.get(41).aggiungiStrade(40, "nord-est");
 		strade.get(41).aggiungiStrade(25, "sud-ovest");
-		strade.get(41).aggiungiStrade(24, "sud-est");	
+		strade.get(41).aggiungiStrade(24, "sud-est");
+		
+		//regioni
+		regioni.add(new Regione(0,TipoTerreno.SHEEPSBURG));
+		regioni.add(new Regione(1,TipoTerreno.GRANO));
+		regioni.add(new Regione(2,TipoTerreno.PRATERIA));
+		regioni.add(new Regione(3,TipoTerreno.FORESTA));
+		regioni.add(new Regione(4,TipoTerreno.ACQUA));
+		regioni.add(new Regione(5,TipoTerreno.SABBIA));
+		regioni.add(new Regione(6,TipoTerreno.ROCCIA));
+		regioni.add(new Regione(7,TipoTerreno.GRANO));
+		regioni.add(new Regione(8,TipoTerreno.PRATERIA));
+		regioni.add(new Regione(9,TipoTerreno.PRATERIA));
+		regioni.add(new Regione(10,TipoTerreno.FORESTA));
+		regioni.add(new Regione(11,TipoTerreno.FORESTA));
+		regioni.add(new Regione(12,TipoTerreno.ACQUA));
+		regioni.add(new Regione(13,TipoTerreno.ACQUA));
+		regioni.add(new Regione(14,TipoTerreno.SABBIA));
+		regioni.add(new Regione(15,TipoTerreno.SABBIA));
+		regioni.add(new Regione(16,TipoTerreno.ROCCIA));
+		regioni.add(new Regione(17,TipoTerreno.ROCCIA));
+		regioni.add(new Regione(18,TipoTerreno.GRANO));
 	}
-	
+
 	// aggiungi giocatore
 	public void aggiungiPastore(String nomeGiocatore, int turnoDiGioco)
 	{
