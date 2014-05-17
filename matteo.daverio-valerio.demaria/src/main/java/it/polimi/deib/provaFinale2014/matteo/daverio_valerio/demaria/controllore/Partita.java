@@ -16,6 +16,7 @@ public class Partita {
 	private ArrayList<Pastore> pastori;
 	private ArrayList<Strada> strade;
 	private ArrayList<Regione> regioni;
+	private ArrayList<Pecora> pecore;
 	
 	
 	// costruttori
@@ -42,6 +43,12 @@ public class Partita {
 		return strade;
 	}
 	
+	public ArrayList<Pecora> getPecore()
+	{
+		return pecore;
+	}
+	
+
 	/*
 	 * 
 	 *  
@@ -54,7 +61,10 @@ public class Partita {
 	 *  
 	 */
 	
-	
+	public void start()
+	{
+		inizializza();
+	}
 	// inizializzazione della classe
 	private void inizializza()
 	{
@@ -316,6 +326,11 @@ public class Partita {
 		regioni.add(new Regione(18,TipoTerreno.GRANO));
 	}
 
+	public void addPecora(Pecora p)
+	{
+		pecore.add(p);
+	}
+	
 	// aggiungi giocatore
 	public void aggiungiPastore(String nomeGiocatore, int turnoDiGioco)
 	{
