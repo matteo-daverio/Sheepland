@@ -14,7 +14,7 @@ public class Partita {
 	private int numeroGiocatori;
 	private int turno;
 	private ArrayList<Pastore> pastori;
-	private static ArrayList<Strada> strade;
+	private ArrayList<Strada> strade;
 	private ArrayList<Regione> regioni;
 	
 	
@@ -37,7 +37,7 @@ public class Partita {
 		return numeroGiocatori;
 	}
 	
-	public static ArrayList<Strada> getStrade()
+	public ArrayList<Strada> getStrade()
 	{
 		return strade;
 	}
