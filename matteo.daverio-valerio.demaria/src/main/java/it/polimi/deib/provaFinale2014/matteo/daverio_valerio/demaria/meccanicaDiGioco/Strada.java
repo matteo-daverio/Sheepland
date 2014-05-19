@@ -20,6 +20,7 @@ public class Strada {
 		this.regioneDestra=regioneDestra;
 		this.regioneSinistra=regioneSinistra;
 		this.numeroDado=numeroDado;
+		this.strade=new ArrayList<Direzione>();
 	}
 
 	

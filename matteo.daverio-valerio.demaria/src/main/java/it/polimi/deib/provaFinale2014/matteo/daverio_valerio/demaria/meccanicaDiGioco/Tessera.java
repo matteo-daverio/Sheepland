@@ -1,17 +1,19 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+
 public class Tessera {
 	
-	private final String tipo;
+	private final TipoTerreno tipo;
 	private final int costo;
 	
-	public Tessera(String tipo, int costo)
+	public Tessera(TipoTerreno tipo, int costo)
 	{
 		this.tipo=tipo;
 		this.costo=costo;
 	}
 	
-	public String getTipo()
+	public TipoTerreno getTipo()
 	{
 		return tipo;
 	}

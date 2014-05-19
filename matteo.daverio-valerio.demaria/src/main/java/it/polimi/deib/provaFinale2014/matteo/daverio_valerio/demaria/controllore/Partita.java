@@ -3,10 +3,12 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllor
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Regione;
+
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Partita {
@@ -15,15 +17,21 @@ public class Partita {
 	private int turno;
 	private ArrayList<Pastore> pastori;
 	private ArrayList<Strada> strade;
-	private ArrayList<Regione> regioni;
+	
 	private ArrayList<Pecora> pecore;
+	private static final Map<Integer,TipoTerreno> mappaRegioni =new HashMap<Integer,TipoTerreno>();
 	
 	
 	// costruttori
 	
 	public Partita()  // costruttore vuoto
 	{
-		turno=1;
+		this.turno=1;
+		this.strade= new ArrayList<Strada>();
+		
+		this.pastori=new ArrayList<Pastore>();
+		this.pecore= new ArrayList<Pecora>();
+		
 	}
 	
 	// getter e setter
@@ -304,26 +312,28 @@ public class Partita {
 		strade.get(41).aggiungiStrade(25, "sud-ovest");
 		strade.get(41).aggiungiStrade(24, "sud-est");
 		
-		//regioni
-		regioni.add(new Regione(0,TipoTerreno.SHEEPSBURG));
-		regioni.add(new Regione(1,TipoTerreno.GRANO));
-		regioni.add(new Regione(2,TipoTerreno.PRATERIA));
-		regioni.add(new Regione(3,TipoTerreno.FORESTA));
-		regioni.add(new Regione(4,TipoTerreno.ACQUA));
-		regioni.add(new Regione(5,TipoTerreno.SABBIA));
-		regioni.add(new Regione(6,TipoTerreno.ROCCIA));
-		regioni.add(new Regione(7,TipoTerreno.GRANO));
-		regioni.add(new Regione(8,TipoTerreno.PRATERIA));
-		regioni.add(new Regione(9,TipoTerreno.PRATERIA));
-		regioni.add(new Regione(10,TipoTerreno.FORESTA));
-		regioni.add(new Regione(11,TipoTerreno.FORESTA));
-		regioni.add(new Regione(12,TipoTerreno.ACQUA));
-		regioni.add(new Regione(13,TipoTerreno.ACQUA));
-		regioni.add(new Regione(14,TipoTerreno.SABBIA));
-		regioni.add(new Regione(15,TipoTerreno.SABBIA));
-		regioni.add(new Regione(16,TipoTerreno.ROCCIA));
-		regioni.add(new Regione(17,TipoTerreno.ROCCIA));
-		regioni.add(new Regione(18,TipoTerreno.GRANO));
+		//associazione regione-tipo terreno
+		mappaRegioni.put(0, TipoTerreno.SHEEPSBURG);
+		mappaRegioni.put(1, TipoTerreno.GRANO);
+		mappaRegioni.put(2, TipoTerreno.PRATERIA);
+		mappaRegioni.put(3, TipoTerreno.FORESTA);
+		mappaRegioni.put(4, TipoTerreno.ACQUA);
+		mappaRegioni.put(5, TipoTerreno.SABBIA);
+		mappaRegioni.put(6, TipoTerreno.ROCCIA);
+		mappaRegioni.put(7, TipoTerreno.GRANO);
+		mappaRegioni.put(8, TipoTerreno.PRATERIA);
+		mappaRegioni.put(9, TipoTerreno.PRATERIA);
+		mappaRegioni.put(10, TipoTerreno.FORESTA);
+		mappaRegioni.put(11, TipoTerreno.FORESTA);
+		mappaRegioni.put(12, TipoTerreno.ACQUA);
+		mappaRegioni.put(13, TipoTerreno.ACQUA);
+		mappaRegioni.put(14, TipoTerreno.SABBIA);
+		mappaRegioni.put(15, TipoTerreno.SABBIA);
+		mappaRegioni.put(16, TipoTerreno.ROCCIA);
+		mappaRegioni.put(17, TipoTerreno.ROCCIA);
+		mappaRegioni.put(18, TipoTerreno.GRANO);
+		
+
 	}
 
 	public void addPecora(Pecora p)
