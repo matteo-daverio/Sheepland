@@ -1,9 +1,10 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Lupo;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.PecoraNera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class Partita {
 	private ArrayList<Strada> strade;
 	
 	private ArrayList<Pecora> pecore;
+	private Lupo lupo;
+	private PecoraNera pecoraNera;
 	private static final Map<Integer,TipoTerreno> mappaRegioni =new HashMap<Integer,TipoTerreno>();
 	
 	
@@ -31,10 +34,16 @@ public class Partita {
 		
 		this.pastori=new ArrayList<Pastore>();
 		this.pecore= new ArrayList<Pecora>();
+		this.pecoraNera=new PecoraNera();
+		this.lupo=new Lupo();
 		
 	}
 	
 	// getter e setter
+	public PecoraNera getPecoraNera()
+	{
+		return pecoraNera;
+	}
 	
 	public void setNumeroGiocatori(int numeroGiocatori)
 	{
@@ -349,11 +358,17 @@ public class Partita {
 	
 	
 	// movimento pastore
-	private void muoviPastore()
+	private void muoviPastore (int posizione)
 	{
 		
 	}
 	
+	
+	// movimento pecora nera
+	public void muoviPecoraNera()
+	{
+		pecoraNera.fugaPecoraNera(lancioDado(), pastori, strade);
+	}
 	
 	/*
 	 * 
