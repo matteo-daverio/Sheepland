@@ -41,6 +41,19 @@ public class Partita {
 	}
 
 	// getter e setter
+	
+	public int getTurno(){
+		return turno;
+	}
+	
+	public void setTurno(int turno){
+		this.turno=turno;
+	}
+	
+	public int getContatoreRecinti(){
+		return contatoreRecinti;
+	}
+	
 	public PecoraNera getPecoraNera() {
 		return pecoraNera;
 	}

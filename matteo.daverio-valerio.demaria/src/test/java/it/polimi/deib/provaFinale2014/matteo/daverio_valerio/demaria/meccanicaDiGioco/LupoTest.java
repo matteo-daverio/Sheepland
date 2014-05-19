@@ -21,8 +21,8 @@ public class LupoTest {
 	// prima di fare i test creo un'istanza di lupo e partita
 	public void setUp() throws Exception {
 		partita = new Partita();
-
 		lupo = new Lupo();
+		partita.start();
 	}
 
 	@Test
@@ -31,27 +31,60 @@ public class LupoTest {
 		assertEquals("il lupo non si trova inizialmente a sheepsburg",
 				Costanti.POSIZIONE_SHEEPBURG, lupo.getPosizione());
 	}
-
-	// @Ignore("problemi con strade.add nella classe partita")
-
-	// TODO: testare il movimento da sheepburg con: -strada non recintata, -
-	// strada recintata(ma alcune senza recinto), - strade tutte recintate, -
-	// dado non presente
+		
+	@Test
+	public void getPosizioneLupoTest(){
+		assertEquals("getter posizione sbagliato",0,lupo.getPosizione());
+	}
 	
 	@Test
-	// testo il movimento corretto del lupo
-	public void movimentoLupoTest() {
+	public void setPosizioneLupoTest(){
+		lupo.setPosizione(1);
+		assertEquals("setter posizione sbagliato",1,lupo.getPosizione());
+	}
+	
+	@Test
+	// movimento con strada non recintata
+	public void movimento1LupoTest() {
 		partita.start();
-		if (!partita.getStrade().get(33).recintata()
-				|| (partita.getStrade().get(33).recintata()
-						&& partita.getStrade().get(35).recintata()
-						&& partita.getStrade().get(36).recintata()
-						&& partita.getStrade().get(38).recintata()
-						&& partita.getStrade().get(40).recintata() && partita
-						.getStrade().get(32).recintata()))
-			assertEquals("movimento non corretto", 1,
-					lupo.muoviLupo(6, partita.getStrade()));
+		
+		assertEquals("movimento non corretto", 1,
+				lupo.muoviLupo(6, partita.getStrade()));
+	}
 
+	@Test
+	// movimento con tutte strade recintate
+	public void movimento2LupoTest() {
+		partita.start();
+		partita.getStrade().get(33).aggiungiRecinto();
+		partita.getStrade().get(35).aggiungiRecinto();
+		partita.getStrade().get(36).aggiungiRecinto();
+		partita.getStrade().get(38).aggiungiRecinto();
+		partita.getStrade().get(40).aggiungiRecinto();
+		partita.getStrade().get(32).aggiungiRecinto();
+
+		assertEquals("movimento non corretto", 1,
+				lupo.muoviLupo(6, partita.getStrade()));
+	}
+
+	@Test
+	// movimento con una strada recintata e almeno una confinante no
+	public void movimento3LupoTest() {
+		partita.start();
+		partita.getStrade().get(33).aggiungiRecinto();
+
+		assertEquals("movimento non corretto", 0,
+				lupo.muoviLupo(6, partita.getStrade()));
+	}
+
+	@Test
+	// movimento con valore del dado non presente in nessuna strada confinante
+	public void movimento4LupoTest() {
+		partita.start();
+		lupo.setPosizione(9);
+
+		assertEquals("movimento non corretto", 9,
+				lupo.muoviLupo(6, partita.getStrade()));
 	}
 
 	@Test

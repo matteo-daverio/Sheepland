@@ -21,11 +21,44 @@ public class PecoraTest {
 
 	@Test
 	// controllo che i parametri della pecora creata siano giusti
-	public void parametriInizialiPecora() {
+	public void parametriInizialiPecoraTest() {
 		assertEquals("posizione iniziale di pecora non corretta", 3,
 				pecora.getPosizione());
 		assertEquals("tipo di pecora non corretto",
 				Costanti.TIPO_PECORA_PECORA, pecora.getTipoPecora());
+	}
+	
+	@Test
+	public void getPosizionePecoraTest(){
+		assertEquals("getter posizione sbagliato",3,pecora.getPosizione());
+	}
+	
+	@Test
+	public void setPosizionePecoraTest(){
+		pecora.setPosizione(4);
+		assertEquals("setter posizione sbagliato",4,pecora.getPosizione());
+	}
+
+	@Test
+	public void getTipoPecoraTest(){
+		assertEquals("getter tipo sbagliato",Costanti.TIPO_PECORA_PECORA,pecora.getTipoPecora());
+	}
+	
+	@Test
+	public void setTipoPecoraTest(){
+		pecora.setTipoPecora(Costanti.TIPO_PECORA_AGNELLO);;
+		assertEquals("setter sbagliato",Costanti.TIPO_PECORA_AGNELLO,pecora.getTipoPecora());
+	}
+	
+	@Test
+	public void getTurnoTest(){
+		assertEquals("getter turno sbagliato",0,pecora.getTurno());
+	}
+	
+	@Test
+	public void incrementaTurnoTest(){
+		pecora.incrementaTurno();
+		assertEquals("incrementa turno sbagliato",1,pecora.getTurno());
 	}
 	
 	@Test

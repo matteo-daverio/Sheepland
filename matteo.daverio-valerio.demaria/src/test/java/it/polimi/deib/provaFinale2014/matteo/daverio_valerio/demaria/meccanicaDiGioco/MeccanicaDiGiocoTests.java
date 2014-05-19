@@ -8,7 +8,12 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ LupoTest.class,
-	                  PecoraTest.class})
+	                  PecoraTest.class,
+	                  PastoreTest.class,
+	                  PecoraNeraTest.class,
+	                  StradaTest.class,
+	                  DirezioneTest.class,
+	                  TesseraTest.class})
 public class MeccanicaDiGiocoTests {
 
 }
