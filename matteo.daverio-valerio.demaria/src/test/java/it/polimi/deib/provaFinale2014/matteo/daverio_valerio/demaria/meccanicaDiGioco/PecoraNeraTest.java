@@ -25,6 +25,32 @@ public class PecoraNeraTest {
 		assertEquals("tipo sbagliato",Costanti.TIPO_PECORA_PECORANERA,pecoraNera.getTipoPecora());			
 	}
 	
+	@Test
+	// fuga con strada sgombra
+	public void fugaPecoraNeraTest1(){
+		partita.start();
+		assertEquals("fuga della pecora nera errata",
+				1,pecoraNera.fugaPecoraNera(6, partita.getPastori(), partita.getStrade()));
+	}
+	
+	@Test
+	// fuga con strada occupata da pastore
+	public void fugaPecoraNeraTest2(){
+		partita.start();
+		partita.aggiungiPastore("Valerio",1);
+		partita.getPastori().get(0).setPosizione(33);
+		assertEquals("fuga della pecora nera errata",
+				0,pecoraNera.fugaPecoraNera(6, partita.getPastori(), partita.getStrade()));
+	}
+
+	@Test
+	// fuga con strada recintata
+	public void fugaPecoraNeraTest3(){
+		partita.start();
+        partita.getStrade().get(33).aggiungiRecinto();
+		assertEquals("fuga della pecora nera errata",
+				0,pecoraNera.fugaPecoraNera(6, partita.getPastori(), partita.getStrade()));
+	}
 	
 
 }

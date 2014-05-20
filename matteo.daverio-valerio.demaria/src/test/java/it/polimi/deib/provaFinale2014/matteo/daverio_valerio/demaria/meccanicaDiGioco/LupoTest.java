@@ -46,7 +46,6 @@ public class LupoTest {
 	@Test
 	// movimento con strada non recintata
 	public void movimento1LupoTest() {
-		partita.start();
 		
 		assertEquals("movimento non corretto", 1,
 				lupo.muoviLupo(6, partita.getStrade()));
@@ -55,7 +54,6 @@ public class LupoTest {
 	@Test
 	// movimento con tutte strade recintate
 	public void movimento2LupoTest() {
-		partita.start();
 		partita.getStrade().get(33).aggiungiRecinto();
 		partita.getStrade().get(35).aggiungiRecinto();
 		partita.getStrade().get(36).aggiungiRecinto();
@@ -70,7 +68,6 @@ public class LupoTest {
 	@Test
 	// movimento con una strada recintata e almeno una confinante no
 	public void movimento3LupoTest() {
-		partita.start();
 		partita.getStrade().get(33).aggiungiRecinto();
 
 		assertEquals("movimento non corretto", 0,
@@ -80,7 +77,6 @@ public class LupoTest {
 	@Test
 	// movimento con valore del dado non presente in nessuna strada confinante
 	public void movimento4LupoTest() {
-		partita.start();
 		lupo.setPosizione(9);
 
 		assertEquals("movimento non corretto", 9,

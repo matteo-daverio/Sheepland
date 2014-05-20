@@ -1,5 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Direzione;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Lupo;
@@ -41,21 +42,25 @@ public class Partita {
 	}
 
 	// getter e setter
-	
-	public int getTurno(){
+
+	public int getTurno() {
 		return turno;
 	}
-	
-	public void setTurno(int turno){
-		this.turno=turno;
+
+	public void setTurno(int turno) {
+		this.turno = turno;
 	}
-	
-	public int getContatoreRecinti(){
+
+	public int getContatoreRecinti() {
 		return contatoreRecinti;
 	}
-	
+
 	public PecoraNera getPecoraNera() {
 		return pecoraNera;
+	}
+	
+	public Lupo getLupo(){
+		return lupo;
 	}
 
 	public void setNumeroGiocatori(int numeroGiocatori) {
@@ -74,6 +79,10 @@ public class Partita {
 		return pecore;
 	}
 
+	public ArrayList<Pastore> getPastori() {
+		return pastori;
+	}
+
 	/*
 	 * 
 	 * 
@@ -88,6 +97,7 @@ public class Partita {
 	// inizializzazione della classe
 	private void inizializza() {
 		creaMappa();
+		creaPecore();
 	}
 
 	private void creaMappa() {
@@ -345,8 +355,9 @@ public class Partita {
 
 	}
 
-	public void addPecora(Pecora p) {
-		pecore.add(p);
+	private void creaPecore(){
+	for (int i=0; i<=Costanti.NUMERO_PECORE-1; i++)
+	  pecore.add(new Pecora());	
 	}
 
 	// incremento del turno
@@ -363,16 +374,19 @@ public class Partita {
 	}
 
 	// controllo movimento pastore
-	public void muoviPastore(int posizione) {
+	public void muoviPastore(int posizione) // throws NoMovementException,
+	// NoMoneyException, InvalidMovementException
+	{
 		Pastore pastore = pastori.get(turno - 1);
 		if (pastore.getPosizione() == posizione) {
 			// posizione arrivo uguale a posizione di partenza
-			// TODO throws NoMovementException;
+			// throw new NoMovementException();
 		} else if (movimentoValido(posizione)
 				&& mossaSenzaSpesa(posizione,
 						strade.get(pastore.getPosizione()))) {
 			// movimento valido e senza spese, quindi lo esegue
 			spostamentoPastore(pastore, posizione);
+
 		} else if (movimentoValido(posizione)) {
 			// movimento valido ma con spesa di denaro
 			if (pastore.getDenaro() >= 1) {
@@ -381,11 +395,11 @@ public class Partita {
 				spostamentoPastore(pastore, posizione);
 			} else {
 				// denaro insufficiente
-				// TODO throws NoMoneyException;
+				// throw new NoMoneyException();
 			}
 		} else {
 			// movimento invalido
-			// TODO throws InvalidMovementException
+			// throw new InvalidMovementException();
 		}
 
 	}
@@ -395,12 +409,88 @@ public class Partita {
 		pecoraNera.fugaPecoraNera(lancioDado(), pastori, strade);
 	}
 
+	// movimento lupo
+	public boolean muoviLupo() {
+		lupo.muoviLupo(lancioDado(), strade);
+		return lupo.mangiaPecora(pecore);
+	}
+
+	// trasforma agnello
+	public void trasformaAgnelli() {
+		for (Pecora pecora : pecore)
+			if (pecora.getTipoPecora() == Costanti.TIPO_PECORA_AGNELLO)
+				pecora.incrementaTurno();
+	}
+
+	// abbattimento
+	public void abbatti() {
+		if (denaroSufficente()) {
+
+		}
+	}
+
+	// accoppiamento
+	public void accoppia(int posizione) {
+		if (regioneAdiacente(posizione)) {
+			if (esisteMontone(posizione) && esistePecora(posizione))
+				pecore.add(new Pecora(posizione, Costanti.TIPO_PECORA_AGNELLO));
+			else{
+				//TODO sollevare eccezione non esistono maschio e femmina
+				//throw new NotBisexualException();
+			}
+		} else {
+		
+		// TODO sollevare eccezione terreno non adiacente al pastore
+		// throw new IllegalShireException();
+		}
+	}
+
 	/*
 	 * 
 	 * 
 	 * 
 	 * METODI DI SERVIZIO
 	 */
+	// controllo che il pastore abbia denaro sufficente a comprare il silenzio
+	private boolean denaroSufficente() {
+
+		ArrayList<Direzione> stradeLimitrofe = strade.get(
+				pastori.get(turno - 1).getPosizione()).getStrade();
+		for(Direzione direzione: stradeLimitrofe){
+		   //TODO vedere se ci sono pastori nelle vicinanze
+		}
+		return true;
+	}
+
+	// controllo che la regione sia una delle due adiacenti al pastore che
+	// attualmente sta giocando
+	private boolean regioneAdiacente(int posizione) {
+		if (strade.get(pastori.get(turno - 1).getPosizione())
+				.getRegioneDestra() == posizione
+				|| strade.get(pastori.get(turno - 1).getPosizione())
+						.getRegioneSinistra() == posizione)
+			return true;
+		else
+			return false;
+	}
+
+	private boolean esisteMontone(int posizione) {
+		for (Pecora pecora : pecore) {
+			if ((pecora.getPosizione() == posizione)
+					&& (pecora.getTipoPecora() == Costanti.TIPO_PECORA_MONTONE))
+				return true;
+		}
+		return false;
+	}
+
+	private boolean esistePecora(int posizione) {
+		for (Pecora pecora : pecore) {
+			if ((pecora.getPosizione() == posizione)
+					&& (pecora.getTipoPecora() == Costanti.TIPO_PECORA_PECORA))
+				return true;
+		}
+		return false;
+	}
 
 	private int lancioDado() {
 		return (int) (Math.random() * 6);
