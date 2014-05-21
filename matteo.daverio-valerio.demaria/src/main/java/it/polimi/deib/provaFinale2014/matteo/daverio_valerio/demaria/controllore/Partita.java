@@ -7,6 +7,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.I
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Direzione;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Lupo;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
@@ -104,7 +105,7 @@ public class Partita {
 		creaMappa();
 		creaPecore();
 	}
-
+ 
 	private void creaMappa() {
 		// strade
 		strade.add(new Strada(0, 9, 8, 1));
@@ -359,7 +360,10 @@ public class Partita {
 		mappaRegioni.put(18, TipoTerreno.GRANO);
 
 	}
-
+    /**
+     * creo le 18 pecore iniziali
+     * @author Valerio De Maria
+     */
 	private void creaPecore() {
 		for (int i = 0; i <= Costanti.NUMERO_PECORE - 1; i++)
 			pecore.add(new Pecora());
@@ -417,32 +421,67 @@ public class Partita {
 		pecoraNera.fugaPecoraNera(lancioDado(), pastori, strade);
 	}
 
-	// movimento lupo
+	/**
+	 * muovo il lupo
+	 * @return boolean
+	 * @author Valerio De Maria
+	 */
 	public boolean muoviLupo() {
 		lupo.muoviLupo(lancioDado(), strade);
 		return lupo.mangiaPecora(pecore);
 	}
 
-	// trasforma agnello
+	/**
+	 * trasformo gli agnelli
+	 * @return void
+	 * @author Valerio De Maria
+	 */
 	public void trasformaAgnelli() {
 		for (Pecora pecora : pecore)
 			if (pecora.getTipoPecora() == Costanti.TIPO_PECORA_AGNELLO)
 				pecora.incrementaTurno();
 	}
 
-	// abbattimento
-	public void abbatti() {
-		if (denaroSufficente()) {
-			// TODO terminare il metodo abbattimento
-		}
+	/**
+	 * abbattimento
+	 * 
+	 * @param regione
+	 * @throws NoSheepInShireException
+	 *         NoMoneyException
+	 *         IllegalShireException
+	 * @return void            
+	 * @author Valerio De Maria
+	 */
+	public void abbatti(int regione) throws NoSheepInShireException, NoMoneyException,IllegalShireException {
+		Pecora pecoraDaAbbattere = scegliPecoraDaAbbattere(regione);
+		if (regioneAdiacente(regione)){
+		 if (pecoraDaAbbattere != null) {
+		  if (denaroPerSilenzioSufficente()) {
+				pecore.remove(pecoraDaAbbattere);
+				pagaSilenzio();
+
+			} else
+				throw new NoMoneyException();
+		} else
+			throw new NoSheepInShireException();
+		} 
+		else throw new IllegalShireException();
 	}
 
-	// accoppiamento
-	public void accoppia(int posizione) throws IllegalShireException,
+	/**
+	 * accoppiamento
+	 * 
+	 * @param regione
+	 * @throws IllegalShireException
+	 *         CannotProcreateException
+	 * @return void        
+	 * @author Valerio De Maria
+	 */
+	public void accoppia(int regione) throws IllegalShireException,
 			CannotProcreateException {
-		if (regioneAdiacente(posizione)) {
-			if (esisteMontone(posizione) && esistePecora(posizione))
-				pecore.add(new Pecora(posizione, Costanti.TIPO_PECORA_AGNELLO));
+		if (regioneAdiacente(regione)) {
+			if (esisteMontone(regione) && esistePecora(regione))
+				pecore.add(new Pecora(regione, Costanti.TIPO_PECORA_AGNELLO));
 			else {
 				// nel terreno scelto non ci sono sia pecore che montoni
 				throw new CannotProcreateException();
@@ -459,21 +498,64 @@ public class Partita {
 	 * 
 	 * METODI DI SERVIZIO
 	 */
-	// controllo che il pastore abbia denaro sufficente a comprare il silenzio
-	private boolean denaroSufficente() {
+	/**
+	 * scelgo la pecora da abbattere
+	 * @param regione
+	 * @return Pecora
+	 * @author Valerio De Maria
+	 */
+	private Pecora scegliPecoraDaAbbattere(int regione) {
+		for (Pecora pecora : pecore)
+			if (pecora.getPosizione() == regione)
+				return pecora;
+		return null;
+	}
 
+	/**
+	 * controllo che il pastore abbia denaro sufficente a comprare il silenzio
+	 * @return boolean
+	 * @author Valerio De Maria
+	 */
+	private boolean denaroPerSilenzioSufficente() {
+		ArrayList<Direzione> stradeLimitrofe = strade.get(
+				pastori.get(turno - 1).getPosizione()).getStrade();
+		int pastoriVicini = 0;
+		for (Direzione direzione : stradeLimitrofe) {
+			if (stradaOccupata(direzione.getPosizione()))
+				pastoriVicini++;
+		}
+		if ((pastori.get(turno - 1).getDenaro()) >= (pastoriVicini * 2))
+			return true;
+		else
+			return false;
+	}
+    /**
+     * pago il silenzio ai pastori vicino in seguito ad un abbattimento
+     * @return void
+     * @author Valerio De Maria
+     */
+	private void pagaSilenzio() {
 		ArrayList<Direzione> stradeLimitrofe = strade.get(
 				pastori.get(turno - 1).getPosizione()).getStrade();
 		for (Direzione direzione : stradeLimitrofe) {
-			// TODO vedere se ci sono pastori nelle vicinanze
-			// utilizza il metodo gia scritto boolean stradaOccupata(int
-			// posizioneStrada)
+			for (Pastore pastore : pastori) {
+				if ((pastore.getPosizione() == direzione.getPosizione())
+						&& (lancioDado() >= 5)) {
+					pastore.setDenaro(pastore.getDenaro() + 2);
+					pastori.get(turno - 1).setDenaro(
+							pastori.get(turno - 1).getDenaro() - 2);
+				}
+			}
 		}
-		return true;
 	}
 
-	// controllo che la regione sia una delle due adiacenti al pastore che
-	// attualmente sta giocando
+	/**
+	 * controllo che la regione sia una delle due adiacenti al pastore
+	 * che attualmente sta giocando
+	 * @param posizione
+	 * @return boolean
+	 * @author Valerio De Maria
+	 */
 	private boolean regioneAdiacente(int posizione) {
 		if (strade.get(pastori.get(turno - 1).getPosizione())
 				.getRegioneDestra() == posizione
@@ -483,7 +565,12 @@ public class Partita {
 		else
 			return false;
 	}
-
+    /**
+     * vedo se c'è un montone nella regione
+     * @param posizione
+     * @return boolean
+     * @author Valerio De Maria
+     */
 	private boolean esisteMontone(int posizione) {
 		for (Pecora pecora : pecore) {
 			if ((pecora.getPosizione() == posizione)
@@ -492,7 +579,12 @@ public class Partita {
 		}
 		return false;
 	}
-
+    /**
+     * vedo se c'è una pecora nella regione 
+     * @param posizione
+     * @return boolean
+     * @author Valerio De Maria
+     */
 	private boolean esistePecora(int posizione) {
 		for (Pecora pecora : pecore) {
 			if ((pecora.getPosizione() == posizione)

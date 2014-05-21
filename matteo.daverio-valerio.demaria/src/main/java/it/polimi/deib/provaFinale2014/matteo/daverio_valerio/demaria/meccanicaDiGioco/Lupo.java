@@ -51,7 +51,7 @@ public class Lupo {
 	public boolean mangiaPecora(ArrayList<Pecora> pecore) {
 		for (Pecora pecora : pecore) {
 			if (posizione == pecora.getPosizione()) {
-				pecore.remove(pecora); // da testare se funziona bene!!!!!!!
+				pecore.remove(pecora);
 				return true;
 			}
 		}
