@@ -5,6 +5,7 @@ public class Costanti {
 	// costanti per il server
 	public static final int PORTA=3000;
 	public static final long PERIODO_TICK_TIMER = 1000;
+	public final static String SERVER_NAME = "compute";
 	
 	// costanti per le pecore
 

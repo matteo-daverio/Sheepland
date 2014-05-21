@@ -70,6 +70,7 @@ public class PartitaTest {
 	// movimento pastore con strada sgombra e limitrofa
 	public void muoviPastoreTest1() {
 		partita.getPastori().get(0).setPosizione(30);
+		//TODO controllo sulle exception da gestire
 		partita.muoviPastore(1);
 		assertEquals("movimento pastore non corretto", 1, partita.getPastori()
 				.get(0).getPosizione());
@@ -84,6 +85,7 @@ public class PartitaTest {
 	// movimento pastore con strada sgombra e ma non limitrofa con soldi
 	public void muoviPastoreTest2() {
 		partita.getPastori().get(0).setPosizione(30);
+		//TODO controllo sulle exception da gestire
 		partita.muoviPastore(25);
 		assertEquals("movimento pastore non corretto", 25, partita.getPastori()
 				.get(0).getPosizione());
@@ -100,6 +102,7 @@ public class PartitaTest {
 		partita.aggiungiPastore("Matteo", 2);
 		partita.getPastori().get(1).setPosizione(25);
 		partita.getPastori().get(0).setPosizione(30);
+		//TODO controllo sulle exception da gestire
 		partita.muoviPastore(25);
 		assertEquals("movimento pastore non corretto", 30, partita.getPastori()
 				.get(0).getPosizione());
@@ -115,6 +118,7 @@ public class PartitaTest {
 	public void muoviPastoreTest4() {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.getStrade().get(25).aggiungiRecinto();
+		//TODO controllo sulle exception da gestire
 		partita.muoviPastore(25);
 		assertEquals("movimento pastore non corretto", 30, partita.getPastori()
 				.get(0).getPosizione());

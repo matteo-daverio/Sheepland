@@ -2,6 +2,11 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllor
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Direzione;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Lupo;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
@@ -58,8 +63,8 @@ public class Partita {
 	public PecoraNera getPecoraNera() {
 		return pecoraNera;
 	}
-	
-	public Lupo getLupo(){
+
+	public Lupo getLupo() {
 		return lupo;
 	}
 
@@ -355,12 +360,13 @@ public class Partita {
 
 	}
 
-	private void creaPecore(){
-	for (int i=0; i<=Costanti.NUMERO_PECORE-1; i++)
-	  pecore.add(new Pecora());	
+	private void creaPecore() {
+		for (int i = 0; i <= Costanti.NUMERO_PECORE - 1; i++)
+			pecore.add(new Pecora());
 	}
 
 	// incremento del turno
+	// @author Matteo Daverio
 	public void incrementaTurno() {
 		if (turno == numeroGiocatori)
 			turno = 1;
@@ -369,18 +375,19 @@ public class Partita {
 	}
 
 	// aggiungi giocatore
+	// @author Matteo Daverio
 	public void aggiungiPastore(String nomeGiocatore, int turnoDiGioco) {
 		pastori.add(new Pastore(nomeGiocatore, turnoDiGioco));
 	}
 
 	// controllo movimento pastore
-	public void muoviPastore(int posizione) // throws NoMovementException,
-	// NoMoneyException, InvalidMovementException
-	{
+	// @author Matteo Daverio
+	public void muoviPastore(int posizione) throws NoMovementException,
+			NoMoneyException, InvalidMovementException {
 		Pastore pastore = pastori.get(turno - 1);
 		if (pastore.getPosizione() == posizione) {
 			// posizione arrivo uguale a posizione di partenza
-			// throw new NoMovementException();
+			throw new NoMovementException();
 		} else if (movimentoValido(posizione)
 				&& mossaSenzaSpesa(posizione,
 						strade.get(pastore.getPosizione()))) {
@@ -395,16 +402,17 @@ public class Partita {
 				spostamentoPastore(pastore, posizione);
 			} else {
 				// denaro insufficiente
-				// throw new NoMoneyException();
+				throw new NoMoneyException();
 			}
 		} else {
 			// movimento invalido
-			// throw new InvalidMovementException();
+			throw new InvalidMovementException();
 		}
 
 	}
 
 	// movimento pecora nera
+	// @author Matteo Daverio
 	public void muoviPecoraNera() {
 		pecoraNera.fugaPecoraNera(lancioDado(), pastori, strade);
 	}
@@ -425,23 +433,23 @@ public class Partita {
 	// abbattimento
 	public void abbatti() {
 		if (denaroSufficente()) {
-
+			// TODO terminare il metodo abbattimento
 		}
 	}
 
 	// accoppiamento
-	public void accoppia(int posizione) {
+	public void accoppia(int posizione) throws IllegalShireException,
+			CannotProcreateException {
 		if (regioneAdiacente(posizione)) {
 			if (esisteMontone(posizione) && esistePecora(posizione))
 				pecore.add(new Pecora(posizione, Costanti.TIPO_PECORA_AGNELLO));
-			else{
-				//TODO sollevare eccezione non esistono maschio e femmina
-				//throw new NotBisexualException();
+			else {
+				// nel terreno scelto non ci sono sia pecore che montoni
+				throw new CannotProcreateException();
 			}
 		} else {
-		
-		// TODO sollevare eccezione terreno non adiacente al pastore
-		// throw new IllegalShireException();
+			// il terreno scelto non è adiacente al pastore
+			throw new IllegalShireException();
 		}
 	}
 
@@ -456,8 +464,10 @@ public class Partita {
 
 		ArrayList<Direzione> stradeLimitrofe = strade.get(
 				pastori.get(turno - 1).getPosizione()).getStrade();
-		for(Direzione direzione: stradeLimitrofe){
-		   //TODO vedere se ci sono pastori nelle vicinanze
+		for (Direzione direzione : stradeLimitrofe) {
+			// TODO vedere se ci sono pastori nelle vicinanze
+			// utilizza il metodo gia scritto boolean stradaOccupata(int
+			// posizioneStrada)
 		}
 		return true;
 	}
@@ -492,11 +502,14 @@ public class Partita {
 		return false;
 	}
 
+	// simula il lancio di un dado
+	// @author Matteo Daverio
 	private int lancioDado() {
 		return (int) (Math.random() * 6);
 	}
 
 	// controlla se la mossa richiesta dal pastore richiede dispendio di denaro
+	// @author Matteo Daverio
 	private boolean mossaSenzaSpesa(int posizioneArrivo, Strada strada) {
 		for (Direzione stradaAdiacente : strada.getStrade()) {
 			if (stradaAdiacente.getPosizione() == posizioneArrivo)
@@ -507,17 +520,20 @@ public class Partita {
 
 	// controlla se la posizione di arrivo ha un pastore o un recinto che la
 	// occupa
+	// @author Matteo Daverio
 	private boolean movimentoValido(int posizioneArrivo) {
 		return !stradaRecintata(posizioneArrivo)
 				&& !stradaOccupata(posizioneArrivo);
 	}
 
 	// controlla se la strada è recintata
+	// @author Matteo Daverio
 	private boolean stradaRecintata(int posizioneStrada) {
 		return strade.get(posizioneStrada).recintata();
 	}
 
 	// controlla se sulla strada c'è un pastore
+	// @author Matteo Daverio
 	private boolean stradaOccupata(int posizioneStrada) {
 		for (Pastore pastore : pastori) {
 			if (pastore.getPosizione() == posizioneStrada)
@@ -527,6 +543,7 @@ public class Partita {
 	}
 
 	// movimento effettivo del pastore
+	// @author Matteo Daverio
 	private void spostamentoPastore(Pastore pastore, int posizione) {
 		strade.get(pastore.getPosizione()).aggiungiRecinto();
 		contatoreRecinti++;

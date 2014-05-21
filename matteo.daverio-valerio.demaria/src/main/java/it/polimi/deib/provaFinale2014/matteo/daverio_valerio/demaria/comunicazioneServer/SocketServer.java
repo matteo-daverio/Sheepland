@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
-public class SocketServer implements Server {
+public class SocketServer implements Server, Runnable {
 	private int port;
 	private int contatore = 0;
 	private boolean erroreCreazioneSocket = false;
@@ -82,6 +82,11 @@ public class SocketServer implements Server {
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
+	}
+
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
