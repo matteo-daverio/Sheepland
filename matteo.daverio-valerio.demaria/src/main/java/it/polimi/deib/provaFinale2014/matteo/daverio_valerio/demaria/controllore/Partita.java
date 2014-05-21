@@ -105,7 +105,7 @@ public class Partita {
 		creaMappa();
 		creaPecore();
 	}
- 
+
 	private void creaMappa() {
 		// strade
 		strade.add(new Strada(0, 9, 8, 1));
@@ -360,17 +360,23 @@ public class Partita {
 		mappaRegioni.put(18, TipoTerreno.GRANO);
 
 	}
-    /**
-     * creo le 18 pecore iniziali
-     * @author Valerio De Maria
-     */
+
+	/**
+	 * creo le 18 pecore iniziali
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void creaPecore() {
 		for (int i = 0; i <= Costanti.NUMERO_PECORE - 1; i++)
 			pecore.add(new Pecora());
 	}
 
-	// incremento del turno
-	// @author Matteo Daverio
+	/**
+	 * incremento del turno
+	 * 
+	 * @author Matteo Daverio
+	 * 
+	 */
 	public void incrementaTurno() {
 		if (turno == numeroGiocatori)
 			turno = 1;
@@ -378,14 +384,26 @@ public class Partita {
 			turno++;
 	}
 
-	// aggiungi giocatore
-	// @author Matteo Daverio
+	/**
+	 * aggiungi giocatore
+	 * 
+	 * @author Matteo Daverio
+	 * @param nomeGiocatore
+	 * @param turnoDiGioco
+	 */
 	public void aggiungiPastore(String nomeGiocatore, int turnoDiGioco) {
 		pastori.add(new Pastore(nomeGiocatore, turnoDiGioco));
 	}
 
-	// controllo movimento pastore
-	// @author Matteo Daverio
+	/**
+	 * controllo movimento pastore
+	 * 
+	 * @author Matteo Daverio
+	 * @param posizione
+	 * @throws NoMovementException
+	 * @throws NoMoneyException
+	 * @throws InvalidMovementException
+	 */
 	public void muoviPastore(int posizione) throws NoMovementException,
 			NoMoneyException, InvalidMovementException {
 		Pastore pastore = pastori.get(turno - 1);
@@ -415,14 +433,18 @@ public class Partita {
 
 	}
 
-	// movimento pecora nera
-	// @author Matteo Daverio
+	/**
+	 * movimento pecora nera
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public void muoviPecoraNera() {
 		pecoraNera.fugaPecoraNera(lancioDado(), pastori, strade);
 	}
 
 	/**
 	 * muovo il lupo
+	 * 
 	 * @return boolean
 	 * @author Valerio De Maria
 	 */
@@ -433,6 +455,7 @@ public class Partita {
 
 	/**
 	 * trasformo gli agnelli
+	 * 
 	 * @return void
 	 * @author Valerio De Maria
 	 */
@@ -447,25 +470,25 @@ public class Partita {
 	 * 
 	 * @param regione
 	 * @throws NoSheepInShireException
-	 *         NoMoneyException
-	 *         IllegalShireException
-	 * @return void            
+	 *             NoMoneyException IllegalShireException
+	 * @return void
 	 * @author Valerio De Maria
 	 */
-	public void abbatti(int regione) throws NoSheepInShireException, NoMoneyException,IllegalShireException {
+	public void abbatti(int regione) throws NoSheepInShireException,
+			NoMoneyException, IllegalShireException {
 		Pecora pecoraDaAbbattere = scegliPecoraDaAbbattere(regione);
-		if (regioneAdiacente(regione)){
-		 if (pecoraDaAbbattere != null) {
-		  if (denaroPerSilenzioSufficente()) {
-				pecore.remove(pecoraDaAbbattere);
-				pagaSilenzio();
+		if (regioneAdiacente(regione)) {
+			if (pecoraDaAbbattere != null) {
+				if (denaroPerSilenzioSufficente()) {
+					pecore.remove(pecoraDaAbbattere);
+					pagaSilenzio();
 
+				} else
+					throw new NoMoneyException();
 			} else
-				throw new NoMoneyException();
+				throw new NoSheepInShireException();
 		} else
-			throw new NoSheepInShireException();
-		} 
-		else throw new IllegalShireException();
+			throw new IllegalShireException();
 	}
 
 	/**
@@ -473,8 +496,8 @@ public class Partita {
 	 * 
 	 * @param regione
 	 * @throws IllegalShireException
-	 *         CannotProcreateException
-	 * @return void        
+	 *             CannotProcreateException
+	 * @return void
 	 * @author Valerio De Maria
 	 */
 	public void accoppia(int regione) throws IllegalShireException,
@@ -500,6 +523,7 @@ public class Partita {
 	 */
 	/**
 	 * scelgo la pecora da abbattere
+	 * 
 	 * @param regione
 	 * @return Pecora
 	 * @author Valerio De Maria
@@ -513,6 +537,7 @@ public class Partita {
 
 	/**
 	 * controllo che il pastore abbia denaro sufficente a comprare il silenzio
+	 * 
 	 * @return boolean
 	 * @author Valerio De Maria
 	 */
@@ -529,11 +554,13 @@ public class Partita {
 		else
 			return false;
 	}
-    /**
-     * pago il silenzio ai pastori vicino in seguito ad un abbattimento
-     * @return void
-     * @author Valerio De Maria
-     */
+
+	/**
+	 * pago il silenzio ai pastori vicino in seguito ad un abbattimento
+	 * 
+	 * @return void
+	 * @author Valerio De Maria
+	 */
 	private void pagaSilenzio() {
 		ArrayList<Direzione> stradeLimitrofe = strade.get(
 				pastori.get(turno - 1).getPosizione()).getStrade();
@@ -550,8 +577,9 @@ public class Partita {
 	}
 
 	/**
-	 * controllo che la regione sia una delle due adiacenti al pastore
-	 * che attualmente sta giocando
+	 * controllo che la regione sia una delle due adiacenti al pastore che
+	 * attualmente sta giocando
+	 * 
 	 * @param posizione
 	 * @return boolean
 	 * @author Valerio De Maria
@@ -565,12 +593,14 @@ public class Partita {
 		else
 			return false;
 	}
-    /**
-     * vedo se c'è un montone nella regione
-     * @param posizione
-     * @return boolean
-     * @author Valerio De Maria
-     */
+
+	/**
+	 * vedo se c'è un montone nella regione
+	 * 
+	 * @param posizione
+	 * @return boolean
+	 * @author Valerio De Maria
+	 */
 	private boolean esisteMontone(int posizione) {
 		for (Pecora pecora : pecore) {
 			if ((pecora.getPosizione() == posizione)
@@ -579,12 +609,14 @@ public class Partita {
 		}
 		return false;
 	}
-    /**
-     * vedo se c'è una pecora nella regione 
-     * @param posizione
-     * @return boolean
-     * @author Valerio De Maria
-     */
+
+	/**
+	 * vedo se c'è una pecora nella regione
+	 * 
+	 * @param posizione
+	 * @return boolean
+	 * @author Valerio De Maria
+	 */
 	private boolean esistePecora(int posizione) {
 		for (Pecora pecora : pecore) {
 			if ((pecora.getPosizione() == posizione)
@@ -594,14 +626,24 @@ public class Partita {
 		return false;
 	}
 
-	// simula il lancio di un dado
-	// @author Matteo Daverio
+	/**
+	 * simula il lancio di un dado
+	 * 
+	 * @author Matteo Daverio
+	 * @return
+	 */
 	private int lancioDado() {
 		return (int) (Math.random() * 6);
 	}
 
-	// controlla se la mossa richiesta dal pastore richiede dispendio di denaro
-	// @author Matteo Daverio
+	/**
+	 * controlla se la mossa richiesta dal pastore richiede dispendio di denaro
+	 * 
+	 * @author Matteo Daverio
+	 * @param posizioneArrivo
+	 * @param strada
+	 * @return
+	 */
 	private boolean mossaSenzaSpesa(int posizioneArrivo, Strada strada) {
 		for (Direzione stradaAdiacente : strada.getStrade()) {
 			if (stradaAdiacente.getPosizione() == posizioneArrivo)
@@ -610,22 +652,37 @@ public class Partita {
 		return false;
 	}
 
-	// controlla se la posizione di arrivo ha un pastore o un recinto che la
-	// occupa
-	// @author Matteo Daverio
+	/**
+	 * controlla se la posizione di arrivo ha un pastore o un recinto che la //
+	 * occupa
+	 * 
+	 * @author Matteo Daverio
+	 * @param posizioneArrivo
+	 * @return
+	 */
 	private boolean movimentoValido(int posizioneArrivo) {
 		return !stradaRecintata(posizioneArrivo)
 				&& !stradaOccupata(posizioneArrivo);
 	}
 
-	// controlla se la strada è recintata
-	// @author Matteo Daverio
+	/**
+	 * controlla se la strada è recintata
+	 * 
+	 * @author Matteo Daverio
+	 * @param posizioneStrada
+	 * @return
+	 */
 	private boolean stradaRecintata(int posizioneStrada) {
 		return strade.get(posizioneStrada).recintata();
 	}
 
-	// controlla se sulla strada c'è un pastore
-	// @author Matteo Daverio
+	/**
+	 * controlla se sulla strada c'è un pastore
+	 * 
+	 * @author Matteo Daverio
+	 * @param posizioneStrada
+	 * @return
+	 */
 	private boolean stradaOccupata(int posizioneStrada) {
 		for (Pastore pastore : pastori) {
 			if (pastore.getPosizione() == posizioneStrada)
@@ -634,8 +691,13 @@ public class Partita {
 		return false;
 	}
 
-	// movimento effettivo del pastore
-	// @author Matteo Daverio
+	/**
+	 * movimento effettivo del pastore
+	 * 
+	 * @author Matteo Daverio
+	 * @param pastore
+	 * @param posizione
+	 */
 	private void spostamentoPastore(Pastore pastore, int posizione) {
 		strade.get(pastore.getPosizione()).aggiungiRecinto();
 		contatoreRecinti++;
