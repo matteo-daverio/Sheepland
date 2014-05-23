@@ -4,8 +4,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Direzione;
@@ -14,6 +16,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.PecoraNera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,9 +27,9 @@ public class Partita {
 	private int numeroGiocatori;
 	private int turno;
 	private int contatoreRecinti;
+	private int[] costoTessere = new int[6];
 	private ArrayList<Pastore> pastori;
 	private ArrayList<Strada> strade;
-
 	private ArrayList<Pecora> pecore;
 	private Lupo lupo;
 	private PecoraNera pecoraNera;
@@ -39,7 +42,6 @@ public class Partita {
 		this.turno = 1;
 		this.contatoreRecinti = 0;
 		this.strade = new ArrayList<Strada>();
-
 		this.pastori = new ArrayList<Pastore>();
 		this.pecore = new ArrayList<Pecora>();
 		this.pecoraNera = new PecoraNera();
@@ -515,12 +517,60 @@ public class Partita {
 		}
 	}
 
+	/**
+	 * il pastore del turno può comprare una tessera terreno
+	 * 
+	 * @param terreno
+	 * @throws NoMoreCardsException
+	 * @throws NoMoneyException
+	 * @author Valerio De Maria
+	 */
+	public void compraTessera(TipoTerreno terreno) throws NoMoreCardsException,
+			NoMoneyException, IllegalShireTypeException {
+		if (tipoRegioneAdiacenteCorrispondente(terreno)) {
+			if (costoTessere[terreno.ordinal()] <= 4) {
+				if (pastori.get(turno - 1).getDenaro() >= costoTessere[terreno
+						.ordinal()]) {
+					pastori.get(turno - 1).aggiungiTessera(
+							new Tessera(terreno,
+									costoTessere[terreno.ordinal()]));
+					pastori.get(turno - 1).setDenaro(
+							pastori.get(turno - 1).getDenaro()
+									- costoTessere[terreno.ordinal()]);
+				} else
+					throw new NoMoneyException();
+
+			} else
+				throw new NoMoreCardsException();
+		} else
+			throw new IllegalShireTypeException();
+	}
+
 	/*
 	 * 
 	 * 
 	 * 
 	 * METODI DI SERVIZIO
 	 */
+/**
+ * controllo che il terreno che gli passo corrisponde a uno dei due tipi 
+ * di terreno delle due regioni adiacenti al pastore
+ * @param terreno
+ * @return boolean
+ * @author Valerio De Maria
+ */
+	private boolean tipoRegioneAdiacenteCorrispondente(TipoTerreno terreno) {
+		if ((mappaRegioni.get(strade.get(pastori.get(turno - 1).getPosizione())
+				.getRegioneDestra()) == terreno)
+				|| (mappaRegioni.get(strade.get(
+						pastori.get(turno - 1).getPosizione())
+						.getRegioneSinistra()) == terreno)) {
+			return true;
+
+		}
+		else return false;
+	}
+
 	/**
 	 * scelgo la pecora da abbattere
 	 * 
