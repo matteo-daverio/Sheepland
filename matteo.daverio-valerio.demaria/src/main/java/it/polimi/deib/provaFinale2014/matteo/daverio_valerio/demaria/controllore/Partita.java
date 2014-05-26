@@ -17,6 +17,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.PecoraNera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.TesseraInVendita;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class Partita {
 	private ArrayList<Pecora> pecore;
 	private Lupo lupo;
 	private PecoraNera pecoraNera;
+	private ArrayList<TesseraInVendita> terreniInVendita; //per il market
 	private static final Map<Integer, TipoTerreno> mappaRegioni = new HashMap<Integer, TipoTerreno>();
 
 	// costruttori
@@ -46,10 +48,16 @@ public class Partita {
 		this.pecore = new ArrayList<Pecora>();
 		this.pecoraNera = new PecoraNera();
 		this.lupo = new Lupo();
+		this.terreniInVendita=new ArrayList<TesseraInVendita>(); //per il market
 
 	}
 
 	// getter e setter
+	
+	
+	public ArrayList<TesseraInVendita> getTerreniInVendita(){ //per il market
+		return terreniInVendita;
+	}
 
 	public int getTurno() {
 		return turno;
