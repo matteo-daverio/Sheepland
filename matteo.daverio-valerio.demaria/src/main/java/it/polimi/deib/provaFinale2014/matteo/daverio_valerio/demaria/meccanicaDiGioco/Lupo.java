@@ -10,9 +10,7 @@ public class Lupo {
 
 	// costruttori
 
-	public Lupo() // costruttore vuoto che crea l'animale random in posizione
-					// random
-	{
+	public Lupo() {
 		this.posizione = Costanti.POSIZIONE_SHEEPBURG;
 	}
 
@@ -26,28 +24,34 @@ public class Lupo {
 		posizione = pos;
 	}
 
-	// movimento lupo
-
+	/**
+	 * metodo che esegue il movimento del lupo
+	 * 
+	 * @param lancioDado
+	 * @param strade
+	 * @return nuova posizione del lupo
+	 * @author Matteo Daverio
+	 */
 	public int muoviLupo(int lancioDado, ArrayList<Strada> strade) {
-		Strada strada = esisteStrada(lancioDado, strade); // strada su cui il
-															// lupo DOVREBBE
-															// passare
-
-		if (strada != null) // se la strada esiste
-		{
-			if (!strada.recintata() || tutteRecintate(strade)) // se non è
-																// recintata,
-																// oppure tutte
-																// le strade
-																// intorno sono
-																// recintate
-				effettuaMovimento(strada); // il lupo si muove
+		// strada su cui il lupo DOVREBBE passare
+		Strada strada = esisteStrada(lancioDado, strade);
+		// controlla se la strada esiste
+		if (strada != null) {
+			// se non è recintata, oppure tutte le strade intorno sono recintate
+			if (!strada.recintata() || tutteRecintate(strade))
+				// il lupo si muove
+				effettuaMovimento(strada);
 		}
 		return posizione;
 	}
 
-	// se esiste una pecora nel terreno, il lupo la mangia
-
+	/**
+	 * se esiste una pecora nel terreno, il lupo la mangia
+	 * 
+	 * @param pecore
+	 * @return true se il lupo ha mangiato una pecora
+	 * @author Matteo Daverio
+	 */
 	public boolean mangiaPecora(ArrayList<Pecora> pecore) {
 		for (Pecora pecora : pecore) {
 			if (posizione == pecora.getPosizione()) {
@@ -93,11 +97,8 @@ public class Lupo {
 	// controlla se tutte le strade intorno al lupo sono recintate
 	private boolean tutteRecintate(ArrayList<Strada> strade) {
 		for (Strada strada : strade) {
-			if (stradaAdiacente(strada) && !strada.recintata()) // se la strada
-																// è adiacente
-																// al lupo e non
-																// è recintata
-			{
+			// se la strada è adiacente al lupo e non è recintata
+			if (stradaAdiacente(strada) && !strada.recintata()) {
 				return false;
 			}
 		}

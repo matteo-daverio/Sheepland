@@ -151,6 +151,17 @@ public class PartitaTest {
 	}
 
 	@Test
+	public void muoviLupoTest() {
+		int numeroPecore = partita.getPecore().size();
+		partita.getLupo().setPosizione(4);
+		for (Pecora pecora : partita.getPecore())
+			pecora.setPosizione(13);
+		partita.muoviLupo();
+		assertEquals("Il lupo non mangia", numeroPecore - 1, partita
+				.getPecore().size());
+	}
+
+	@Test
 	/**
 	 * abbattimento pecora con pecore adiacenti
 	 * 
@@ -327,6 +338,13 @@ public class PartitaTest {
 	}
 
 	@Test(expected = NoMoreCardsException.class)
+	/**
+	 * attende eccezione se il pastore vuole acquistare delle tessere di una tipologia di cui non ce ne sono più
+	 * 
+	 * @throws NoMoreCardsException
+	 * @throws NoMoneyException
+	 * @throws IllegalShireTypeException
+	 */
 	public void noMoreCardsExceptionTest() throws NoMoreCardsException,
 			NoMoneyException, IllegalShireTypeException {
 		partita.getPastori().get(0).setPosizione(0);
@@ -335,6 +353,13 @@ public class PartitaTest {
 	}
 
 	@Test(expected = NoMoneyException.class)
+	/**
+	 * attende eccezione se il giocatore tenta di acquistare una tessera senza avere soldi
+	 * 
+	 * @throws NoMoreCardsException
+	 * @throws NoMoneyException
+	 * @throws IllegalShireTypeException
+	 */
 	public void noMoneyExceptionTest2() throws NoMoreCardsException,
 			NoMoneyException, IllegalShireTypeException {
 		partita.getPastori().get(0).setPosizione(0);
@@ -344,6 +369,14 @@ public class PartitaTest {
 	}
 
 	@Test(expected = IllegalShireTypeException.class)
+	/**
+	 * attende eccezione se un pastore tenta di acquistare una tipologia di terreno non adiacente a lui
+	 * 
+	 * @throws NoMoreCardsException
+	 * @throws NoMoneyException
+	 * @throws IllegalShireTypeException
+	 * @author Matteo Daverio
+	 */
 	public void illegalShireTypeExceptionTest() throws NoMoreCardsException,
 			NoMoneyException, IllegalShireTypeException {
 		partita.getPastori().get(0).setPosizione(0);
