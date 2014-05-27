@@ -22,6 +22,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Partita {
 
@@ -34,8 +35,9 @@ public class Partita {
 	private ArrayList<Pecora> pecore;
 	private Lupo lupo;
 	private PecoraNera pecoraNera;
-	private ArrayList<TesseraInVendita> terreniInVendita; //per il market
+	private ArrayList<TesseraInVendita> terreniInVendita; // per il market
 	private static final Map<Integer, TipoTerreno> mappaRegioni = new HashMap<Integer, TipoTerreno>();
+	private Random random = new Random();
 
 	// costruttori
 
@@ -48,14 +50,14 @@ public class Partita {
 		this.pecore = new ArrayList<Pecora>();
 		this.pecoraNera = new PecoraNera();
 		this.lupo = new Lupo();
-		this.terreniInVendita=new ArrayList<TesseraInVendita>(); //per il market
+		this.terreniInVendita = new ArrayList<TesseraInVendita>(); // per il
+																	// market
 
 	}
 
 	// getter e setter
-	
-	
-	public ArrayList<TesseraInVendita> getTerreniInVendita(){ //per il market
+
+	public ArrayList<TesseraInVendita> getTerreniInVendita() { // per il market
 		return terreniInVendita;
 	}
 
@@ -545,6 +547,7 @@ public class Partita {
 					pastori.get(turno - 1).setDenaro(
 							pastori.get(turno - 1).getDenaro()
 									- costoTessere[terreno.ordinal()]);
+					costoTessere[terreno.ordinal()]++;
 				} else
 					throw new NoMoneyException();
 
@@ -560,13 +563,14 @@ public class Partita {
 	 * 
 	 * METODI DI SERVIZIO
 	 */
-/**
- * controllo che il terreno che gli passo corrisponde a uno dei due tipi 
- * di terreno delle due regioni adiacenti al pastore
- * @param terreno
- * @return boolean
- * @author Valerio De Maria
- */
+	/**
+	 * controllo che il terreno che gli passo corrisponde a uno dei due tipi di
+	 * terreno delle due regioni adiacenti al pastore
+	 * 
+	 * @param terreno
+	 * @return boolean
+	 * @author Valerio De Maria
+	 */
 	private boolean tipoRegioneAdiacenteCorrispondente(TipoTerreno terreno) {
 		if ((mappaRegioni.get(strade.get(pastori.get(turno - 1).getPosizione())
 				.getRegioneDestra()) == terreno)
@@ -575,8 +579,8 @@ public class Partita {
 						.getRegioneSinistra()) == terreno)) {
 			return true;
 
-		}
-		else return false;
+		} else
+			return false;
 	}
 
 	/**
@@ -691,7 +695,8 @@ public class Partita {
 	 * @return
 	 */
 	private int lancioDado() {
-		return (int) (Math.random() * 6);
+
+		return random.nextInt(5) + 1;
 	}
 
 	/**
@@ -711,7 +716,7 @@ public class Partita {
 	}
 
 	/**
-	 * controlla se la posizione di arrivo ha un pastore o un recinto che la //
+	 * controlla se la posizione di arrivo ha un pastore o un recinto che la 
 	 * occupa
 	 * 
 	 * @author Matteo Daverio
