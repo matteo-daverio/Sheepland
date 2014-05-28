@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaThreadRMI;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.ThreadRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.ServerApplication;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -9,14 +9,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * applicazione del client
+ * @author Valerio De Maria
+ *
+ */
 public class ClientRMI implements InterfacciaClientRMI {
 	
 	//TODO da chiedere all'utente;
 	static String nome ="Valerio";
 	static String password="Ramponio";
 	
-	//TODO CAPIRE PERCHè NON VUOLE OVERRIDE
-	//@Override
+	
 	public String comunicaClient(String messaggio){
 		System.out.println("il server mi ha detto"+messaggio);
 		return "Ricevuto";
@@ -29,10 +33,10 @@ public class ClientRMI implements InterfacciaClientRMI {
         	
 			//cerco il registry del server
 			Registry registry = LocateRegistry.getRegistry("localhost",
-					ThreadRMI.SERVER_PORT);
+					ServerApplication.SERVER_PORT_RMI);
 			
 			//scarico l'oggetto remoto del server
-			InterfacciaThreadRMI comp = (InterfacciaThreadRMI) registry
+			InterfacciaGestioneRMI comp = (InterfacciaGestioneRMI) registry
 					.lookup("serverInAttesa");
 			
 			
@@ -59,7 +63,7 @@ public class ClientRMI implements InterfacciaClientRMI {
 			    
 				//cerco il registry del server
 				Registry registry = LocateRegistry.getRegistry("localhost",
-						ThreadRMI.SERVER_PORT);
+						ServerApplication.SERVER_PORT_RMI);
 				
 				//associo all'oggetto esportato il nome formato da 
 				//nomeGiocatore+password
