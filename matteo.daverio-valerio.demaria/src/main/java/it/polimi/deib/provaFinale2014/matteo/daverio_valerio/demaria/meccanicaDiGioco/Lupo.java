@@ -52,14 +52,14 @@ public class Lupo {
 	 * @return true se il lupo ha mangiato una pecora
 	 * @author Matteo Daverio
 	 */
-	public boolean mangiaPecora(ArrayList<Pecora> pecore) {
+	public ArrayList<Pecora> mangiaPecora(ArrayList<Pecora> pecore) {
 		for (Pecora pecora : pecore) {
 			if (posizione == pecora.getPosizione()) {
 				pecore.remove(pecora);
-				return true;
+				return pecore;
 			}
 		}
-		return false;
+		return pecore;
 	}
 
 	/*
@@ -70,8 +70,15 @@ public class Lupo {
 	 * METODI DI SUPPORTO
 	 */
 
-	// restituisce, se esiste, la strada adiacente al terreno del lupo con il
-	// numero del dado uscito dal lancio
+	/**
+	 * restituisce, se esiste, la strada adiacente al terreno del lupo con il
+	 * numero del dado uscito dal lancio
+	 * 
+	 * @param lancioDado
+	 * @param strade
+	 * @return strada che il lupo dovrebbe saltare
+	 * @author Matteo Daverio
+	 */
 	private Strada esisteStrada(int lancioDado, ArrayList<Strada> strade) {
 		for (Strada strada : strade) {
 			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado)
@@ -80,13 +87,24 @@ public class Lupo {
 		return null;
 	}
 
-	// controlla se il lupo si trova su un terreno adiacente alla strada passata
+	/**
+	 * controlla se il lupo si trova su un terreno adiacente alla strada passata
+	 * 
+	 * @param strada
+	 * @return se la strada è adiacente al terreno in cui si trova il lupo
+	 * @author Matteo Daverio
+	 */
 	private boolean stradaAdiacente(Strada strada) {
 		return strada.getRegioneDestra() == posizione
 				|| strada.getRegioneSinistra() == posizione;
 	}
 
-	// il lupo attraversa la strada
+	/**
+	 * muove il lupo attraverso la strada
+	 * 
+	 * @param strada
+	 * @author Matteo
+	 */
 	private void effettuaMovimento(Strada strada) {
 		if (posizione == strada.getRegioneDestra())
 			posizione = strada.getRegioneSinistra();
@@ -94,7 +112,13 @@ public class Lupo {
 			posizione = strada.getRegioneDestra();
 	}
 
-	// controlla se tutte le strade intorno al lupo sono recintate
+	/**
+	 * controlla se tutte le strade intorno al lupo sono recintate
+	 * 
+	 * @param strade
+	 * @return se le strade intorno al lupo sono tutte recintate
+	 * @author Matteo
+	 */
 	private boolean tutteRecintate(ArrayList<Strada> strade) {
 		for (Strada strada : strade) {
 			// se la strada è adiacente al lupo e non è recintata

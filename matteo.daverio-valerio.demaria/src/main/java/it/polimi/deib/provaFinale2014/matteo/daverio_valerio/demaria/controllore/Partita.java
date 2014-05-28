@@ -440,6 +440,7 @@ public class Partita {
 			}
 		} else {
 			// movimento invalido
+			//TODO ogni tanto nei test da questa eccezione inattesa, verificare la motivazione
 			throw new InvalidMovementException();
 		}
 
@@ -460,9 +461,9 @@ public class Partita {
 	 * @return boolean
 	 * @author Valerio De Maria
 	 */
-	public boolean muoviLupo() {
+	public void muoviLupo() {
 		lupo.muoviLupo(lancioDado(), strade);
-		return lupo.mangiaPecora(pecore);
+		pecore=lupo.mangiaPecora(pecore);
 	}
 
 	/**
@@ -694,7 +695,7 @@ public class Partita {
 	 * @author Matteo Daverio
 	 * @return
 	 */
-	private int lancioDado() {
+	int lancioDado() {
 
 		return random.nextInt(5) + 1;
 	}

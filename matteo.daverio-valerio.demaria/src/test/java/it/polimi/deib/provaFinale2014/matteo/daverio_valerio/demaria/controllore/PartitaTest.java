@@ -2,7 +2,6 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllor
 
 import static org.junit.Assert.*;
 
-import java.util.Random;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
@@ -25,7 +24,7 @@ public class PartitaTest {
 
 	@Before
 	public void setUp() throws Exception {
-		partita = new Partita();
+		partita = new MiaPartita();
 		partita.start();
 		partita.aggiungiPastore("Valerio", 1);
 		partita.aggiungiPastore("Matteo", 2);
@@ -157,6 +156,8 @@ public class PartitaTest {
 		for (Pecora pecora : partita.getPecore())
 			pecora.setPosizione(13);
 		partita.muoviLupo();
+		assertEquals("Il lupo si sposta male", 13, partita.getLupo()
+				.getPosizione());
 		assertEquals("Il lupo non mangia", numeroPecore - 1, partita
 				.getPecore().size());
 	}
@@ -384,23 +385,18 @@ public class PartitaTest {
 	}
 
 	/**
-	 * override del metodo nextInt di random
+	 * override lancio dado di partita
 	 * 
-	 * @author Matteo Daverio
-	 * 
+	 * @author Matteo
+	 *
 	 */
-	class MioRandom extends Random {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
+	class MiaPartita extends Partita {
 		@Override
-		public int nextInt(int max) {
-			return max;
+		int lancioDado() {
+			return 6;
 		}
-
 	}
+
+	
 
 }

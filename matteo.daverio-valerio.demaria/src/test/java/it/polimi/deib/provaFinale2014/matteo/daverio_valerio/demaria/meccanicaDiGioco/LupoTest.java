@@ -3,11 +3,9 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 import java.util.ArrayList;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.*;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.*;
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 

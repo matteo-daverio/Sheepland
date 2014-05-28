@@ -3,10 +3,11 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
 import java.util.ArrayList;
+
 /**
  * 
  * @author Matteo Daverio
- *
+ * 
  */
 public class Pastore {
 
@@ -15,9 +16,9 @@ public class Pastore {
 	private ArrayList<Tessera> tessere = new ArrayList<Tessera>();
 	private String nomeGiocatore;
 	private int turnoDiGioco;
-	
+
 	/**
-	* costruttore
+	 * costruttore
 	 * 
 	 * @param nomeGiocatore
 	 * @param turnoDiGioco
@@ -31,17 +32,23 @@ public class Pastore {
 	}
 
 	// getter e setter
-	
-	// ritorna la posizione del pastore
+
+	/**
+	 * 
+	 * @return posizione del pastore
+	 */
 	public int getPosizione() {
 		return posizione;
 	}
 
-	// ritorna il turno di gioco del pastore
+	/**
+	 * 
+	 * @return turno di gioco del pastore
+	 */
 	public int getTurnoDiGioco() {
 		return turnoDiGioco;
 	}
-	
+
 	// setta la posizione del pastore
 	public void setPosizione(int posizione) {
 		this.posizione = posizione;
