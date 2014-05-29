@@ -24,6 +24,9 @@ public class Costanti {
 	public static final int POSIZIONE_SHEEPBURG = 0;
 	public static final int NUMERO_REGIONI = 18;
 	
+	//costanti per la partita
+	public static final int NUMERO_MOSSE_GIOCATORE=3;
+	public static final int NUMERO_RECINTI_NORMALI=20;
 
 
 }

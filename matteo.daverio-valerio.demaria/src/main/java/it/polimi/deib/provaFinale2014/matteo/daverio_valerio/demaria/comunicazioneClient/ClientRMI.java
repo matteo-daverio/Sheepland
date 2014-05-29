@@ -20,10 +20,21 @@ public class ClientRMI implements InterfacciaClientRMI {
 	static String nome ="Valerio";
 	static String password="Ramponio";
 	
+	//InterfacciaPartia partita;
 	
-	public String comunicaClient(String messaggio){
+	
+	public void iniziaPartita(String messaggio){
+		
+		//cerco il registry del server
+		//Registry registry = LocateRegistry.getRegistry("localhost",
+			//	ServerApplication.SERVER_PORT_RMI);
+		
+		
+		//partita = (InterfacciaPartita) registry.lookup(messaggio);
+		
 		System.out.println("il server mi ha detto"+messaggio);
-		return "Ricevuto";
+		
+		
 	}
 	
 	public static void main(String[] args) {

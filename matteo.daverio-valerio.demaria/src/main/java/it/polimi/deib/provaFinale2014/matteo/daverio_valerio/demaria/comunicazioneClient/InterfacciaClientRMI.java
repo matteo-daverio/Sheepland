@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface InterfacciaClientRMI extends Remote {
 	
-	public String comunicaClient(String messaggio) throws RemoteException;
+	public void  iniziaPartita(String messaggio) throws RemoteException;
 	
 	//public String iniziaPartita()throws RemoteException;
 	
