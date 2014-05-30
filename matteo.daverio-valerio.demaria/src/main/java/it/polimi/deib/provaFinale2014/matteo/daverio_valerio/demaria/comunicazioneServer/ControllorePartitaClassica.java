@@ -1,12 +1,19 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import mosse.Mossa;
+import mosse.MuoviPastore;
 
 public class ControllorePartitaClassica implements Runnable {
 
@@ -23,11 +30,48 @@ public class ControllorePartitaClassica implements Runnable {
 		this.partita = partita;
 
 	}
+	
+	
+	private void comunicaMovimentoPecoraNera(int nuovaPosizione){
+		
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			
+			x.comunicaMovimentoPecoraNera(nuovaPosizione);
+
+		}
+	}
+	
+	private void comunicaMosseDisponibili(){
+		//TODO
+	}
+	
+	private Mossa riceviMossa(){
+		
+		return new MuoviPastore(3);
+	}
 
 	private void giocaTurno() {
 
 		partita.muoviPecoraNera();
+		
+		//dico al client che la pecora nera si è mossa
+		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
+		
 		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
+		
+			comunicaMosseDisponibili();
+			
+			Mossa mossa =riceviMossa();
+			
+			try {
+				mossa.eseguiMossa(partita);
+			} catch (Exception e) {}
+
+			
+			
+			
+			
+			
 			// TODO comunico al client le mosse che può fare, le faccio eseguire
 			// e controllo che muova almeno una volta il pastore e che non
 			// esegua la stessa mossa due volta di fila

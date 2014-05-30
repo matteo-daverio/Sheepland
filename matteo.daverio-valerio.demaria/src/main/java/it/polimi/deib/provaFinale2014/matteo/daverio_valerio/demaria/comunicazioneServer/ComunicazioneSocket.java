@@ -42,6 +42,11 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient{
 			e.printStackTrace();
 		}
 	}
+
+	public void comunicaMovimentoPecoraNera(int nuovaPosizione) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

@@ -21,4 +21,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	public void chiudiConnessione(){
 		
 	}
+
+	public void comunicaMovimentoPecoraNera(int nuovaPosizione) {
+		// TODO Auto-generated method stub
+		
+	}
 }

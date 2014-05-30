@@ -8,4 +8,8 @@ public interface InterfacciaComunicazioneClient {
 	public void inviaPartita(Partita partita);
 
 	public void chiudiConnessione();
+	
+	public void comunicaMovimentoPecoraNera(int nuovaPosizione);
+	
+	
 }
