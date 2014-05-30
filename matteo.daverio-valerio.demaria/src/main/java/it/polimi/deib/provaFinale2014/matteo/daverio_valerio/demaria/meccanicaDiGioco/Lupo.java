@@ -8,18 +8,33 @@ public class Lupo {
 
 	private int posizione;
 
-	// costruttori
 
+	/**
+	 * costruttore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public Lupo() {
 		this.posizione = Costanti.POSIZIONE_SHEEPBURG;
 	}
 
 	// getter e setter
 
+	/**
+	 * 
+	 * @return posizione del lupo
+	 * @author Matteo Daverio
+	 */
 	public int getPosizione() {
 		return posizione;
 	}
 
+	/**
+	 * imposta la posizione del lupo al valore passato
+	 * 
+	 * @param pos
+	 * @author Matteo Daverio
+	 */
 	public void setPosizione(int pos) {
 		posizione = pos;
 	}
@@ -103,7 +118,7 @@ public class Lupo {
 	 * muove il lupo attraverso la strada
 	 * 
 	 * @param strada
-	 * @author Matteo
+	 * @author Matteo Daverio
 	 */
 	private void effettuaMovimento(Strada strada) {
 		if (posizione == strada.getRegioneDestra())
@@ -117,7 +132,7 @@ public class Lupo {
 	 * 
 	 * @param strade
 	 * @return se le strade intorno al lupo sono tutte recintate
-	 * @author Matteo
+	 * @author Matteo Daverio
 	 */
 	private boolean tutteRecintate(ArrayList<Strada> strade) {
 		for (Strada strada : strade) {

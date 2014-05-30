@@ -49,32 +49,53 @@ public class Pastore {
 		return turnoDiGioco;
 	}
 
-	// setta la posizione del pastore
+	/**
+	 * setta la posizione del pastore
+	 * 
+	 * @param posizione
+	 */
 	public void setPosizione(int posizione) {
 		this.posizione = posizione;
 	}
 
-	// ritorna il denaro posseduto
+	/**
+	 * 
+	 * @return denaro posseduto dal pastore
+	 */
 	public int getDenaro() {
 		return denaro;
 	}
 
-	// setta il denaro posseduto
+	/**
+	 * setta il denaro posseduto
+	 * 
+	 * @param denaro
+	 */
 	public void setDenaro(int denaro) {
 		this.denaro = denaro;
 	}
 
-	// ritorna le tessere possedute dal pastore
+	/**
+	 * 
+	 * @return tessere possedute dal pastore
+	 */
 	public ArrayList<Tessera> getTessere() {
 		return tessere;
 	}
 
-	// aggiunge tessere al pastore
+	/**
+	 * aggiunge tessere al pastore
+	 * 
+	 * @param tessera
+	 */
 	public void aggiungiTessera(Tessera tessera) {
 		tessere.add(tessera);
 	}
 
-	// ritorna il nome del giocatore
+	/**
+	 * 
+	 * @return nome del giocatore
+	 */
 	public String getNomeGiocatore() {
 		return nomeGiocatore;
 	}

@@ -41,8 +41,8 @@ public class Partita {
 
 	// costruttori
 
-	public Partita() // costruttore vuoto
-	{
+	public Partita() { // costruttore vuoto
+
 		this.turno = 1;
 		this.contatoreRecinti = 0;
 		this.strade = new ArrayList<Strada>();
@@ -440,7 +440,8 @@ public class Partita {
 			}
 		} else {
 			// movimento invalido
-			//TODO ogni tanto nei test da questa eccezione inattesa, verificare la motivazione
+			// TODO ogni tanto nei test da questa eccezione inattesa, verificare
+			// la motivazione
 			throw new InvalidMovementException();
 		}
 
@@ -463,7 +464,7 @@ public class Partita {
 	 */
 	public void muoviLupo() {
 		lupo.muoviLupo(lancioDado(), strade);
-		pecore=lupo.mangiaPecora(pecore);
+		pecore = lupo.mangiaPecora(pecore);
 	}
 
 	/**
@@ -496,7 +497,7 @@ public class Partita {
 					pecore.remove(pecoraDaAbbattere);
 					pagaSilenzio();
 
-				} else
+				} else 
 					throw new NoMoneyException();
 			} else
 				throw new NoSheepInShireException();
@@ -516,9 +517,9 @@ public class Partita {
 	public void accoppia(int regione) throws IllegalShireException,
 			CannotProcreateException {
 		if (regioneAdiacente(regione)) {
-			if (esisteMontone(regione) && esistePecora(regione))
+			if (esisteMontone(regione) && esistePecora(regione)) {
 				pecore.add(new Pecora(regione, Costanti.TIPO_PECORA_AGNELLO));
-			else {
+			} else {
 				// nel terreno scelto non ci sono sia pecore che montoni
 				throw new CannotProcreateException();
 			}
@@ -609,12 +610,13 @@ public class Partita {
 				pastori.get(turno - 1).getPosizione()).getStrade();
 		int pastoriVicini = 0;
 		for (Direzione direzione : stradeLimitrofe) {
-			if (stradaOccupata(direzione.getPosizione()))
+			if (stradaOccupata(direzione.getPosizione())){
 				pastoriVicini++;
+			}
 		}
-		if ((pastori.get(turno - 1).getDenaro()) >= (pastoriVicini * 2))
-			return true;
-		else
+		if ((pastori.get(turno - 1).getDenaro()) >= (pastoriVicini * 2)){
+			return true;	
+		}else
 			return false;
 	}
 
@@ -651,9 +653,9 @@ public class Partita {
 		if (strade.get(pastori.get(turno - 1).getPosizione())
 				.getRegioneDestra() == posizione
 				|| strade.get(pastori.get(turno - 1).getPosizione())
-						.getRegioneSinistra() == posizione)
+						.getRegioneSinistra() == posizione) {
 			return true;
-		else
+		}else
 			return false;
 	}
 
@@ -667,8 +669,9 @@ public class Partita {
 	private boolean esisteMontone(int posizione) {
 		for (Pecora pecora : pecore) {
 			if ((pecora.getPosizione() == posizione)
-					&& (pecora.getTipoPecora() == Costanti.TIPO_PECORA_MONTONE))
+					&& (pecora.getTipoPecora() == Costanti.TIPO_PECORA_MONTONE)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -683,8 +686,9 @@ public class Partita {
 	private boolean esistePecora(int posizione) {
 		for (Pecora pecora : pecore) {
 			if ((pecora.getPosizione() == posizione)
-					&& (pecora.getTipoPecora() == Costanti.TIPO_PECORA_PECORA))
+					&& (pecora.getTipoPecora() == Costanti.TIPO_PECORA_PECORA)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -710,14 +714,15 @@ public class Partita {
 	 */
 	private boolean mossaSenzaSpesa(int posizioneArrivo, Strada strada) {
 		for (Direzione stradaAdiacente : strada.getStrade()) {
-			if (stradaAdiacente.getPosizione() == posizioneArrivo)
+			if (stradaAdiacente.getPosizione() == posizioneArrivo) {
 				return true;
+			}
 		}
 		return false;
 	}
 
 	/**
-	 * controlla se la posizione di arrivo ha un pastore o un recinto che la 
+	 * controlla se la posizione di arrivo ha un pastore o un recinto che la
 	 * occupa
 	 * 
 	 * @author Matteo Daverio
@@ -749,8 +754,9 @@ public class Partita {
 	 */
 	private boolean stradaOccupata(int posizioneStrada) {
 		for (Pastore pastore : pastori) {
-			if (pastore.getPosizione() == posizioneStrada)
+			if (pastore.getPosizione() == posizioneStrada) {
 				return true;
+			}
 		}
 		return false;
 	}

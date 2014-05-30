@@ -18,10 +18,20 @@ public class Direzione {
 
 	// getter
 
+	/**
+	 * 
+	 * @return posizione strada adiacente
+	 * @author Matteo Daverio
+	 */
 	public int getPosizione() {
 		return posizione;
 	}
 
+	/**
+	 * 
+	 * @return direzione verso cui il pastore dovrebbe dirigersi per raggiungere questa strada
+	 * @author Matteo Daverio
+	 */
 	public String getVerso() {
 		return verso;
 	}
