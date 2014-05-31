@@ -5,6 +5,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
@@ -537,6 +538,7 @@ public class Partita {
 	 * @throws NoMoneyException
 	 * @author Valerio De Maria
 	 */
+	// TODO da testare
 	public void compraTessera(TipoTerreno terreno) throws NoMoreCardsException,
 			NoMoneyException, IllegalShireTypeException {
 		if (tipoRegioneAdiacenteCorrispondente(terreno)) {
@@ -559,6 +561,33 @@ public class Partita {
 			throw new IllegalShireTypeException();
 	}
 
+	
+	
+	//TODO da testare
+	/**
+	 * effettua il movimento della pecora, se è realizzabile
+	 * 
+	 * @param pecora
+	 * @param strada
+	 * @throws IllegalStreetException
+	 * @throws IllegalShireException
+	 * @author Matteo Daverio
+	 */
+	public void muoviPecora(int pecora, Strada strada) throws IllegalStreetException,IllegalShireException {
+		// il pastore deve trovarsi sulla strada passata
+		if(pastori.get(turno-1).getPosizione()==strada.getPosizione()){ 
+			// la pecora deve trovarsi in un terreno adiacente alla strada su cui è il pastore
+			if(pecore.get(pecora).getPosizione()==strada.getRegioneDestra() || pecore.get(pecora).getPosizione()==strada.getRegioneSinistra()){
+				pecore.get(pecora).muoviPecora(strada);
+			}
+			else{
+				throw new IllegalShireException();
+			}
+		} else {
+			throw new IllegalStreetException();
+		}
+	}
+	
 	/*
 	 * 
 	 * 

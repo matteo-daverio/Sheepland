@@ -122,9 +122,10 @@ public class Pecora {
 	 * @author Matteo Daverio
 	 */
 	public void muoviPecora(Strada strada) {
-		if (posizione == strada.getRegioneDestra())
+		if (posizione == strada.getRegioneDestra()) {
 			posizione = strada.getRegioneSinistra();
-		else
+		}else if(posizione==strada.getRegioneSinistra()){
 			posizione = strada.getRegioneDestra();
+		}
 	}
 }
