@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 /**
- * 
+ * classe che gestisce le conessioni socket
  * 
  * @author Valerio De Maria
  *
@@ -20,7 +20,7 @@ public class GestioneSocket implements Gestione {
 	private String line;
 	private String tipo;
 	
-	
+	//costruttore
 	public GestioneSocket(Socket socket){
 		
 		this.tipo="socket";

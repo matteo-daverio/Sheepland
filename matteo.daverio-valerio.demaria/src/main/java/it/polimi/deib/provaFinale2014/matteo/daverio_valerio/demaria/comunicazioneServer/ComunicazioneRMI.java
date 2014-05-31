@@ -1,7 +1,11 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-
+/**
+ * classe che comunica con client RMI
+ * @author Valerio De Maria
+ *
+ */
 public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	private String nome,password;
@@ -23,7 +27,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	}
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione) {
-		// TODO Auto-generated method stub
+
 		
 	}
 }

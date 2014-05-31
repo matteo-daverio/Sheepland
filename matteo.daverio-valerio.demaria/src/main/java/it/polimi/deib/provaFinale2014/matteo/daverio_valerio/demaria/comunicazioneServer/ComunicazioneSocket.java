@@ -7,6 +7,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * classe che parla con client socket
+ * @author Valerio De Maria
+ *
+ */
 public class ComunicazioneSocket implements InterfacciaComunicazioneClient{
 	
 	private Socket socket;
@@ -44,7 +49,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient{
 	}
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione) {
-		// TODO Auto-generated method stub
 		
 	}
 	
