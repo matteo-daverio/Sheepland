@@ -1,6 +1,8 @@
-package mosse;
+package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 /**
  * passo la pecora che voglio muovere e la strada su cui si trova il pastore
@@ -21,9 +23,9 @@ public class MuoviPecora implements Mossa {
 	    
 	}
 	
-	public void eseguiMossa(Partita partita) {
+	public void eseguiMossa(Partita partita) throws IllegalStreetException, IllegalShireException {
 		
-		partita.getPecore().get(pecora).muoviPecora(strada);
+		partita.muoviPecora(pecora, strada);;
 	}
 
 }

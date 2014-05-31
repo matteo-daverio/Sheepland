@@ -1,9 +1,10 @@
-package mosse;
+package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
@@ -18,7 +19,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
  */
 public interface Mossa {
 	
-	public void eseguiMossa(Partita partita) throws NoMovementException, NoMoneyException, InvalidMovementException, NoMoreCardsException, IllegalShireTypeException, NoSheepInShireException, IllegalShireException, CannotProcreateException;
+	public void eseguiMossa(Partita partita) throws NoMovementException, NoMoneyException, InvalidMovementException, NoMoreCardsException, IllegalShireTypeException, NoSheepInShireException, IllegalShireException, CannotProcreateException, IllegalStreetException;
 	
 
 }

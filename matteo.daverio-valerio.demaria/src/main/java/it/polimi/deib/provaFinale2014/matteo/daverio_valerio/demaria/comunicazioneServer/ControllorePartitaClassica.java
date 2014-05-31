@@ -2,12 +2,13 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 
 import java.util.ArrayList;
 
 
-import mosse.Mossa;
-import mosse.MuoviPastore;
+
 /**
  *gestisce l'evolversi della partita in caso di più di due giocatori 
  *
