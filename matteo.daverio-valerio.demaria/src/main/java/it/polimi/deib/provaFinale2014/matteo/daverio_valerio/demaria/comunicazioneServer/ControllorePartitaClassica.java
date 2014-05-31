@@ -5,15 +5,14 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-
-
 /**
- *gestisce l'evolversi della partita in caso di più di due giocatori 
- *
+ * gestisce l'evolversi della partita in caso di più di due giocatori
+ * 
  * @author Valerio De Maria
- *
+ * 
  */
 public class ControllorePartitaClassica implements Runnable {
 
@@ -111,6 +110,7 @@ public class ControllorePartitaClassica implements Runnable {
 	 * invio ad ogni client l'istanza della partita in corso
 	 * 
 	 * @author Valerio De Maria
+	 * @throws RemoteException
 	 */
 	private void inviaPartita() {
 
@@ -144,9 +144,9 @@ public class ControllorePartitaClassica implements Runnable {
 		// TODO devo chiedere al client dove vuole mettere inizialmente il suo
 		// pastore
 	}
-	
-	private void comunicaFinePartita(){
-		
+
+	private void comunicaFinePartita() {
+
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class ControllorePartitaClassica implements Runnable {
 		// i client in maniera trasparente rispetto alla modalità di connessione
 		trasferisciGestioneComunicazione();
 
-		inviaPartita();
+			inviaPartita();
 
 		posizionaPastori();
 
