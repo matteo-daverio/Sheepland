@@ -1,6 +1,18 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,6 +29,17 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void movimentoPecoraNera(int posizione) throws RemoteException;
 	
+	public Mossa inviaMossa() throws RemoteException;
 	
+	public void movimentoPastore(int posizione) throws RemoteException, NoMovementException, NoMoneyException, InvalidMovementException;
+	
+	public void cambioTurno(int turno) throws RemoteException;
+	
+	public void acquistoTessera(TipoTerreno terreno) throws RemoteException, NoMoreCardsException, NoMoneyException, IllegalShireTypeException;
+	
+	public void movimentoPecora(int pecora, Strada strada) throws IllegalStreetException, IllegalShireException;
 
+	public void abbattimento(int regione) throws NoSheepInShireException, NoMoneyException, IllegalShireException;
+	
+	public void accoppiamento(int regione) throws IllegalShireException, CannotProcreateException;
 }

@@ -2,7 +2,20 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ServerApplication;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -19,6 +32,22 @@ public class ClientRMI implements InterfacciaClientRMI {
 	private Partita partita;
 	private InterfacciaGestioneRMI server;
 
+	/**
+	 * il client riceve l'aggiornamento su un cambio di turno 
+	 */
+	public void cambioTurno(int turno){
+		partita.setTurno(turno);
+	}
+	/**
+	 * il client riceve che il giocatore del turno attuale ha mosso
+	 * @author Valerio De Maria
+	 * @throws InvalidMovementException 
+	 * @throws NoMoneyException 
+	 * @throws NoMovementException 
+	 */
+	public void movimentoPastore(int posizione) throws NoMovementException, NoMoneyException, InvalidMovementException{
+		partita.muoviPastore(posizione);
+	}
 	/**
 	 * ricevo l'istanza della partita creata dal server
 	 * 
@@ -37,6 +66,10 @@ public class ClientRMI implements InterfacciaClientRMI {
 	public void movimentoPecoraNera(int posizione){
 		
 		partita.getPecoraNera().setPosizione(posizione);
+	}
+	
+	public Mossa inviaMossa(){
+		return (new MuoviPastore(3));
 	}
 	
 	private void gioca(){
@@ -111,6 +144,24 @@ public class ClientRMI implements InterfacciaClientRMI {
 		
 		//ora il client rimane in attesa di iniziare tramite "riceviPartita"
 
+	}
+	
+	public void acquistoTessera(TipoTerreno terreno) throws RemoteException, NoMoreCardsException, NoMoneyException, IllegalShireTypeException {
+		partita.compraTessera(terreno);
+		
+	}
+	
+	public void movimentoPecora(int pecora, Strada strada) throws IllegalStreetException, IllegalShireException{
+		partita.muoviPecora(pecora, strada);
+	}
+	
+	public void abbattimento(int regione) throws NoSheepInShireException, NoMoneyException, IllegalShireException {
+		partita.abbatti(regione);
+		
+	}
+	public void accoppiamento(int regione) throws IllegalShireException, CannotProcreateException {
+		partita.accoppia(regione);
+		
 	}
 
 }

@@ -49,9 +49,9 @@ public class ControllorePartitaClassica implements Runnable {
 		// TODO
 	}
 
-	private Mossa riceviMossa() {
+	public Mossa riceviMossa() {
 
-		return new MuoviPastore(3);
+		return giocatori.get(partita.getTurno()-1).riceviMossa();
 	}
 
 	/**
@@ -74,15 +74,18 @@ public class ControllorePartitaClassica implements Runnable {
 			comunicaMosseDisponibili();
 
 			Mossa mossa = riceviMossa();
-
+             
 			try {
 				mossa.eseguiMossa(partita);
 			} catch (Exception e) {
 			}
+			
+			//faccio eseguire su tutti i client la mossa fatta
+			mossa.aggiornaClients(giocatori);
 
 			// TODO controllo che muova almeno una volta il pastore e che non
 			// esegua la stessa mossa due volta di fila
-		}
+		}//fine ciclo for
 
 	}
 
