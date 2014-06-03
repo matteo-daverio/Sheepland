@@ -1,12 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ServerApplication;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
@@ -23,14 +17,19 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
+
 /**
  * classe che comunica con client RMI
  * 
  * @author Valerio De Maria
  * 
  */
-public class ComunicazioneRMI implements InterfacciaComunicazioneClient,
-		InterfacciaComunicazioneRMI {
+public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	private String nome, password;
 	private InterfacciaClientRMI client;
@@ -58,31 +57,11 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient,
 			System.err.println("Remote instance" + " not bound.");
 		}
 
-		// IL SERVER CARICA SUL REGISTRY LA NUOVA INTERFACCIA
-		try {
-
-			// creo l'oggetto remoto da caricare sul server
-			InterfacciaComunicazioneRMI server = new ComunicazioneRMI(nome,
-					password);
-			// esporto l'oggetto remoto
-			InterfacciaComunicazioneRMI stub = (InterfacciaComunicazioneRMI) UnicastRemoteObject
-					.exportObject(server, 0);
-			// creo un registry
-			Registry registry = LocateRegistry
-					.createRegistry(Costanti.PORTA_RMI);
-			// associo all'oggetto remoto esportato un nome
-			registry.rebind("server" + nome + password, stub);
-
-		} catch (RemoteException e) {
-			System.err.println("ComputeEngine exception:");
-			e.printStackTrace();
-		}
-
 	}
 
-	public Mossa riceviMossa() {
+	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
 		try {
-			return client.inviaMossa();
+			return client.inviaMossa(mosseDisponibili);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -117,38 +96,38 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient,
 		try {
 			client.movimentoPastore(posizione);
 		} catch (RemoteException e) {
-			
+
 			e.printStackTrace();
 		} catch (NoMovementException e) {
-			
+
 			e.printStackTrace();
 		} catch (NoMoneyException e) {
-			
+
 			e.printStackTrace();
 		} catch (InvalidMovementException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void comunicaAcquistaTessera(TipoTerreno terreno) {
 		try {
 			client.acquistoTessera(terreno);
 		} catch (RemoteException e) {
-			
+
 			e.printStackTrace();
 		} catch (NoMoreCardsException e) {
-			
+
 			e.printStackTrace();
 		} catch (NoMoneyException e) {
-			
+
 			e.printStackTrace();
 		} catch (IllegalShireTypeException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void comunicaAbbattimento(int regione) {
@@ -161,10 +140,10 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient,
 
 			e.printStackTrace();
 		} catch (IllegalShireException e) {
-		
+
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void comunicaAccoppiamento(int regione) {
@@ -175,17 +154,17 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient,
 		} catch (CannotProcreateException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void comunicaMovimentoPecora(int pecora, Strada strada) {
-	try {
-		client.movimentoPecora(pecora, strada);
-	} catch (IllegalStreetException e) {
-		e.printStackTrace();
-	} catch (IllegalShireException e) {
-		e.printStackTrace();
-	}
-		
+		try {
+			client.movimentoPecora(pecora, strada);
+		} catch (IllegalStreetException e) {
+			e.printStackTrace();
+		} catch (IllegalShireException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

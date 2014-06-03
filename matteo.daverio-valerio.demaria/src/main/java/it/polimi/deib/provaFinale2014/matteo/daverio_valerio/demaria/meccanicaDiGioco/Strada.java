@@ -5,17 +5,17 @@ import java.util.ArrayList;
 /**
  * 
  * @author Matteo Daverio
- *
+ * 
  */
 public class Strada {
-	
+
 	private final int posizione;
 	private final int numeroDado; // numero da fare con il dado per passare
 	private final int regioneDestra;
 	private final int regioneSinistra;
 	private boolean recinto;
 	private ArrayList<Direzione> strade;
-	
+
 	/**
 	 * costruttore strada
 	 * 
@@ -25,19 +25,20 @@ public class Strada {
 	 * @param numeroDado
 	 * @author Matteo Daverio
 	 */
-	public Strada(int posizione, int regioneDestra, int regioneSinistra, int numeroDado)  // da modificare quando creeremo il metodo inizializzazione
+	public Strada(int posizione, int regioneDestra, int regioneSinistra,
+			int numeroDado) // da modificare quando creeremo il metodo
+							// inizializzazione
 	{
-		recinto=false;
-		this.posizione=posizione;
-		this.regioneDestra=regioneDestra;
-		this.regioneSinistra=regioneSinistra;
-		this.numeroDado=numeroDado;
-		this.strade=new ArrayList<Direzione>();
+		recinto = false;
+		this.posizione = posizione;
+		this.regioneDestra = regioneDestra;
+		this.regioneSinistra = regioneSinistra;
+		this.numeroDado = numeroDado;
+		this.strade = new ArrayList<Direzione>();
 	}
 
-	
-	// getter e setter 
-	
+	// getter e setter
+
 	/**
 	 * 
 	 * @return se la strada è recintata
@@ -53,7 +54,7 @@ public class Strada {
 	 * @author Matteo Daverio
 	 */
 	public void aggiungiRecinto() {
-		recinto=true;
+		recinto = true;
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class Strada {
 	 * @author Matteo Daverio
 	 */
 	public void aggiungiStrade(int posizioneStrada, String verso) {
-		Direzione direzione=new Direzione(posizioneStrada,verso);
+		Direzione direzione = new Direzione(posizioneStrada, verso);
 		strade.add(direzione);
 	}
 
@@ -103,7 +104,7 @@ public class Strada {
 	public int getRegioneSinistra() {
 		return regioneSinistra;
 	}
-	
+
 	/**
 	 * 
 	 * @return numero dado richiesto per attraversare la strada
@@ -112,5 +113,5 @@ public class Strada {
 	public int getNumeroDado() {
 		return numeroDado;
 	}
-	
+
 }

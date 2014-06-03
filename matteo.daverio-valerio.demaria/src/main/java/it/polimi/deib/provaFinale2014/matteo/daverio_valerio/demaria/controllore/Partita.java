@@ -380,8 +380,9 @@ public class Partita {
 	 * @author Valerio De Maria
 	 */
 	private void creaPecore() {
-		for (int i = 0; i <= Costanti.NUMERO_PECORE - 1; i++)
+		for (int i = 0; i <= Costanti.NUMERO_PECORE - 1; i++) {
 			pecore.add(new Pecora());
+		}
 	}
 
 	/**
@@ -391,10 +392,11 @@ public class Partita {
 	 * 
 	 */
 	public void incrementaTurno() {
-		if (turno == numeroGiocatori)
+		if (turno == numeroGiocatori) {
 			turno = 1;
-		else
+		} else {
 			turno++;
+		}
 	}
 
 	/**
@@ -475,9 +477,11 @@ public class Partita {
 	 * @author Valerio De Maria
 	 */
 	public void trasformaAgnelli() {
-		for (Pecora pecora : pecore)
-			if (pecora.getTipoPecora() == Costanti.TIPO_PECORA_AGNELLO)
+		for (Pecora pecora : pecore) {
+			if (pecora.getTipoPecora() == Costanti.TIPO_PECORA_AGNELLO) {
 				pecora.incrementaTurno();
+			}
+		}
 	}
 
 	/**
@@ -498,12 +502,15 @@ public class Partita {
 					pecore.remove(pecoraDaAbbattere);
 					pagaSilenzio();
 
-				} else 
+				} else {
 					throw new NoMoneyException();
-			} else
+				}
+			} else {
 				throw new NoSheepInShireException();
-		} else
+			}
+		} else {
 			throw new IllegalShireException();
+		}
 	}
 
 	/**
@@ -552,18 +559,19 @@ public class Partita {
 							pastori.get(turno - 1).getDenaro()
 									- costoTessere[terreno.ordinal()]);
 					costoTessere[terreno.ordinal()]++;
-				} else
+				} else {
 					throw new NoMoneyException();
+				}
 
-			} else
+			} else {
 				throw new NoMoreCardsException();
-		} else
+			}
+		} else {
 			throw new IllegalShireTypeException();
+		}
 	}
 
-	
-	
-	//TODO da testare
+	// TODO da testare
 	/**
 	 * effettua il movimento della pecora, se è realizzabile
 	 * 
@@ -573,21 +581,24 @@ public class Partita {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void muoviPecora(int pecora, Strada strada) throws IllegalStreetException,IllegalShireException {
+	public void muoviPecora(int pecora, Strada strada)
+			throws IllegalStreetException, IllegalShireException {
 		// il pastore deve trovarsi sulla strada passata
-		if(pastori.get(turno-1).getPosizione()==strada.getPosizione()){ 
-			// la pecora deve trovarsi in un terreno adiacente alla strada su cui è il pastore
-			if(pecore.get(pecora).getPosizione()==strada.getRegioneDestra() || pecore.get(pecora).getPosizione()==strada.getRegioneSinistra()){
+		if (pastori.get(turno - 1).getPosizione() == strada.getPosizione()) {
+			// la pecora deve trovarsi in un terreno adiacente alla strada su
+			// cui è il pastore
+			if (pecore.get(pecora).getPosizione() == strada.getRegioneDestra()
+					|| pecore.get(pecora).getPosizione() == strada
+							.getRegioneSinistra()) {
 				pecore.get(pecora).muoviPecora(strada);
-			}
-			else{
+			} else {
 				throw new IllegalShireException();
 			}
 		} else {
 			throw new IllegalStreetException();
 		}
 	}
-	
+
 	/*
 	 * 
 	 * 
@@ -610,8 +621,9 @@ public class Partita {
 						.getRegioneSinistra()) == terreno)) {
 			return true;
 
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -622,9 +634,11 @@ public class Partita {
 	 * @author Valerio De Maria
 	 */
 	private Pecora scegliPecoraDaAbbattere(int regione) {
-		for (Pecora pecora : pecore)
-			if (pecora.getPosizione() == regione)
+		for (Pecora pecora : pecore) {
+			if (pecora.getPosizione() == regione) {
 				return pecora;
+			}
+		}
 		return null;
 	}
 
@@ -639,14 +653,15 @@ public class Partita {
 				pastori.get(turno - 1).getPosizione()).getStrade();
 		int pastoriVicini = 0;
 		for (Direzione direzione : stradeLimitrofe) {
-			if (stradaOccupata(direzione.getPosizione())){
+			if (stradaOccupata(direzione.getPosizione())) {
 				pastoriVicini++;
 			}
 		}
-		if ((pastori.get(turno - 1).getDenaro()) >= (pastoriVicini * 2)){
-			return true;	
-		}else
+		if ((pastori.get(turno - 1).getDenaro()) >= (pastoriVicini * 2)) {
+			return true;
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -684,8 +699,9 @@ public class Partita {
 				|| strade.get(pastori.get(turno - 1).getPosizione())
 						.getRegioneSinistra() == posizione) {
 			return true;
-		}else
+		} else {
 			return false;
+		}
 	}
 
 	/**

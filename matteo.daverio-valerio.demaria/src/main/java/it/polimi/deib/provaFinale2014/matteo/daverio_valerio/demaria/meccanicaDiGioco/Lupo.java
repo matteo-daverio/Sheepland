@@ -1,13 +1,12 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
-import java.util.ArrayList;
-
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+
+import java.util.ArrayList;
 
 public class Lupo {
 
 	private int posizione;
-
 
 	/**
 	 * costruttore
@@ -53,9 +52,10 @@ public class Lupo {
 		// controlla se la strada esiste
 		if (strada != null) {
 			// se non è recintata, oppure tutte le strade intorno sono recintate
-			if (!strada.recintata() || tutteRecintate(strade))
+			if (!strada.recintata() || tutteRecintate(strade)) {
 				// il lupo si muove
 				effettuaMovimento(strada);
+			}
 		}
 		return posizione;
 	}
@@ -96,8 +96,9 @@ public class Lupo {
 	 */
 	private Strada esisteStrada(int lancioDado, ArrayList<Strada> strade) {
 		for (Strada strada : strade) {
-			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado)
+			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado) {
 				return strada;
+			}
 		}
 		return null;
 	}
@@ -121,10 +122,11 @@ public class Lupo {
 	 * @author Matteo Daverio
 	 */
 	private void effettuaMovimento(Strada strada) {
-		if (posizione == strada.getRegioneDestra())
+		if (posizione == strada.getRegioneDestra()) {
 			posizione = strada.getRegioneSinistra();
-		else
+		} else {
 			posizione = strada.getRegioneDestra();
+		}
 	}
 
 	/**

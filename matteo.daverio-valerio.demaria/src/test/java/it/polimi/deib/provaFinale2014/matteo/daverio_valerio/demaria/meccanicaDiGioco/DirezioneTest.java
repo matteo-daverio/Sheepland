@@ -1,6 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
 import org.junit.Before;
@@ -20,7 +20,7 @@ public class DirezioneTest {
 		partita = new Partita();
 		partita.start();
 	}
-	
+
 	@Test
 	/**
 	 * test del getter per la posizione della strada adiacente
@@ -28,9 +28,10 @@ public class DirezioneTest {
 	 * @author Matteo Daverio
 	 */
 	public void getPosizioneTest() {
-		assertEquals("Strada adiacente errata",1,partita.getStrade().get(0).getStrade().get(0).getPosizione());
+		assertEquals("Strada adiacente errata", 1, partita.getStrade().get(0)
+				.getStrade().get(0).getPosizione());
 	}
-	
+
 	@Test
 	/**
 	 * test del getter per la direzione verso la strada adiacente
@@ -38,7 +39,8 @@ public class DirezioneTest {
 	 * @author Matteo Daverio
 	 */
 	public void getDirezioneTest() {
-		assertEquals("Direzione adiacente errata","nord-est",partita.getStrade().get(0).getStrade().get(0).getVerso());
+		assertEquals("Direzione adiacente errata", "nord-est", partita
+				.getStrade().get(0).getStrade().get(0).getVerso());
 	}
 
 }

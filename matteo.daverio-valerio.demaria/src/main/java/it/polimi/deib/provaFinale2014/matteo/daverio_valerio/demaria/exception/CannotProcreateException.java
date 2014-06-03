@@ -7,14 +7,12 @@ public class CannotProcreateException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CannotProcreateException()
-	{
+	public CannotProcreateException() {
 		super();
 	}
-	
-	public CannotProcreateException(String s)
-	{
+
+	public CannotProcreateException(String s) {
 		super(s);
 	}
-	
+
 }

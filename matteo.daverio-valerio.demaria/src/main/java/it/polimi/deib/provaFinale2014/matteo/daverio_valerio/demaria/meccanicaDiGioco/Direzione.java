@@ -29,7 +29,8 @@ public class Direzione {
 
 	/**
 	 * 
-	 * @return direzione verso cui il pastore dovrebbe dirigersi per raggiungere questa strada
+	 * @return direzione verso cui il pastore dovrebbe dirigersi per raggiungere
+	 *         questa strada
 	 * @author Matteo Daverio
 	 */
 	public String getVerso() {

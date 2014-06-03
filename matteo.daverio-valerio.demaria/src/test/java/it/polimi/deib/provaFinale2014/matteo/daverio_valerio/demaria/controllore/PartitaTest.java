@@ -1,8 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore;
 
-import static org.junit.Assert.*;
-
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
@@ -153,8 +152,9 @@ public class PartitaTest {
 	public void muoviLupoTest() {
 		int numeroPecore = partita.getPecore().size();
 		partita.getLupo().setPosizione(4);
-		for (Pecora pecora : partita.getPecore())
+		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(13);
+		}
 		partita.muoviLupo();
 		assertEquals("Il lupo si sposta male", 13, partita.getLupo()
 				.getPosizione());
@@ -349,8 +349,9 @@ public class PartitaTest {
 	public void noMoreCardsExceptionTest() throws NoMoreCardsException,
 			NoMoneyException, IllegalShireTypeException {
 		partita.getPastori().get(0).setPosizione(0);
-		for (int i = 0; i <= 6; i++)
+		for (int i = 0; i <= 6; i++) {
 			partita.compraTessera(TipoTerreno.PRATERIA);
+		}
 	}
 
 	@Test(expected = NoMoneyException.class)
@@ -388,7 +389,7 @@ public class PartitaTest {
 	 * override lancio dado di partita
 	 * 
 	 * @author Matteo
-	 *
+	 * 
 	 */
 	class MiaPartita extends Partita {
 		@Override
@@ -396,7 +397,5 @@ public class PartitaTest {
 			return 6;
 		}
 	}
-
-	
 
 }

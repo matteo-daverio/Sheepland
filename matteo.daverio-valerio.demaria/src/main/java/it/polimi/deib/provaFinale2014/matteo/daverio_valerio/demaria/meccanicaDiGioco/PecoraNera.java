@@ -1,8 +1,8 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
-import java.util.ArrayList;
-
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+
+import java.util.ArrayList;
 
 /**
  * 
@@ -12,7 +12,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 public class PecoraNera extends Pecora {
 
 	/**
-	 * costruttore 
+	 * costruttore
 	 * 
 	 * @author Matteo Daverio
 	 */
@@ -31,13 +31,13 @@ public class PecoraNera extends Pecora {
 	 */
 
 	public int fugaPecoraNera(int lancioDado, ArrayList<Pastore> pastori,
-			ArrayList<Strada> strade) { 
+			ArrayList<Strada> strade) {
 		Strada strada = esisteStrada(lancioDado, strade);
 		if (strada != null && !strada.recintata()
 				&& !stradaOccupata(strada, pastori)) {
-			if (strada.getRegioneDestra() == this.getPosizione()){
+			if (strada.getRegioneDestra() == this.getPosizione()) {
 				this.setPosizione(strada.getRegioneSinistra());
-			}else{
+			} else {
 				this.setPosizione(strada.getRegioneDestra());
 			}
 		}
@@ -49,13 +49,14 @@ public class PecoraNera extends Pecora {
 	 * 
 	 * @param lancioDado
 	 * @param strade
-	 * @return se esiste, la strada su cui la pecora nera dovrebbe saltare in base al lancio del dado
+	 * @return se esiste, la strada su cui la pecora nera dovrebbe saltare in
+	 *         base al lancio del dado
 	 * @author Matteo Daverio
 	 */
 
 	private Strada esisteStrada(int lancioDado, ArrayList<Strada> strade) {
 		for (Strada strada : strade) {
-			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado){
+			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado) {
 				return strada;
 			}
 		}
@@ -83,8 +84,9 @@ public class PecoraNera extends Pecora {
 	 */
 	private boolean stradaOccupata(Strada strada, ArrayList<Pastore> pastori) {
 		for (Pastore pastore : pastori) {
-			if (pastore.getPosizione() == strada.getPosizione())
+			if (pastore.getPosizione() == strada.getPosizione()) {
 				return true;
+			}
 		}
 		return false;
 	}

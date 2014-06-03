@@ -6,13 +6,9 @@ import org.junit.runners.Suite;
 //TestSuite della meccanica del gioco
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ LupoTest.class,
-	                  PecoraTest.class,
-	                  PastoreTest.class,
-	                  PecoraNeraTest.class,
-	                  StradaTest.class,
-	                  DirezioneTest.class,
-	                  TesseraTest.class})
+@Suite.SuiteClasses({ LupoTest.class, PecoraTest.class, PastoreTest.class,
+		PecoraNeraTest.class, StradaTest.class, DirezioneTest.class,
+		TesseraTest.class })
 public class MeccanicaDiGiocoTests {
 
 }

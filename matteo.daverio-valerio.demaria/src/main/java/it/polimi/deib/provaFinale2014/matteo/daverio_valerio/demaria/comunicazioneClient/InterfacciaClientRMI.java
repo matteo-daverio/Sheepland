@@ -1,5 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
@@ -16,30 +17,36 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+
 /**
  * interfaccia del client RMI dove ho i metodi che il server può eseguire
- *  
+ * 
  * @author Valerio De Maria
- *
+ * 
  */
 public interface InterfacciaClientRMI extends Remote {
 
-	
 	public void riceviPartita(Partita partita) throws RemoteException;
-	
-	public void movimentoPecoraNera(int posizione) throws RemoteException;
-	
-	public Mossa inviaMossa() throws RemoteException;
-	
-	public void movimentoPastore(int posizione) throws RemoteException, NoMovementException, NoMoneyException, InvalidMovementException;
-	
-	public void cambioTurno(int turno) throws RemoteException;
-	
-	public void acquistoTessera(TipoTerreno terreno) throws RemoteException, NoMoreCardsException, NoMoneyException, IllegalShireTypeException;
-	
-	public void movimentoPecora(int pecora, Strada strada) throws IllegalStreetException, IllegalShireException;
 
-	public void abbattimento(int regione) throws NoSheepInShireException, NoMoneyException, IllegalShireException;
-	
-	public void accoppiamento(int regione) throws IllegalShireException, CannotProcreateException;
+	public void movimentoPecoraNera(int posizione) throws RemoteException;
+
+	public Mossa inviaMossa(ArrayList<Mosse> mosseDisponibili) throws RemoteException;
+
+	public void movimentoPastore(int posizione) throws RemoteException,
+			NoMovementException, NoMoneyException, InvalidMovementException;
+
+	public void cambioTurno(int turno) throws RemoteException;
+
+	public void acquistoTessera(TipoTerreno terreno) throws RemoteException,
+			NoMoreCardsException, NoMoneyException, IllegalShireTypeException;
+
+	public void movimentoPecora(int pecora, Strada strada)
+			throws IllegalStreetException, IllegalShireException;
+
+	public void abbattimento(int regione) throws NoSheepInShireException,
+			NoMoneyException, IllegalShireException;
+
+	public void accoppiamento(int regione) throws IllegalShireException,
+			CannotProcreateException;
 }

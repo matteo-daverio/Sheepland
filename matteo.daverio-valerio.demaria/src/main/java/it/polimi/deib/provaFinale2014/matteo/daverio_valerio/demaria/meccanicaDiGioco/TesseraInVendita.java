@@ -8,7 +8,5 @@ public class TesseraInVendita extends Tessera {
 		super(tipo, costo);
 
 	}
-	
-
 
 }

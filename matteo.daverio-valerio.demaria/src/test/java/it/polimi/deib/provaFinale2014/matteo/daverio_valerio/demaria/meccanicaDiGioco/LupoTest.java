@@ -1,13 +1,13 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
+import static org.junit.Assert.assertEquals;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+
 import java.util.ArrayList;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.*;
-import static org.junit.Assert.*;
-
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 //TestCase della classe Lupo
 public class LupoTest {
@@ -29,22 +29,22 @@ public class LupoTest {
 		assertEquals("il lupo non si trova inizialmente a sheepsburg",
 				Costanti.POSIZIONE_SHEEPBURG, lupo.getPosizione());
 	}
-		
+
 	@Test
-	public void getPosizioneLupoTest(){
-		assertEquals("getter posizione sbagliato",0,lupo.getPosizione());
+	public void getPosizioneLupoTest() {
+		assertEquals("getter posizione sbagliato", 0, lupo.getPosizione());
 	}
-	
+
 	@Test
-	public void setPosizioneLupoTest(){
+	public void setPosizioneLupoTest() {
 		lupo.setPosizione(1);
-		assertEquals("setter posizione sbagliato",1,lupo.getPosizione());
+		assertEquals("setter posizione sbagliato", 1, lupo.getPosizione());
 	}
-	
+
 	@Test
 	// movimento con strada non recintata
 	public void movimento1LupoTest() {
-		
+
 		assertEquals("movimento non corretto", 1,
 				lupo.muoviLupo(6, partita.getStrade()));
 	}

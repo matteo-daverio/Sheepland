@@ -19,14 +19,16 @@ public class Pecora {
 	 * @author Matteo Daverio
 	 */
 	public Pecora(int posizione, int tipoPecora) {
-		if (tipoPecora == 3)
+		if (tipoPecora == 3) {
 			this.tipoPecora = 2;
-		else
+		} else {
 			this.tipoPecora = tipoPecora;
-		if (posizione == 19)
+		}
+		if (posizione == 19) {
 			this.posizione = 18;
-		else
+		} else {
 			this.posizione = posizione;
+		}
 	}
 
 	/**
@@ -100,8 +102,9 @@ public class Pecora {
 		turno++;
 		if (turno >= 3) {
 			tipoPecora = (int) ((Math.random() * 2) + 1);
-			if (tipoPecora >= 3)
+			if (tipoPecora >= 3) {
 				tipoPecora = 2;
+			}
 
 		}
 	}
@@ -124,7 +127,7 @@ public class Pecora {
 	public void muoviPecora(Strada strada) {
 		if (posizione == strada.getRegioneDestra()) {
 			posizione = strada.getRegioneSinistra();
-		}else if(posizione==strada.getRegioneSinistra()){
+		} else if (posizione == strada.getRegioneSinistra()) {
 			posizione = strada.getRegioneDestra();
 		}
 	}

@@ -10,37 +10,33 @@ import java.util.concurrent.Executors;
  * decide quando crare una nuova partita
  * 
  * @author Valerio De Maria
- *
+ * 
  */
 public class GestorePartite implements Runnable {
-	
-	
+
 	private static ArrayList<Gestione> connessioni = new ArrayList<Gestione>();
-	
-	ExecutorService executor = Executors.newCachedThreadPool(); //pool di thread
-	
+
+	ExecutorService executor = Executors.newCachedThreadPool(); // pool di
+																// thread
+
 	/**
 	 * aggiungo una nuova connessione a quelle in attesa di iniziare
+	 * 
 	 * @param g
 	 * @author Valerio De Maria
 	 */
-	public static void addConnessione(Gestione g){
+	public static void addConnessione(Gestione g) {
 		connessioni.add(g);
 	}
-	
-	
-	public void run(){
-		
-		//creo una nuova partita
+
+	public void run() {
+
+		// creo una nuova partita
 		Partita partita = new Partita();
-		//aggiungo una nuova partita in corso al pool di thread
+		// aggiungo una nuova partita in corso al pool di thread
 		executor.submit(new ControllorePartitaClassica(connessioni, partita));
 		executor.submit(new ControllorePartitaDueGiocatori(connessioni, partita));
-		
 
-		
-		
 	}
-	
 
 }

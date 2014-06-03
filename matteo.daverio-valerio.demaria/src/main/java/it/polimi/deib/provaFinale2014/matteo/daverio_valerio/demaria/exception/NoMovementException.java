@@ -7,13 +7,11 @@ public class NoMovementException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NoMovementException()
-	{
+	public NoMovementException() {
 		super();
 	}
-	
-	public NoMovementException(String s)
-	{
+
+	public NoMovementException(String s) {
 		super(s);
 	}
 }

@@ -1,6 +1,5 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.Gestione;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneSocket;
@@ -16,8 +15,9 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * faccio partire il thread di gestione delle partite, pubblico l'implementazione
- * di InterfacciaGestioneRMI sul registry, attendo connesioni socket
+ * faccio partire il thread di gestione delle partite, pubblico
+ * l'implementazione di InterfacciaGestioneRMI sul registry, attendo connesioni
+ * socket
  * 
  * @author Valerio De Maria
  * 
@@ -70,7 +70,8 @@ public class ServerApplication {
 			return;
 		}
 
-		System.out.println("Il server socket si mette in attesa di connessioni");
+		System.out
+				.println("Il server socket si mette in attesa di connessioni");
 		while (true) {
 			try {
 				Socket socket = serverSocket.accept();
@@ -80,7 +81,7 @@ public class ServerApplication {
 				break; // entrerei qui se serverSocket venisse chiuso"
 			}
 		}
-		
+
 		try {
 			serverSocket.close();
 		} catch (IOException e) {

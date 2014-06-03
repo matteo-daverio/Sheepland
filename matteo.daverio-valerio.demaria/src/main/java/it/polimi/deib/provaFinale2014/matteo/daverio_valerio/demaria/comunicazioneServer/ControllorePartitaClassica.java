@@ -1,12 +1,14 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * gestisce l'evolversi della partita in caso di più di due giocatori
@@ -20,6 +22,8 @@ public class ControllorePartitaClassica implements Runnable {
 	private Partita partita;
 	private boolean finePartita, faseFinale, pastoreMosso;
 	private ArrayList<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
+	private ArrayList<Mosse> mosseDisponibili = new ArrayList<Mosse>();
+	private ArrayList<Mosse> mosseFatte = new ArrayList<Mosse>();
 
 	// costruttore
 	public ControllorePartitaClassica(ArrayList<Gestione> connessioni,
@@ -44,14 +48,73 @@ public class ControllorePartitaClassica implements Runnable {
 
 		}
 	}
+	
+	/**
+	 * creo la lista di mosse disponibili da inviare al client
+	 * @param mosseFatte
+	 * @return mosseDisponibili
+	 * @author Valerio De Maria
+	 */
 
-	private void comunicaMosseDisponibili() {
-		// TODO
+	private ArrayList<Mosse> calcolaMosseDisponibili(ArrayList<Mosse> mosseFatte) {
+		ArrayList<Mosse> mosseDisponibili =new ArrayList<Mosse>();
+		if((mosseFatte.size()==Costanti.NUMERO_MOSSE_GIOCATORE-1)&&(mosseFatte.get(0)!=Mosse.MUOVI_PASTORE)&&(mosseFatte.get(1)!=Mosse.MUOVI_PASTORE)){
+			 mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+			 return mosseDisponibili;
+			}
+		else{
+			if(mosseFatte.size()>=0){
+			switch(mosseFatte.get(mosseFatte.size())){
+			
+			case ABBATTI:
+				mosseDisponibili.add(Mosse.ACCOPPIA);
+				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+				mosseDisponibili.add(Mosse.MUOVI_PECORA);
+				break;
+			case ACCOPPIA:
+				mosseDisponibili.add(Mosse.ABBATTI);
+				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+				mosseDisponibili.add(Mosse.MUOVI_PECORA);
+				break;
+			case COMPRA_TESSERA:
+				mosseDisponibili.add(Mosse.ACCOPPIA);
+				mosseDisponibili.add(Mosse.ABBATTI);
+				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+				mosseDisponibili.add(Mosse.MUOVI_PECORA);
+				break;
+			case MUOVI_PASTORE:
+				mosseDisponibili.add(Mosse.ACCOPPIA);
+				mosseDisponibili.add(Mosse.ABBATTI);
+				mosseDisponibili.add(Mosse.MUOVI_PECORA);
+				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+				break;
+			case MUOVI_PECORA:
+				mosseDisponibili.add(Mosse.ACCOPPIA);
+				mosseDisponibili.add(Mosse.ABBATTI);
+				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+				break;
+			default:
+				break; 
+			}//fine switch
+			}//fine if numero mosse fatte maggiore di zero
+			else{
+				mosseDisponibili.add(Mosse.ACCOPPIA);
+				mosseDisponibili.add(Mosse.ABBATTI);
+				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+				mosseDisponibili.add(Mosse.MUOVI_PECORA);
+			}
+			return mosseDisponibili;
+		}
+
 	}
 
-	public Mossa riceviMossa() {
+	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
 
-		return giocatori.get(partita.getTurno()-1).riceviMossa();
+		return giocatori.get(partita.getTurno() - 1).riceviMossa(mosseDisponibili);
 	}
 
 	/**
@@ -68,24 +131,28 @@ public class ControllorePartitaClassica implements Runnable {
 		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
 
 		pastoreMosso = false;
+		mosseFatte.clear();
 		// il giocatore compie le mosse che può fare nel turno
 		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
 
-			comunicaMosseDisponibili();
+			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
 
-			Mossa mossa = riceviMossa();
-             
+			Mossa mossa = riceviMossa(mosseDisponibili);
+
 			try {
 				mossa.eseguiMossa(partita);
 			} catch (Exception e) {
 			}
-			
-			//faccio eseguire su tutti i client la mossa fatta
+
+			// faccio eseguire su tutti i client la mossa fatta
 			mossa.aggiornaClients(giocatori);
+
+			// aggiungo all'arrayList la mossa fatta
+			mossa.aggiornaMosseFatte(mosseFatte);
 
 			// TODO controllo che muova almeno una volta il pastore e che non
 			// esegua la stessa mossa due volta di fila
-		}//fine ciclo for
+		}// fine ciclo for
 
 	}
 
@@ -167,7 +234,7 @@ public class ControllorePartitaClassica implements Runnable {
 		// i client in maniera trasparente rispetto alla modalità di connessione
 		trasferisciGestioneComunicazione();
 
-			inviaPartita();
+		inviaPartita();
 
 		posizionaPastori();
 
