@@ -2,6 +2,8 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -20,5 +22,11 @@ public interface Gestione {
 
 	public Socket getSocket();
 	
+	public ObjectInputStream getBufferIn();
+	
+	public ObjectOutputStream getBufferOut();
+	
 	public InterfacciaClientRMI getInterfacciaClient();
+	
+	public void autenticazione(boolean riuscita);
 }

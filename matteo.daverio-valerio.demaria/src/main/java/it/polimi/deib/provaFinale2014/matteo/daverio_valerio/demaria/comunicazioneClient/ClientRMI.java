@@ -55,7 +55,8 @@ public class ClientRMI implements InterfacciaClientRMI {
 	}
 
 	/**
-	 * ricevo l'istanza della partita creata dal server
+	 * ricevo l'istanza della partita creata dal server e l'interfaccia su cui
+	 * chiamare i metodi
 	 * 
 	 * @author Valerio De Maria
 	 */
@@ -112,8 +113,11 @@ public class ClientRMI implements InterfacciaClientRMI {
 			//creo l'interfaccia da passare al server 
 			InterfacciaClientRMI client = new ClientRMI();
 			
+			// esporto l'interfaccia client
+			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject.exportObject(client, 0);
+			
 			// eseguo il metodo registrazione dell'oggetto remoto del server
-			String result = server.registrazione(nome, password,client);
+			boolean result = server.registrazione(nome, password,client);
 
 		} catch (RemoteException e) {
 			System.err.println("Remote exception:");

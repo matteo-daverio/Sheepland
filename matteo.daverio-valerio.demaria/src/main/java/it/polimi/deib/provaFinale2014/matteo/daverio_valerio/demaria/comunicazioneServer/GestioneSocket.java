@@ -1,8 +1,11 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -17,8 +20,8 @@ public class GestioneSocket implements Gestione {
 
 	private Socket socket;
 	private String nomeClient, password;
-	private Scanner in;
-	private PrintWriter out;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
 	private String line;
 	private String tipo;
 
@@ -30,22 +33,33 @@ public class GestioneSocket implements Gestione {
 
 		try {
 
-			in = new Scanner(socket.getInputStream());
-			out = new PrintWriter(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
 
 			// chiedo il nomeGiocatore
-			out.println("nome?");
+			out.reset();
+			out.writeObject(ComandiSocket.RICHIESTA_NOME);
 			out.flush();
-			line = in.nextLine();
-
-			this.nomeClient = line;
+			String nome=new String();
+			try {
+				nome = (String)in.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			this.nomeClient = nome;
 
 			// chiedo la password
-			out.println("password?");
+			out.reset();
+			out.writeObject(ComandiSocket.RICHIESTA_PASSWORD);
 			out.flush();
-			line = in.nextLine();
+			String password=new String();
+			try {
+				password = (String)in.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
-			this.password = line;
+			this.password = password;
 
 			// chiudo la connessione
 			in.close();
@@ -73,8 +87,43 @@ public class GestioneSocket implements Gestione {
 	public String getPassword() {
 		return password;
 	}
+	
+	public ObjectInputStream getBufferIn(){
+		return in;
+	}
 
+	public ObjectOutputStream getBufferOut(){
+		return out;
+	}
+	
 	public InterfacciaClientRMI getInterfacciaClient() {
 		return null;
+	}
+	/**
+	 * se il nome e password inseriti sono relativi ad un giocatore che sta
+	 * giocando, l'autenticazione fallisce 
+	 * @param riuscita
+	 */
+	public void autenticazione(boolean riuscita){
+		if(riuscita){
+			try {
+				out.reset();
+				out.writeObject(ComandiSocket.AUTENTICAZIONE_RIUSCITA);
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		else{
+			try {
+				out.reset();
+				out.writeObject(ComandiSocket.AUTENTICAZIONE_FALLITA);
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 }

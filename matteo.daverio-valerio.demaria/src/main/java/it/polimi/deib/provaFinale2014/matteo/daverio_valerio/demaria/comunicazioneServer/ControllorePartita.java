@@ -200,7 +200,7 @@ public abstract class ControllorePartita implements Runnable {
 
 		for (Gestione x : connessioni) {
 			if (x.getTipoConnessione().equals("socket")) {
-				giocatori.add(new ComunicazioneSocket(x.getSocket()));
+				giocatori.add(new ComunicazioneSocket(x.getSocket(),x.getBufferIn(),x.getBufferOut()));
 			} else {
 
 				giocatori

@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
  */
 public interface InterfacciaGestioneRMI extends Remote {
 
-	public String registrazione(String nomeClient, String password, InterfacciaClientRMI client)
+	public boolean registrazione(String nomeClient, String password, InterfacciaClientRMI client)
 			throws RemoteException;
 	
 	

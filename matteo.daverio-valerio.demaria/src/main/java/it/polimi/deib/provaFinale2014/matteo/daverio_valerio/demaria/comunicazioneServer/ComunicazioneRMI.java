@@ -3,6 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ServerApplication;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
@@ -21,6 +22,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
@@ -35,11 +37,13 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	private InterfacciaClientRMI client;
 
 	// costruttore
-	public ComunicazioneRMI(String nome, String password, InterfacciaClientRMI client) {
+	public ComunicazioneRMI(String nome, String password,
+			InterfacciaClientRMI client) {
 
 		this.nome = nome;
 		this.password = password;
-		this.client= client;
+		this.client = client;
+	
 	}
 
 	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
@@ -113,9 +117,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaAbbattimento(int regione,int pecora) {
+	public void comunicaAbbattimento(int regione, int pecora) {
 		try {
-			client.abbattimento(regione,pecora);
+			client.abbattimento(regione, pecora);
 		} catch (NoSheepInShireException e) {
 
 			e.printStackTrace();

@@ -2,6 +2,8 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
@@ -21,15 +23,14 @@ public class GestioneRMI implements Gestione, InterfacciaGestioneRMI {
 	 * 
 	 * @author Valerio De Maria
 	 */
-	public String registrazione(String nomeClient, String password, InterfacciaClientRMI client)
+	public boolean registrazione(String nomeClient, String password, InterfacciaClientRMI client)
 			throws RemoteException {
 
 		this.nomeClient = nomeClient;
 		this.password = password;
 		this.tipo = "RMI";
 		this.client=client;
-		GestorePartite.addConnessione(this);
-		return null;
+		return GestorePartite.addConnessione(this);
 
 	}
 	
@@ -51,6 +52,18 @@ public class GestioneRMI implements Gestione, InterfacciaGestioneRMI {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public ObjectInputStream getBufferIn() {
+		return null;
+	}
+
+	public ObjectOutputStream getBufferOut() {
+		return null;
+	}
+
+	public void autenticazione(boolean riuscita) {
+		
 	}
 
 }

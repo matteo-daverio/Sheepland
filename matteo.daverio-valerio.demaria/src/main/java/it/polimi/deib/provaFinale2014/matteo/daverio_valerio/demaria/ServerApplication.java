@@ -76,7 +76,7 @@ public class ServerApplication {
 			try {
 				Socket socket = serverSocket.accept();
 				Gestione connessioneSocket = new GestioneSocket(socket);
-				GestorePartite.addConnessione(connessioneSocket);
+				connessioneSocket.autenticazione(GestorePartite.addConnessione(connessioneSocket));
 			} catch (IOException e) {
 				break; // entrerei qui se serverSocket venisse chiuso"
 			}
@@ -89,5 +89,7 @@ public class ServerApplication {
 		}
 
 	}
+	
+	
 
 }

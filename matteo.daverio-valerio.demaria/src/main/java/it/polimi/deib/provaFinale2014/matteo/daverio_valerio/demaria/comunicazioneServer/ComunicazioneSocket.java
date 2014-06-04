@@ -29,17 +29,11 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	private ObjectOutputStream out;
 
 	// costruttore
-	public ComunicazioneSocket(Socket socket) {
+	public ComunicazioneSocket(Socket socket,ObjectInputStream in,ObjectOutputStream out) {
 
 		this.socket = socket;
-
-		try {
-			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		this.in=in;
+		this.out=out;
 	}
 
 	public void inviaPartita(Partita partita) {
