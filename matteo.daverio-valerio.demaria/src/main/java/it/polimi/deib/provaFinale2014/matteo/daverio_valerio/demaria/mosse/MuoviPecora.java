@@ -36,11 +36,12 @@ public class MuoviPecora implements Mossa {
 	}
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori) {
-		for (InterfacciaComunicazioneClient x : giocatori) {
-
-			x.comunicaMovimentoPecora(pecora, strada);
-		}
+			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno) {
+		for (int i=0;i<=giocatori.size();i++) {
+	           if(i!=(turno-1)){
+				giocatori.get(turno-1).comunicaMovimentoPecora(pecora, strada);
+	           }
+			}		
 
 	}
 

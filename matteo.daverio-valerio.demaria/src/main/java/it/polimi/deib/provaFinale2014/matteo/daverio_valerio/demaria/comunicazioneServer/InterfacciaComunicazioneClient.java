@@ -22,7 +22,7 @@ public interface InterfacciaComunicazioneClient {
 
 	public void comunicaAcquistaTessera(TipoTerreno terreno);
 
-	public void comunicaAbbattimento(int regione);
+	public void comunicaAbbattimento(int regione,int pecora);
 
 	public void comunicaAccoppiamento(int regione);
 

@@ -1,5 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -70,5 +72,9 @@ public class GestioneSocket implements Gestione {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public InterfacciaClientRMI getInterfacciaClient() {
+		return null;
 	}
 }

@@ -109,8 +109,11 @@ public class ClientRMI implements InterfacciaClientRMI {
 			// scarico l'oggetto remoto del server
 			server = (InterfacciaGestioneRMI) registry.lookup("serverInAttesa");
 
+			//creo l'interfaccia da passare al server 
+			InterfacciaClientRMI client = new ClientRMI();
+			
 			// eseguo il metodo registrazione dell'oggetto remoto del server
-			String result = server.registrazione(nome, password);
+			String result = server.registrazione(nome, password,client);
 
 		} catch (RemoteException e) {
 			System.err.println("Remote exception:");
@@ -121,43 +124,9 @@ public class ClientRMI implements InterfacciaClientRMI {
 
 	}
 
-	/**
-	 * creo un oggetto remoto sul registry tramite cui il server mi comunica
-	 * 
-	 * @author Valerio De Maria
-	 */
-	private void esportaOggettoRemoto() {
-
-		try {
-
-			// creo l'oggetto da caricare sul registry
-			InterfacciaClientRMI client = new ClientRMI();
-
-			// esporto l'oggetto sull registry
-			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject
-					.exportObject(client, 0);
-
-			// cerco il registry del server
-			Registry registry = LocateRegistry.getRegistry("localhost",
-					ServerApplication.SERVER_PORT_RMI);
-
-			// associo all'oggetto esportato il nome formato da
-			// nomeGiocatore+password
-			registry.rebind(nome + password, stub);
-
-		} catch (RemoteException e) {
-			System.err
-					.println("non riesco a caricare l'oggetto client sul registry");
-			e.printStackTrace();
-		}
-
-	}
-
 	public void start() {
 
 		ricercaConnessione();
-
-		esportaOggettoRemoto();
 
 		// ora il client rimane in attesa di iniziare tramite "riceviPartita"
 
@@ -174,9 +143,9 @@ public class ClientRMI implements InterfacciaClientRMI {
 		partita.muoviPecora(pecora, strada);
 	}
 
-	public void abbattimento(int regione) throws NoSheepInShireException,
+	public void abbattimento(int regione,int pecora) throws NoSheepInShireException,
 			NoMoneyException, IllegalShireException {
-		partita.abbatti(regione);
+		partita.abbatti(regione,pecora);
 
 	}
 

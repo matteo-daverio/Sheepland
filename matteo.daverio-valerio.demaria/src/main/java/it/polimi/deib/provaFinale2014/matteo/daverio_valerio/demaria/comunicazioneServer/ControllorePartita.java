@@ -16,7 +16,7 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public class ControllorePartitaClassica implements Runnable {
+public abstract class ControllorePartita implements Runnable {
 
 	private ArrayList<Gestione> connessioni;
 	private Partita partita;
@@ -26,7 +26,7 @@ public class ControllorePartitaClassica implements Runnable {
 	private ArrayList<Mosse> mosseFatte = new ArrayList<Mosse>();
 
 	// costruttore
-	public ControllorePartitaClassica(ArrayList<Gestione> connessioni,
+	public ControllorePartita(ArrayList<Gestione> connessioni,
 			Partita partita) {
 
 		this.connessioni = connessioni;
@@ -145,7 +145,7 @@ public class ControllorePartitaClassica implements Runnable {
 			}
 
 			// faccio eseguire su tutti i client la mossa fatta
-			mossa.aggiornaClients(giocatori);
+			mossa.aggiornaClients(giocatori,partita.getTurno());
 
 			// aggiungo all'arrayList la mossa fatta
 			mossa.aggiornaMosseFatte(mosseFatte);
@@ -204,7 +204,7 @@ public class ControllorePartitaClassica implements Runnable {
 			} else {
 
 				giocatori
-						.add(new ComunicazioneRMI(x.getNome(), x.getPassword()));
+						.add(new ComunicazioneRMI(x.getNome(), x.getPassword(), x.getInterfacciaClient()));
 			}
 
 		}

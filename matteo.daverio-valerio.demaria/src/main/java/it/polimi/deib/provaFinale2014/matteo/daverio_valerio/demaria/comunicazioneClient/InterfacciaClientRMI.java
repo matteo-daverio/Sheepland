@@ -44,7 +44,7 @@ public interface InterfacciaClientRMI extends Remote {
 	public void movimentoPecora(int pecora, Strada strada)
 			throws IllegalStreetException, IllegalShireException;
 
-	public void abbattimento(int regione) throws NoSheepInShireException,
+	public void abbattimento(int regione,int pecora) throws NoSheepInShireException,
 			NoMoneyException, IllegalShireException;
 
 	public void accoppiamento(int regione) throws IllegalShireException,

@@ -35,28 +35,11 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	private InterfacciaClientRMI client;
 
 	// costruttore
-	public ComunicazioneRMI(String nome, String password) {
+	public ComunicazioneRMI(String nome, String password, InterfacciaClientRMI client) {
 
 		this.nome = nome;
 		this.password = password;
-
-		// IL SERVER CERCA L'INTERFACCIA CLIENT
-		try {
-
-			// cerco il registry del client
-			Registry registry = LocateRegistry.getRegistry("localhost",
-					ServerApplication.SERVER_PORT_RMI);
-
-			// scarico l'oggetto remoto del client
-			client = (InterfacciaClientRMI) registry.lookup(nome + password);
-
-		} catch (RemoteException e) {
-			System.err.println("Remote exception:");
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			System.err.println("Remote instance" + " not bound.");
-		}
-
+		this.client= client;
 	}
 
 	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
@@ -130,9 +113,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaAbbattimento(int regione) {
+	public void comunicaAbbattimento(int regione,int pecora) {
 		try {
-			client.abbattimento(regione);
+			client.abbattimento(regione,pecora);
 		} catch (NoSheepInShireException e) {
 
 			e.printStackTrace();

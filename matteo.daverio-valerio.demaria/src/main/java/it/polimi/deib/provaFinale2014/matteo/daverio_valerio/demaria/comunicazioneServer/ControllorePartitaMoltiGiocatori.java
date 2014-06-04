@@ -4,18 +4,11 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore
 
 import java.util.ArrayList;
 
-/**
- * caso in cui ho solo due giocatori
- * 
- * @author Valerio De Maria
- * 
- */
-public class ControllorePartitaDueGiocatori extends ControllorePartita {
+public class ControllorePartitaMoltiGiocatori extends ControllorePartita {
 
-	public ControllorePartitaDueGiocatori(ArrayList<Gestione> connessioni,
+	public ControllorePartitaMoltiGiocatori(ArrayList<Gestione> connessioni,
 			Partita partita) {
 		super(connessioni, partita);
-
 	}
 
 }

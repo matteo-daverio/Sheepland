@@ -31,7 +31,7 @@ public interface Mossa {
 			IllegalStreetException;
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori);
+			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno);
 
 	public void aggiornaMosseFatte(ArrayList<Mosse> mosseFatte);
 

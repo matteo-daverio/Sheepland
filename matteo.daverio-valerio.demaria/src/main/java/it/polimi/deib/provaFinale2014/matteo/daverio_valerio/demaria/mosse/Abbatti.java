@@ -12,39 +12,40 @@ import java.util.ArrayList;
 /**
  * passo la regione dove si vuole abbattere una pecora
  * 
- * @author DeMaria
+ * @author Valeri De Maria
  * 
  */
 public class Abbatti implements Mossa {
 
-	private int regione;
+	private int regione,pecora;
 
 	// costruttore
-	public Abbatti(int regione) {
+	public Abbatti(int regione,int pecora) {
 
 		this.regione = regione;
+		this.pecora=pecora;
 
 	}
 
 	public void eseguiMossa(Partita partita) throws NoSheepInShireException,
 			NoMoneyException, IllegalShireException {
 
-		partita.abbatti(regione);
-
-	}
-
-	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori) {
-		for (InterfacciaComunicazioneClient x : giocatori) {
-
-			x.comunicaAbbattimento(regione);
-		}
+		partita.abbatti(regione,pecora);
 
 	}
 
 	public void aggiornaMosseFatte(ArrayList<Mosse> mosseFatte) {
 		mosseFatte.add(Mosse.ABBATTI);
 
+	}
+
+	public void aggiornaClients(
+			ArrayList<InterfacciaComunicazioneClient> giocatori, int turno) {
+		for (int i=0;i<=giocatori.size();i++) {
+	           if(i!=(turno-1)){
+				giocatori.get(turno-1).comunicaAbbattimento(regione,pecora);
+	           }
+			}		
 	}
 
 }

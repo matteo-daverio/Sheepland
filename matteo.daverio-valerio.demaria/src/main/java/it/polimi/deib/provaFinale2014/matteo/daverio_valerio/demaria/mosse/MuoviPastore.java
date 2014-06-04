@@ -34,12 +34,13 @@ public class MuoviPastore implements Mossa {
 	}
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori) {
+			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno) {
 
-		for (InterfacciaComunicazioneClient x : giocatori) {
-
-			x.comunicaMovimentoPastore(posizione);
-		}
+		for (int i=0;i<=giocatori.size();i++) {
+	           if(i!=(turno-1)){
+				giocatori.get(turno-1).comunicaMovimentoPastore(posizione);
+	           }
+			}		
 
 	}
 

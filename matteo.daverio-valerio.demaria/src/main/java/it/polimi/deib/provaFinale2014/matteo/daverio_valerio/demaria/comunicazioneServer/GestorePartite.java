@@ -34,7 +34,7 @@ public class GestorePartite implements Runnable {
 		// creo una nuova partita
 		Partita partita = new Partita();
 		// aggiungo una nuova partita in corso al pool di thread
-		executor.submit(new ControllorePartitaClassica(connessioni, partita));
+		executor.submit(new ControllorePartitaMoltiGiocatori(connessioni, partita));
 		executor.submit(new ControllorePartitaDueGiocatori(connessioni, partita));
 
 	}

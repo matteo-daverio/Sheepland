@@ -493,11 +493,11 @@ public class Partita {
 	 * @return void
 	 * @author Valerio De Maria
 	 */
-	public void abbatti(int regione) throws NoSheepInShireException,
+	public void abbatti(int regione,int pecora) throws NoSheepInShireException,
 			NoMoneyException, IllegalShireException {
-		Pecora pecoraDaAbbattere = scegliPecoraDaAbbattere(regione);
+		Pecora pecoraDaAbbattere = pecore.get(pecora);
 		if (regioneAdiacente(regione)) {
-			if (pecoraDaAbbattere != null) {
+			if (pecoraDaAbbattere != null && pecoraDaAbbattere.getPosizione()==regione) {
 				if (denaroPerSilenzioSufficente()) {
 					pecore.remove(pecoraDaAbbattere);
 					pagaSilenzio();
@@ -624,22 +624,6 @@ public class Partita {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * scelgo la pecora da abbattere
-	 * 
-	 * @param regione
-	 * @return Pecora
-	 * @author Valerio De Maria
-	 */
-	private Pecora scegliPecoraDaAbbattere(int regione) {
-		for (Pecora pecora : pecore) {
-			if (pecora.getPosizione() == regione) {
-				return pecora;
-			}
-		}
-		return null;
 	}
 
 	/**
