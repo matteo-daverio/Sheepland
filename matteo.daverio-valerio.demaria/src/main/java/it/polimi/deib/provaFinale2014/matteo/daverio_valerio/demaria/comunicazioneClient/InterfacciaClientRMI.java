@@ -49,4 +49,6 @@ public interface InterfacciaClientRMI extends Remote {
 
 	public void accoppiamento(int regione) throws IllegalShireException,
 			CannotProcreateException;
+	
+	public boolean pong();
 }

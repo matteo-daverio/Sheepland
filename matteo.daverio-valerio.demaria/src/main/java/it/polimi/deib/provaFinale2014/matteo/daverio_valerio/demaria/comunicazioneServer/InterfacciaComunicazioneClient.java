@@ -1,5 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
@@ -27,5 +28,13 @@ public interface InterfacciaComunicazioneClient {
 	public void comunicaAccoppiamento(int regione);
 
 	public void comunicaMovimentoPecora(int pecora, Strada strada);
+	
+	public String getNome();
+	
+	public String getTipoConnessione();
+	
+	public void setSocket(Socket socket);
+	
+	public boolean ping();
 
 }

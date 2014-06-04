@@ -159,4 +159,8 @@ public class ClientRMI implements InterfacciaClientRMI {
 
 	}
 
+	public boolean pong() {
+		return true;
+	}
+
 }

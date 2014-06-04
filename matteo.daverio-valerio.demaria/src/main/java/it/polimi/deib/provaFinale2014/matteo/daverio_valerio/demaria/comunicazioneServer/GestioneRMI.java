@@ -1,6 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +18,7 @@ public class GestioneRMI implements Gestione, InterfacciaGestioneRMI {
 
 	private String nomeClient, password, tipo;
 	private InterfacciaClientRMI client;
+	private Partita partita;
 
 	/**
 	 * metodo che i client chiamano per registrarsi
@@ -30,12 +32,17 @@ public class GestioneRMI implements Gestione, InterfacciaGestioneRMI {
 		this.password = password;
 		this.tipo = "RMI";
 		this.client=client;
+		this.partita=null;
 		return GestorePartite.addConnessione(this);
 
 	}
 	
 	public InterfacciaClientRMI getInterfacciaClient(){
 		return client;
+	}
+	
+	public Partita getPartita(){
+		return partita;
 	}
 
 	public String getNome() {

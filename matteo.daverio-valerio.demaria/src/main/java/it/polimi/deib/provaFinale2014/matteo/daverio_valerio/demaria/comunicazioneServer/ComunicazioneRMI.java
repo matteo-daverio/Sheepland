@@ -18,6 +18,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
+import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -33,15 +34,14 @@ import java.util.ArrayList;
  */
 public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
-	private String nome, password;
+	private String nome;
 	private InterfacciaClientRMI client;
 
 	// costruttore
-	public ComunicazioneRMI(String nome, String password,
+	public ComunicazioneRMI(String nome,
 			InterfacciaClientRMI client) {
 
 		this.nome = nome;
-		this.password = password;
 		this.client = client;
 	
 	}
@@ -153,5 +153,21 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 			e.printStackTrace();
 		}
 
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getTipoConnessione() {
+		return "rmi";
+	}
+
+	public void setSocket(Socket socket) {
+		
+	}
+
+	public boolean ping() {
+		return client.pong();
 	}
 }

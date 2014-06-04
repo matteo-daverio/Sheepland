@@ -1,6 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -29,4 +30,6 @@ public interface Gestione {
 	public InterfacciaClientRMI getInterfacciaClient();
 	
 	public void autenticazione(boolean riuscita);
+	
+	public Partita getPartita();
 }

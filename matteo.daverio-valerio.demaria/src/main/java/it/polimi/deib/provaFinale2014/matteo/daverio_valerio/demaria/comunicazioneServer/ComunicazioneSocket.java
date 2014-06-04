@@ -24,22 +24,26 @@ import java.util.Scanner;
 public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 
 	private Socket socket;
-	private String line;
+	private String nome;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 
 	// costruttore
-	public ComunicazioneSocket(Socket socket,ObjectInputStream in,ObjectOutputStream out) {
+	public ComunicazioneSocket(Socket socket,ObjectInputStream in,ObjectOutputStream out,String nome) {
 
 		this.socket = socket;
 		this.in=in;
 		this.out=out;
+		this.nome=nome;
 	}
 
 	public void inviaPartita(Partita partita) {
 
 		try {
+			out.reset();
 			out.writeObject(ComandiSocket.INVIO_PARTITA);
+			out.flush();
+			out.reset();
 			out.writeObject(partita);
 			out.flush();
 		} catch (IOException e) {
@@ -62,7 +66,10 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione) {
 		
 		try {
+			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PECORA_NERA);
+			out.flush();
+			out.reset();
 			out.writeInt(nuovaPosizione);
 			out.flush();
 		} catch (IOException e) {
@@ -80,6 +87,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PASTORE);
+			out.flush();
 			out.writeInt(posizione);
 			out.flush();
 		} catch (IOException e) {
@@ -90,7 +98,10 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	public void comunicaAcquistaTessera(TipoTerreno terreno) {
 		
 		try {
+			out.reset();
 			out.writeObject(ComandiSocket.ACQUISTO_TESSERA);
+			out.flush();
+			out.reset();
 			out.writeObject(terreno);
 			out.flush();
 		} catch (IOException e) {
@@ -102,9 +113,13 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	public void comunicaAbbattimento(int regione,int pecora) {
 		
 		try {
+			out.reset();
 			out.writeObject(ComandiSocket.ABBATTIMENTO);
+			out.flush();
+			out.reset();
 			out.writeInt(regione);
 			out.flush();
+			out.reset();
 			out.writeInt(pecora);
 			out.flush();
 			
@@ -117,7 +132,10 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	public void comunicaAccoppiamento(int regione) {
 		
 		try {
+			out.reset();
 			out.writeObject(ComandiSocket.ACCOPPIAMENTO);
+			out.flush();
+			out.reset();
 			out.writeInt(regione);
 			out.flush();
 		} catch (IOException e) {
@@ -129,14 +147,53 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	public void comunicaMovimentoPecora(int pecora, Strada strada) {
 		
 		try {
+			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PECORA);
+			out.flush();
+			out.reset();
 			out.writeInt(pecora);
 			out.flush();
+			out.reset();
 			out.writeObject(strada);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getTipoConnessione() {
+		return "socket";
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket=socket;
+	}
+
+	public boolean ping() {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.PING);
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (in.equals(ComandiSocket.PONG)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 }

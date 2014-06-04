@@ -2,13 +2,16 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite.MyTask;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 
+import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * gestisce l'evolversi della partita in caso di più di due giocatori
@@ -20,7 +23,7 @@ public abstract class ControllorePartita implements Runnable {
 
 	private ArrayList<Gestione> connessioni;
 	private Partita partita;
-	private boolean finePartita, faseFinale, pastoreMosso;
+	private boolean finePartita, faseFinale;
 	private ArrayList<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
 	private ArrayList<Mosse> mosseDisponibili = new ArrayList<Mosse>();
 	private ArrayList<Mosse> mosseFatte = new ArrayList<Mosse>();
@@ -111,6 +114,10 @@ public abstract class ControllorePartita implements Runnable {
 		}
 
 	}
+	
+	private boolean clientConnesso(){
+		return giocatori.get(partita.getTurno()-1).ping();
+	}
 
 	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
 
@@ -130,11 +137,11 @@ public abstract class ControllorePartita implements Runnable {
 		// dico al client che la pecora nera si è mossa
 		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
 
-		pastoreMosso = false;
+		
 		mosseFatte.clear();
 		// il giocatore compie le mosse che può fare nel turno
 		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
-
+          if(clientConnesso()){
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
 
 			Mossa mossa = riceviMossa(mosseDisponibili);
@@ -149,9 +156,12 @@ public abstract class ControllorePartita implements Runnable {
 
 			// aggiungo all'arrayList la mossa fatta
 			mossa.aggiornaMosseFatte(mosseFatte);
+          
+         }
+          else{
+        	  i=Costanti.NUMERO_MOSSE_GIOCATORE;
+          }
 
-			// TODO controllo che muova almeno una volta il pastore e che non
-			// esegua la stessa mossa due volta di fila
 		}// fine ciclo for
 
 	}
@@ -190,6 +200,28 @@ public abstract class ControllorePartita implements Runnable {
 
 		}
 	}
+	
+	public boolean contieneClient(String nome){
+	
+		for(InterfacciaComunicazioneClient x:giocatori){
+			if(x.getNome().equals(nome)){
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	public void aggiornaComunicazione(String nome, Socket socket){
+		for(InterfacciaComunicazioneClient x:giocatori){
+			if(x.getNome().equals(nome)){
+			 if(x.getTipoConnessione().equals("socket")){
+				 x.setSocket(socket);
+			 }
+			 x.inviaPartita(partita);
+			}
+		}
+	}
 
 	/**
 	 * per ogni client creo una nuova classe di comunicazione soket o RMI
@@ -200,11 +232,11 @@ public abstract class ControllorePartita implements Runnable {
 
 		for (Gestione x : connessioni) {
 			if (x.getTipoConnessione().equals("socket")) {
-				giocatori.add(new ComunicazioneSocket(x.getSocket(),x.getBufferIn(),x.getBufferOut()));
+				giocatori.add(new ComunicazioneSocket(x.getSocket(),x.getBufferIn(),x.getBufferOut(),x.getNome()));
 			} else {
 
 				giocatori
-						.add(new ComunicazioneRMI(x.getNome(), x.getPassword(), x.getInterfacciaClient()));
+						.add(new ComunicazioneRMI(x.getNome(),x.getInterfacciaClient()));
 			}
 
 		}
@@ -226,7 +258,6 @@ public abstract class ControllorePartita implements Runnable {
 	 */
 	public void run() {
 
-		partita.start();
 
 		aggiungiPastori();
 

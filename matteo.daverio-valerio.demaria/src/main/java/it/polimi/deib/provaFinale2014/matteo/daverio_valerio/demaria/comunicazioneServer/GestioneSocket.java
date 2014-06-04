@@ -2,6 +2,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,8 +23,8 @@ public class GestioneSocket implements Gestione {
 	private String nomeClient, password;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private String line;
 	private String tipo;
+	private Partita partita;
 
 	// costruttore
 	public GestioneSocket(Socket socket) {
@@ -125,5 +126,9 @@ public class GestioneSocket implements Gestione {
 			}
 
 		}
+	}
+
+	public Partita getPartita() {
+		return partita;
 	}
 }
