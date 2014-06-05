@@ -178,7 +178,8 @@ public class PartitaTest {
 			pecora.setPosizione(5);
 		}
 		partita.getPastori().get(0).setPosizione(10);
-		partita.abbatti(5);
+		// abbatte la pecora numero 0 in posizione 5
+		partita.abbatti(5,0);
 		assertEquals("Numero pecore errato", numeroPecore - 1, partita
 				.getPecore().size());
 	}
@@ -193,13 +194,33 @@ public class PartitaTest {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void noSheepInShireExceptionTest() throws NoSheepInShireException,
+	public void noSheepInShireExceptionTest1() throws NoSheepInShireException,
 			NoMoneyException, IllegalShireException {
 		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(5);
 		}
 		partita.getPastori().get(0).setPosizione(24);
-		partita.abbatti(3);
+		partita.abbatti(3,0);
+	}
+	
+	@Test(expected = NoSheepInShireException.class)
+	/**
+	 * tutte le pecore eccetto la pecora 0 sono in posizione 5, tento abbattimento
+	 * della pecora 0 in posizione 5
+	 * 
+	 * @throws NoSheepInShireException
+	 * @throws NoMoneyException
+	 * @throws IllegalShireException
+	 * @author Matteo Daverio
+	 */
+	public void noSheepInShireExceptionTest2() throws NoSheepInShireException,
+			NoMoneyException, IllegalShireException {
+		for (Pecora pecora : partita.getPecore()) {
+			pecora.setPosizione(3);
+		}
+		partita.getPecore().get(0).setPosizione(8);
+		partita.getPastori().get(0).setPosizione(24);
+		partita.abbatti(3,0);
 	}
 
 	@Test(expected = NoMoneyException.class)
@@ -221,7 +242,7 @@ public class PartitaTest {
 		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(3);
 		}
-		partita.abbatti(3);
+		partita.abbatti(3,0);
 	}
 
 	@Test(expected = IllegalShireException.class)
@@ -236,8 +257,11 @@ public class PartitaTest {
 	 */
 	public void illegalShireExceptionTest() throws NoSheepInShireException,
 			NoMoneyException, IllegalShireException {
+		for (Pecora pecora : partita.getPecore()) {
+			pecora.setPosizione(5);
+		}
 		partita.getPastori().get(0).setPosizione(23);
-		partita.abbatti(9);
+		partita.abbatti(9,0);
 	}
 
 	@Test
