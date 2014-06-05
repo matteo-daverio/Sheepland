@@ -17,7 +17,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * interfaccia del client RMI dove ho i metodi che il server può eseguire
@@ -31,7 +31,7 @@ public interface InterfacciaClientRMI extends Remote {
 
 	public void movimentoPecoraNera(int posizione) throws RemoteException;
 
-	public Mossa inviaMossa(ArrayList<Mosse> mosseDisponibili) throws RemoteException;
+	public Mossa inviaMossa(List<Mosse> mosseDisponibili) throws RemoteException;
 
 	public void movimentoPastore(int posizione) throws RemoteException,
 			NoMovementException, NoMoneyException, InvalidMovementException;

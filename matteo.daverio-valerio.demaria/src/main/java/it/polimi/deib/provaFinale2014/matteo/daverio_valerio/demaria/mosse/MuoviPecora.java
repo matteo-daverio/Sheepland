@@ -7,7 +7,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.I
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * passo la pecora che voglio muovere e la strada su cui si trova il pastore
@@ -36,7 +36,7 @@ public class MuoviPecora implements Mossa {
 	}
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno) {
+			List<InterfacciaComunicazioneClient> giocatori,int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
 				giocatori.get(turno-1).comunicaMovimentoPecora(pecora, strada);
@@ -45,7 +45,7 @@ public class MuoviPecora implements Mossa {
 
 	}
 
-	public void aggiornaMosseFatte(ArrayList<Mosse> mosseFatte) {
+	public void aggiornaMosseFatte(List<Mosse> mosseFatte) {
 		mosseFatte.add(Mosse.MUOVI_PECORA);
 
 	}

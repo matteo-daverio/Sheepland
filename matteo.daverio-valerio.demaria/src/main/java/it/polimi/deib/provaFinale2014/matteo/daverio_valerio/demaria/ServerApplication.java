@@ -24,10 +24,9 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ServerApplication {
 
-	public final static int SERVER_PORT_RMI = Costanti.PORTA_RMI;// porta su cui
-																	// andrò a
-																	// creare il
-																	// registry
+	//porta su cui creo il registry
+	public final static int SERVER_PORT_RMI = Costanti.PORTA_RMI;
+	//porta su cui il server socket si mette in ascolto
 	public final static int SERVER_PORT_SOCKET = Costanti.PORTA_SOCKET;
 
 	public static void main(String[] args) {
@@ -56,8 +55,8 @@ public class ServerApplication {
 			System.out.println("Il server RMI è pronto a ricevere connessioni");
 
 		} catch (RemoteException e) {
-			System.err.println("ComputeEngine exception:");
-			e.printStackTrace();
+			System.err.println("errore esportazione RMI");
+			LOGGER.log("errore esportazione RMI", e);
 		}
 
 		// PARTE IL CICLO DI ATTESA DI CONNESIONI SOCKET
@@ -66,7 +65,7 @@ public class ServerApplication {
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT_SOCKET);
 		} catch (IOException e) {
-			System.err.println(e.getMessage()); // porta non disponibile
+			System.err.println(e.getMessage()); 
 			return;
 		}
 
@@ -74,11 +73,14 @@ public class ServerApplication {
 				.println("Il server socket si mette in attesa di connessioni");
 		while (true) {
 			try {
+				//socket che dedico per la comunicazione con il client
 				Socket socket = serverSocket.accept();
+				//creo un oggetto di gestioneSocket
 				Gestione connessioneSocket = new GestioneSocket(socket);
+				//se il client non ha una partita in corso lo metto in attesa di una
 				connessioneSocket.autenticazione(GestorePartite.addConnessione(connessioneSocket));
 			} catch (IOException e) {
-				break; // entrerei qui se serverSocket venisse chiuso"
+				break;
 			}
 		}
 

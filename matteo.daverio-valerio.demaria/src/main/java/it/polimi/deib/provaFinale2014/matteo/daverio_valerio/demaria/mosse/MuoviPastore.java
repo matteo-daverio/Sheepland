@@ -7,7 +7,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.I
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * passo la posizione dove voglio muovere il pastore
@@ -34,7 +34,7 @@ public class MuoviPastore implements Mossa {
 	}
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno) {
+			List<InterfacciaComunicazioneClient> giocatori,int turno) {
 
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
@@ -44,7 +44,7 @@ public class MuoviPastore implements Mossa {
 
 	}
 
-	public void aggiornaMosseFatte(ArrayList<Mosse> mosseFatte) {
+	public void aggiornaMosseFatte(List<Mosse> mosseFatte) {
 		mosseFatte.add(Mosse.MUOVI_PASTORE);
 
 	}

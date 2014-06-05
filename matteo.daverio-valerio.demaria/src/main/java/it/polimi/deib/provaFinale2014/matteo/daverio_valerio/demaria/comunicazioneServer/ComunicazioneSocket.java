@@ -10,10 +10,8 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 /**
  * classe che parla con client socket
@@ -78,7 +76,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 
 	}
 
-	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
+	public Mossa riceviMossa(List<Mosse> mosseDisponibili) {
 		return null;
 	}
 

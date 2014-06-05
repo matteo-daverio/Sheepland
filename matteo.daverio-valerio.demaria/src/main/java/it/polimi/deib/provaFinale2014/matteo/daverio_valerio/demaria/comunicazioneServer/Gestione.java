@@ -8,28 +8,35 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * interfaccia delle di connessioni
+ * interfaccia delle connessioni
  * 
  * @author Valerio De Maria
  * 
  */
 public interface Gestione {
 
+	public Partita getPartita();
+	
 	public String getNome();
 
 	public String getTipoConnessione();
 
 	public String getPassword();
 
+	//utile solo per GestioneSocket
 	public Socket getSocket();
 	
+	//utile solo per GestioneSocket
 	public ObjectInputStream getBufferIn();
 	
+	//utile solo per GestioneSocket
 	public ObjectOutputStream getBufferOut();
 	
+	//utile solo per GestioneRMI
 	public InterfacciaClientRMI getInterfacciaClient();
 	
+	//utile solo per GestioneSocket
 	public void autenticazione(boolean riuscita);
 	
-	public Partita getPartita();
+	
 }

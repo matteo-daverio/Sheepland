@@ -13,7 +13,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * interfaccia delle classi di mossa
@@ -31,8 +31,8 @@ public interface Mossa {
 			IllegalStreetException;
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno);
+			List<InterfacciaComunicazioneClient> giocatori,int turno);
 
-	public void aggiornaMosseFatte(ArrayList<Mosse> mosseFatte);
+	public void aggiornaMosseFatte(List<Mosse> mosseFatte);
 
 }

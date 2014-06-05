@@ -13,6 +13,16 @@ import java.rmi.RemoteException;
  */
 public interface InterfacciaGestioneRMI extends Remote {
 
+	/**
+	 * metodo con cui il client RMI fa il log-in
+	 * 
+	 * @param nomeClient
+	 * @param password
+	 * @param client
+	 * @return
+	 * @throws RemoteException
+	 * @author Valerio De Maria
+	 */
 	public boolean registrazione(String nomeClient, String password, InterfacciaClientRMI client)
 			throws RemoteException;
 	

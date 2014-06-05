@@ -23,7 +23,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRMI implements InterfacciaClientRMI {
 
@@ -82,7 +82,7 @@ public class ClientRMI implements InterfacciaClientRMI {
 	 * 
 	 * @author Valerio De Maria
 	 */
-	public Mossa inviaMossa(ArrayList<Mosse> mosseDisponibili) {
+	public Mossa inviaMossa(List<Mosse> mosseDisponibili) {
 
 		// TODO il client deve decidere la mossa da fare
 		return (new MuoviPastore(3));

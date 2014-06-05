@@ -6,7 +6,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * passo la regione dove si vuole far accoppiare le pecore
@@ -32,7 +32,7 @@ public class Accoppia implements Mossa {
 	}
 
 	public void aggiornaClients(
-			ArrayList<InterfacciaComunicazioneClient> giocatori,int turno) {
+			List<InterfacciaComunicazioneClient> giocatori,int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
 				giocatori.get(turno-1).comunicaAccoppiamento(regione);
@@ -41,7 +41,7 @@ public class Accoppia implements Mossa {
 
 	}
 
-	public void aggiornaMosseFatte(ArrayList<Mosse> mosseFatte) {
+	public void aggiornaMosseFatte(List<Mosse> mosseFatte) {
 		mosseFatte.add(Mosse.ACCOPPIA);
 
 	}

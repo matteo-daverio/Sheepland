@@ -2,7 +2,8 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
-import java.util.ArrayList;
+
+import java.util.List;
 
 /**
  * caso in cui ho solo due giocatori
@@ -12,10 +13,16 @@ import java.util.ArrayList;
  */
 public class ControllorePartitaDueGiocatori extends ControllorePartita {
 
-	public ControllorePartitaDueGiocatori(ArrayList<Gestione> connessioni,
+	public ControllorePartitaDueGiocatori(List<Gestione> connessioni,
 			Partita partita) {
 		super(connessioni, partita);
 
+	}
+
+	@Override
+	void aggiungiPastori(List<Gestione> connessioni, Partita partita) {
+		// TODO 
+		
 	}
 
 }

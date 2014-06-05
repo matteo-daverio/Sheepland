@@ -1,15 +1,13 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import java.util.TimerTask;
 import java.util.Timer;
 
@@ -21,14 +19,23 @@ import java.util.Timer;
  */
 public class GestorePartite implements Runnable {
 
-	private static ArrayList<Gestione> connessioni = new ArrayList<Gestione>();
+	// lista client in attesa di giocare una nuova partita
+	private static List<Gestione> connessioni = new ArrayList<Gestione>();
+	// lista dei giocatori che hanno una partita in corso
 	private static List<Gestione> giocatori = new ArrayList<Gestione>();
+	// lista delle partite in corso
 	private static List<ControllorePartita> partiteInCorso = new ArrayList<ControllorePartita>();
 
-	ExecutorService executor = Executors.newCachedThreadPool(); // pool di
-																// thread
+	// pool di thread
+	ExecutorService executor = Executors.newCachedThreadPool();
 
-	private static boolean giocatoreInGioco(Gestione g) {
+	/**
+	 * guardo se il client che ha fatto il login ha una partita in corso
+	 * 
+	 * @param g
+	 * @author Valerio De Maria
+	 */
+	private synchronized static boolean giocatoreInGioco(Gestione g) {
 		for (Gestione x : giocatori) {
 			if ((x.getNome().equals(g.getNome()))) {
 				return true;
@@ -37,7 +44,13 @@ public class GestorePartite implements Runnable {
 		return false;
 	}
 
-	private static boolean passwordSbagliata(Gestione g) {
+	/**
+	 * se il client ha una partita in corso controllo che la password sia giusta
+	 * 
+	 * @param g
+	 * @author Valerio De Maria
+	 */
+	private synchronized static boolean passwordSbagliata(Gestione g) {
 		for (Gestione x : giocatori) {
 			if ((x.getNome().equals(g.getNome()))) {
 				if (x.getPassword().equals(g.getPassword())) {
@@ -48,9 +61,17 @@ public class GestorePartite implements Runnable {
 		return true;
 	}
 
-	private static void reintegraClient(String nome, Socket socket) {
+	/**
+	 * aggiorno la classe di comunicazioneClient all'interno del controllore
+	 * partita
+	 * 
+	 * @param nome
+	 * @param socket
+	 * @author Valerio De Maria
+	 */
+	private synchronized static void reintegraClient(String nome, Socket socket) {
 		for (ControllorePartita x : partiteInCorso) {
-			if(x.contieneClient(nome)){
+			if (x.contieneClient(nome)) {
 				x.aggiornaComunicazione(nome, socket);
 			}
 		}
@@ -72,17 +93,24 @@ public class GestorePartite implements Runnable {
 			if (passwordSbagliata(g)) {
 				return false;
 			} else {
-				reintegraClient(g.getNome(),g.getSocket());
+				reintegraClient(g.getNome(), g.getSocket());
 				return true;
 			}
 
 		}
 
 	}
-    class MyTask extends TimerTask{
+
+	/**
+	 * innerClass che genera le partite
+	 * 
+	 * @author Valerio De Maria
+	 * 
+	 */
+	class CreatorePartite extends TimerTask {
 
 		@Override
-	     public void run() {
+		public void run() {
 			if (connessioni.size() > 1) {
 				Partita p = new Partita();
 				if (connessioni.size() == 2) {
@@ -101,24 +129,32 @@ public class GestorePartite implements Runnable {
 				return;
 
 		}
-			
-		
-    	
-    }
+
+	}
+
+	/**
+	 * metodo run di Runnable
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void run() {
-		
-		// inizializzo il timer
+
+		// inizializzo il timer che fa partire partite anche con 2 giocatori
 		Timer timer = new Timer();
-		MyTask task= new MyTask();
-		timer.schedule(task, 0, 5*1000);
+		CreatorePartite task = new CreatorePartite();
+		timer.schedule(task, 0, Costanti.PERIODO_AVVIO_PARTITE);
 
-		// creo una nuova partita
-		Partita partita = new Partita();
-		// aggiungo una nuova partita in corso al pool di thread
-		executor.submit(new ControllorePartitaMoltiGiocatori(connessioni,
-				partita));
-		executor.submit(new ControllorePartitaDueGiocatori(connessioni, partita));
-
+		// se i giocatori in attesa raggiungono il numero massimo di giocatori
+		// in una partita faccio partire una nuova partita
+		while (true) {
+			if (connessioni.size() == Costanti.NUMERO_MASSIMO_GIOCATORI) {
+				Partita partita = new Partita();
+				ControllorePartitaMoltiGiocatori controllore = new ControllorePartitaMoltiGiocatori(
+						connessioni, partita);
+				partiteInCorso.add(controllore);
+				executor.submit(controllore);
+			}
+		}
 	}
 
 }

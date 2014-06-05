@@ -2,35 +2,31 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite.MyTask;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 /**
- * gestisce l'evolversi della partita in caso di più di due giocatori
+ * gestisce l'evolversi della partita
  * 
  * @author Valerio De Maria
  * 
  */
 public abstract class ControllorePartita implements Runnable {
 
-	private ArrayList<Gestione> connessioni;
+	private List<Gestione> connessioni;
 	private Partita partita;
 	private boolean finePartita, faseFinale;
-	private ArrayList<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
-	private ArrayList<Mosse> mosseDisponibili = new ArrayList<Mosse>();
-	private ArrayList<Mosse> mosseFatte = new ArrayList<Mosse>();
+	private List<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
+	private List<Mosse> mosseDisponibili = new ArrayList<Mosse>();
+	private List<Mosse> mosseFatte = new ArrayList<Mosse>();
 
 	// costruttore
-	public ControllorePartita(ArrayList<Gestione> connessioni,
-			Partita partita) {
+	public ControllorePartita(List<Gestione> connessioni, Partita partita) {
 
 		this.connessioni = connessioni;
 		this.partita = partita;
@@ -51,59 +47,65 @@ public abstract class ControllorePartita implements Runnable {
 
 		}
 	}
-	
+
 	/**
 	 * creo la lista di mosse disponibili da inviare al client
+	 * 
 	 * @param mosseFatte
 	 * @return mosseDisponibili
 	 * @author Valerio De Maria
 	 */
 
-	private ArrayList<Mosse> calcolaMosseDisponibili(ArrayList<Mosse> mosseFatte) {
-		ArrayList<Mosse> mosseDisponibili =new ArrayList<Mosse>();
-		if((mosseFatte.size()==Costanti.NUMERO_MOSSE_GIOCATORE-1)&&(mosseFatte.get(0)!=Mosse.MUOVI_PASTORE)&&(mosseFatte.get(1)!=Mosse.MUOVI_PASTORE)){
-			 mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-			 return mosseDisponibili;
-			}
-		else{
-			if(mosseFatte.size()>=0){
-			switch(mosseFatte.get(mosseFatte.size())){
-			
-			case ABBATTI:
-				mosseDisponibili.add(Mosse.ACCOPPIA);
-				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-				mosseDisponibili.add(Mosse.MUOVI_PECORA);
-				break;
-			case ACCOPPIA:
-				mosseDisponibili.add(Mosse.ABBATTI);
-				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-				mosseDisponibili.add(Mosse.MUOVI_PECORA);
-				break;
-			case COMPRA_TESSERA:
-				mosseDisponibili.add(Mosse.ACCOPPIA);
-				mosseDisponibili.add(Mosse.ABBATTI);
-				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-				mosseDisponibili.add(Mosse.MUOVI_PECORA);
-				break;
-			case MUOVI_PASTORE:
-				mosseDisponibili.add(Mosse.ACCOPPIA);
-				mosseDisponibili.add(Mosse.ABBATTI);
-				mosseDisponibili.add(Mosse.MUOVI_PECORA);
-				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-				break;
-			case MUOVI_PECORA:
-				mosseDisponibili.add(Mosse.ACCOPPIA);
-				mosseDisponibili.add(Mosse.ABBATTI);
-				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-				break;
-			default:
-				break; 
-			}//fine switch
-			}//fine if numero mosse fatte maggiore di zero
-			else{
+	private List<Mosse> calcolaMosseDisponibili(List<Mosse> mosseFatte) {
+		List<Mosse> mosseDisponibili = new ArrayList<Mosse>();
+		// se è l'ultima mossa del turno e non ho ancora mosso il pastore
+		if ((mosseFatte.size() == Costanti.NUMERO_MOSSE_GIOCATORE - 1)
+				&& (mosseFatte.get(0) != Mosse.MUOVI_PASTORE)
+				&& (mosseFatte.get(1) != Mosse.MUOVI_PASTORE)) {
+			mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+			return mosseDisponibili;
+		} else {
+			// se ho fatto almeno una mossa
+			if (mosseFatte.size() >= 0) {
+				// in base all'ultima mossa fatta
+				switch (mosseFatte.get(mosseFatte.size())) {
+
+				case ABBATTI:
+					mosseDisponibili.add(Mosse.ACCOPPIA);
+					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					break;
+				case ACCOPPIA:
+					mosseDisponibili.add(Mosse.ABBATTI);
+					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					break;
+				case COMPRA_TESSERA:
+					mosseDisponibili.add(Mosse.ACCOPPIA);
+					mosseDisponibili.add(Mosse.ABBATTI);
+					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					break;
+				case MUOVI_PASTORE:
+					mosseDisponibili.add(Mosse.ACCOPPIA);
+					mosseDisponibili.add(Mosse.ABBATTI);
+					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+					break;
+				case MUOVI_PECORA:
+					mosseDisponibili.add(Mosse.ACCOPPIA);
+					mosseDisponibili.add(Mosse.ABBATTI);
+					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+					break;
+				default:
+					break;
+				}// fine switch
+			}// fine if numero mosse fatte maggiore di zero
+			else {
+				// la mia prima mossa può essere una qualsiasi
 				mosseDisponibili.add(Mosse.ACCOPPIA);
 				mosseDisponibili.add(Mosse.ABBATTI);
 				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
@@ -114,14 +116,23 @@ public abstract class ControllorePartita implements Runnable {
 		}
 
 	}
-	
-	private boolean clientConnesso(){
-		return giocatori.get(partita.getTurno()-1).ping();
+
+	// TODO
+	private boolean clientConnesso() {
+		return giocatori.get(partita.getTurno() - 1).ping();
 	}
 
-	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili) {
+	/**
+	 * metodo che riceve la mossa inviata dal client
+	 * 
+	 * @param mosseDisponibili
+	 * @return
+	 * @author Valerio De Maria
+	 */
+	public Mossa riceviMossa(List<Mosse> mosseDisponibili) {
 
-		return giocatori.get(partita.getTurno() - 1).riceviMossa(mosseDisponibili);
+		return giocatori.get(partita.getTurno() - 1).riceviMossa(
+				mosseDisponibili);
 	}
 
 	/**
@@ -134,57 +145,42 @@ public abstract class ControllorePartita implements Runnable {
 		// la pecora nera muove all'inizio di ogni nuovo turno
 		partita.muoviPecoraNera();
 
-		// dico al client che la pecora nera si è mossa
+		// dico ai client che la pecora nera si è mossa
 		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
 
-		
 		mosseFatte.clear();
 		// il giocatore compie le mosse che può fare nel turno
 		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
-          if(clientConnesso()){
+
+			mosseDisponibili.clear();
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
 
 			Mossa mossa = riceviMossa(mosseDisponibili);
 
 			try {
 				mossa.eseguiMossa(partita);
+
+				// faccio eseguire su tutti i client la mossa fatta
+				mossa.aggiornaClients(giocatori, partita.getTurno());
+
+				mossa.aggiornaMosseFatte(mosseFatte);
 			} catch (Exception e) {
 			}
-
-			// faccio eseguire su tutti i client la mossa fatta
-			mossa.aggiornaClients(giocatori,partita.getTurno());
-
-			// aggiungo all'arrayList la mossa fatta
-			mossa.aggiornaMosseFatte(mosseFatte);
-          
-         }
-          else{
-        	  i=Costanti.NUMERO_MOSSE_GIOCATORE;
-          }
 
 		}// fine ciclo for
 
 	}
 
 	private void conteggioPunti() {
-
+		// TODO
 	}
 
 	/**
-	 * creo un pastore per ogni giocatore la sequenza di turni dei giocatori è
-	 * data da chi si è connesso per primo
+	 * la creazione dei pastori dipende dal numero dei giocatori della partita
 	 * 
 	 * @author Valerio De Maria
 	 */
-	private void aggiungiPastori() {
-
-		for (int i = 0; i <= connessioni.size(); i++) {
-
-			partita.aggiungiPastore(connessioni.get(i).getNome(), i + 1);
-
-		}
-
-	}
+	abstract void aggiungiPastori(List<Gestione> connessioni, Partita partita);
 
 	/**
 	 * invio ad ogni client l'istanza della partita in corso
@@ -200,25 +196,44 @@ public abstract class ControllorePartita implements Runnable {
 
 		}
 	}
-	
-	public boolean contieneClient(String nome){
-	
-		for(InterfacciaComunicazioneClient x:giocatori){
-			if(x.getNome().equals(nome)){
+
+	/**
+	 * ritorna true se il nome passato come parametro è il nome di uno dei
+	 * giocatori della partita
+	 * 
+	 * @param nome
+	 * @return
+	 * @author Valerio De Maria
+	 */
+	public boolean contieneClient(String nome) {
+
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			if (x.getNome().equals(nome)) {
 				return true;
 			}
 		}
 		return false;
-		
+
 	}
-	
-	public void aggiornaComunicazione(String nome, Socket socket){
-		for(InterfacciaComunicazioneClient x:giocatori){
-			if(x.getNome().equals(nome)){
-			 if(x.getTipoConnessione().equals("socket")){
-				 x.setSocket(socket);
-			 }
-			 x.inviaPartita(partita);
+
+	/**
+	 * aggiorno i parametri di comunicazione client e reinvio la partita in
+	 * corso al client disconnesso
+	 * 
+	 * @param nome
+	 * @param socket
+	 * @author Valerio De Maria
+	 */
+	public void aggiornaComunicazione(String nome, Socket socket) {
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			if (x.getNome().equals(nome)) {
+				// se il client che si è disconesso è Socket aggiorno la socket
+				if (x.getTipoConnessione().equals("socket")) {
+					x.setSocket(socket);
+				}
+				// invio la partita in corso sia che si sia disoconnesso un
+				// client RMI che uno Socket
+				x.inviaPartita(partita);
 			}
 		}
 	}
@@ -232,11 +247,12 @@ public abstract class ControllorePartita implements Runnable {
 
 		for (Gestione x : connessioni) {
 			if (x.getTipoConnessione().equals("socket")) {
-				giocatori.add(new ComunicazioneSocket(x.getSocket(),x.getBufferIn(),x.getBufferOut(),x.getNome()));
+				giocatori.add(new ComunicazioneSocket(x.getSocket(), x
+						.getBufferIn(), x.getBufferOut(), x.getNome()));
 			} else {
 
-				giocatori
-						.add(new ComunicazioneRMI(x.getNome(),x.getInterfacciaClient()));
+				giocatori.add(new ComunicazioneRMI(x.getNome(), x
+						.getInterfacciaClient()));
 			}
 
 		}
@@ -248,7 +264,7 @@ public abstract class ControllorePartita implements Runnable {
 	}
 
 	private void comunicaFinePartita() {
-
+		// TODO
 	}
 
 	/**
@@ -258,8 +274,7 @@ public abstract class ControllorePartita implements Runnable {
 	 */
 	public void run() {
 
-
-		aggiungiPastori();
+		aggiungiPastori(connessioni, partita);
 
 		// creo le classi di comunicazione che si occuperrano di comunicare con
 		// i client in maniera trasparente rispetto alla modalità di connessione

@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.List;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
@@ -17,7 +17,7 @@ public interface InterfacciaComunicazioneClient {
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione);
 
-	public Mossa riceviMossa(ArrayList<Mosse> mosseDisponibili);
+	public Mossa riceviMossa(List<Mosse> mosseDisponibili);
 
 	public void comunicaMovimentoPastore(int posizione);
 
