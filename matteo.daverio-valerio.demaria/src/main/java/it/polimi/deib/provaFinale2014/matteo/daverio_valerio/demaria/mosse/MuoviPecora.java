@@ -1,12 +1,13 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public class MuoviPecora implements Mossa {
+public class MuoviPecora implements Mossa,Serializable {
 
 	private Strada strada;
 	private int pecora;
@@ -45,8 +46,8 @@ public class MuoviPecora implements Mossa {
 
 	}
 
-	public void aggiornaMosseFatte(List<Mosse> mosseFatte) {
-		mosseFatte.add(Mosse.MUOVI_PECORA);
+	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+		mosseFatte.add(MosseEnum.MUOVI_PECORA);
 
 	}
 

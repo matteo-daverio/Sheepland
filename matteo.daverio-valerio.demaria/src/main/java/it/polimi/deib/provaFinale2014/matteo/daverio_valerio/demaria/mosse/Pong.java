@@ -13,26 +13,30 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 
+import java.io.Serializable;
 import java.util.List;
 
-/**
- * interfaccia delle classi di mossa
- * 
- * @author Valerio De Maria
- * 
- * 
- */
-public interface Mossa {
+public class Pong implements Mossa,Serializable{
 
 	public void eseguiMossa(Partita partita) throws NoMovementException,
 			NoMoneyException, InvalidMovementException, NoMoreCardsException,
 			IllegalShireTypeException, NoSheepInShireException,
 			IllegalShireException, CannotProcreateException,
-			IllegalStreetException;
+			IllegalStreetException {
+		// TODO Auto-generated method stub
+		System.out.println("eseguo il pong");
 
-	public void aggiornaClients(
-			List<InterfacciaComunicazioneClient> giocatori,int turno);
+	}
 
-	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte);
+	public void aggiornaClients(List<InterfacciaComunicazioneClient> giocatori,
+			int turno) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

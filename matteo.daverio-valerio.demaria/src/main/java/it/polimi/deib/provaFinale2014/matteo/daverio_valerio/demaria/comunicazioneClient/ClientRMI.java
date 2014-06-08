@@ -1,6 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ServerApplication;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
@@ -17,6 +17,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -24,12 +25,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.Scanner;
 
 public class ClientRMI implements InterfacciaClientRMI {
 
-	// TODO da chiedere all'utente;
-	static String nome = "Valerio";
-	static String password = "Ramponio";
+	Scanner in = new Scanner(System.in);
+	
+	private String nome;
+	private String password;
 
 	private Partita partita;
 	private InterfacciaGestioneRMI server;
@@ -63,6 +66,7 @@ public class ClientRMI implements InterfacciaClientRMI {
 	public void riceviPartita(Partita partita) {
 
 		this.partita = partita;
+		System.out.println("ho ricevuto la partita");
 		gioca();
 
 	}
@@ -82,8 +86,16 @@ public class ClientRMI implements InterfacciaClientRMI {
 	 * 
 	 * @author Valerio De Maria
 	 */
-	public Mossa inviaMossa(List<Mosse> mosseDisponibili) {
+	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) {
 
+		for(MosseEnum x:mosseDisponibili){
+			System.out.println(x);
+		}
+		if(mosseDisponibili.size()==0){
+			System.out.println("invio un pong");
+			return (new Pong());
+		}
+		System.out.println("invio una mossa");
 		// TODO il client deve decidere la mossa da fare
 		return (new MuoviPastore(3));
 	}
@@ -109,15 +121,23 @@ public class ClientRMI implements InterfacciaClientRMI {
 
 			// scarico l'oggetto remoto del server
 			server = (InterfacciaGestioneRMI) registry.lookup("serverInAttesa");
-
-			//creo l'interfaccia da passare al server 
-			InterfacciaClientRMI client = new ClientRMI();
+			
+			//int ID=server.ottieniID();
+			
+			//TODO codice talebano
+			//System.out.println(ID);
 			
 			// esporto l'interfaccia client
-			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject.exportObject(client, 0);
+			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject.exportObject(this,0);
 			
 			// eseguo il metodo registrazione dell'oggetto remoto del server
-			boolean result = server.registrazione(nome, password,client);
+			boolean result = server.registrazione(nome, password,stub);
+			
+			//TODO codice talebano
+			if(result)
+			System.out.println("il server mi ha accettato");
+			else
+			System.out.println("il server mi ha respinto");	
 
 		} catch (RemoteException e) {
 			System.err.println("Remote exception:");
@@ -127,9 +147,18 @@ public class ClientRMI implements InterfacciaClientRMI {
 		}
 
 	}
+	
+	public void logIn(){
+		
+		System.out.println("Nome?");
+		this.nome=in.nextLine();
+		System.out.println("Password?");
+		this.password=in.nextLine();
+	}
 
 	public void start() {
 
+		logIn();
 		ricercaConnessione();
 
 		// ora il client rimane in attesa di iniziare tramite "riceviPartita"

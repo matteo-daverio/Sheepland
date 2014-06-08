@@ -1,6 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
@@ -40,10 +40,11 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	
 	}
 
-	public Mossa riceviMossa(List<Mosse> mosseDisponibili) {
+	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
 		try {
 			return client.inviaMossa(mosseDisponibili);
 		} catch (RemoteException e) {
+			//TODO devo gestire il fatto che il giocatore si è disconnesso
 			e.printStackTrace();
 		}
 		return null;
@@ -123,6 +124,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		} catch (IllegalShireException e) {
 
 			e.printStackTrace();
+		} catch (RemoteException e) {
+
+			e.printStackTrace();
 		}
 
 	}
@@ -134,6 +138,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 			e.printStackTrace();
 		} catch (CannotProcreateException e) {
 			e.printStackTrace();
+		} catch (RemoteException e) {
+			
+			e.printStackTrace();
 		}
 
 	}
@@ -144,6 +151,8 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		} catch (IllegalStreetException e) {
 			e.printStackTrace();
 		} catch (IllegalShireException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -161,7 +170,4 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		
 	}
 
-	public boolean ping() {
-		return client.pong();
-	}
 }

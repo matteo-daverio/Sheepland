@@ -1,6 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
@@ -31,7 +31,7 @@ public interface InterfacciaClientRMI extends Remote {
 
 	public void movimentoPecoraNera(int posizione) throws RemoteException;
 
-	public Mossa inviaMossa(List<Mosse> mosseDisponibili) throws RemoteException;
+	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException;
 
 	public void movimentoPastore(int posizione) throws RemoteException,
 			NoMovementException, NoMoneyException, InvalidMovementException;
@@ -42,13 +42,12 @@ public interface InterfacciaClientRMI extends Remote {
 			NoMoreCardsException, NoMoneyException, IllegalShireTypeException;
 
 	public void movimentoPecora(int pecora, Strada strada)
-			throws IllegalStreetException, IllegalShireException;
+			throws RemoteException,IllegalStreetException, IllegalShireException;
 
-	public void abbattimento(int regione,int pecora) throws NoSheepInShireException,
+	public void abbattimento(int regione,int pecora) throws RemoteException,NoSheepInShireException,
 			NoMoneyException, IllegalShireException;
 
-	public void accoppiamento(int regione) throws IllegalShireException,
+	public void accoppiamento(int regione) throws RemoteException,IllegalShireException,
 			CannotProcreateException;
 	
-	public boolean pong();
 }

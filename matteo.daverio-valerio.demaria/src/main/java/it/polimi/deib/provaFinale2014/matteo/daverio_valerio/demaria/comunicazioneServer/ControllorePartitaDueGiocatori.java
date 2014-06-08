@@ -1,6 +1,8 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+
 
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class ControllorePartitaDueGiocatori extends ControllorePartita {
 	public ControllorePartitaDueGiocatori(List<Gestione> connessioni,
 			Partita partita) {
 		super(connessioni, partita);
+		super.run();
 
 	}
 
@@ -24,5 +27,6 @@ public class ControllorePartitaDueGiocatori extends ControllorePartita {
 		// TODO 
 		
 	}
-
+	
+	
 }

@@ -23,8 +23,6 @@ public interface InterfacciaGestioneRMI extends Remote {
 	 * @throws RemoteException
 	 * @author Valerio De Maria
 	 */
-	public boolean registrazione(String nomeClient, String password, InterfacciaClientRMI client)
-			throws RemoteException;
-	
-	
+	public boolean registrazione(String nomeClient, String password, InterfacciaClientRMI client)throws RemoteException;
+
 }

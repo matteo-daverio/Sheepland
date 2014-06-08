@@ -4,9 +4,12 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.ImplementazioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
@@ -24,9 +27,9 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ServerApplication {
 
-	//porta su cui creo il registry
+	// porta su cui creo il registry
 	public final static int SERVER_PORT_RMI = Costanti.PORTA_RMI;
-	//porta su cui il server socket si mette in ascolto
+	// porta su cui il server socket si mette in ascolto
 	public final static int SERVER_PORT_SOCKET = Costanti.PORTA_SOCKET;
 
 	public static void main(String[] args) {
@@ -37,13 +40,16 @@ public class ServerApplication {
 		gestoreThread = new GestorePartite();
 		t1 = new Thread(gestoreThread);
 		t1.start();
-		System.out.println("gestore di partite creato");
+
+			// TODO codice talebano
+			System.out.println("gestore di partite creato");
+
 
 		// GESTIONE RMI
 		try {
 
 			// creo l'oggetto remoto da caricare sul server
-			InterfacciaGestioneRMI server = new GestioneRMI();
+			InterfacciaGestioneRMI server = new ImplementazioneRMI();
 			// esporto l'oggetto remoto
 			InterfacciaGestioneRMI stub = (InterfacciaGestioneRMI) UnicastRemoteObject
 					.exportObject(server, 0);
@@ -51,8 +57,10 @@ public class ServerApplication {
 			Registry registry = LocateRegistry.createRegistry(SERVER_PORT_RMI);
 			// associo all'oggetto remoto esportato un nome
 			registry.rebind("serverInAttesa", stub);
-
-			System.out.println("Il server RMI è pronto a ricevere connessioni");
+			
+				// TODO codice talebano
+				System.out
+						.println("Il server RMI è pronto a ricevere connessioni");
 
 		} catch (RemoteException e) {
 			System.err.println("errore esportazione RMI");
@@ -65,20 +73,32 @@ public class ServerApplication {
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT_SOCKET);
 		} catch (IOException e) {
-			System.err.println(e.getMessage()); 
+			System.err.println(e.getMessage());
 			return;
 		}
+		
+			// TODO codice talebano
+			System.out
+					.println("Il server socket si mette in attesa di connessioni");
 
-		System.out
-				.println("Il server socket si mette in attesa di connessioni");
 		while (true) {
 			try {
-				//socket che dedico per la comunicazione con il client
+				// socket che dedico per la comunicazione con il client
 				Socket socket = serverSocket.accept();
-				//creo un oggetto di gestioneSocket
+				
+				System.out.println("ho accettato un socket");
+				
+				// creo un oggetto di gestioneSocket
 				Gestione connessioneSocket = new GestioneSocket(socket);
-				//se il client non ha una partita in corso lo metto in attesa di una
-				connessioneSocket.autenticazione(GestorePartite.addConnessione(connessioneSocket));
+				
+				System.out.println("ho creato una gestione socket");
+				
+				connessioneSocket.chiediDati();
+				
+				// se il client non ha una partita in corso lo metto in attesa
+				// di una
+				connessioneSocket.autenticazione(GestorePartite
+						.addConnessione(connessioneSocket));
 			} catch (IOException e) {
 				break;
 			}
@@ -91,7 +111,5 @@ public class ServerApplication {
 		}
 
 	}
-	
-	
 
 }

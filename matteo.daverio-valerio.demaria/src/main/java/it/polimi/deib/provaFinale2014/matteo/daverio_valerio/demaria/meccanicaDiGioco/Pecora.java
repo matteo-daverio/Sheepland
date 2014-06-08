@@ -1,9 +1,15 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
+import java.io.Serializable;
+
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
-public class Pecora {
+public class Pecora implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8519792219114345260L;
 	private int tipoPecora;
 	private int posizione;
 	private int turno = 0;

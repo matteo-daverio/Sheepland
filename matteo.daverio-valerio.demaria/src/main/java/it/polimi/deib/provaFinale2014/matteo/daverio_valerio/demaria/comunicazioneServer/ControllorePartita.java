@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
@@ -22,8 +22,8 @@ public abstract class ControllorePartita implements Runnable {
 	private Partita partita;
 	private boolean finePartita, faseFinale;
 	private List<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
-	private List<Mosse> mosseDisponibili = new ArrayList<Mosse>();
-	private List<Mosse> mosseFatte = new ArrayList<Mosse>();
+	private List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
+	private List<MosseEnum> mosseFatte = new ArrayList<MosseEnum>();
 
 	// costruttore
 	public ControllorePartita(List<Gestione> connessioni, Partita partita) {
@@ -56,49 +56,56 @@ public abstract class ControllorePartita implements Runnable {
 	 * @author Valerio De Maria
 	 */
 
-	private List<Mosse> calcolaMosseDisponibili(List<Mosse> mosseFatte) {
-		List<Mosse> mosseDisponibili = new ArrayList<Mosse>();
+	private List<MosseEnum> calcolaMosseDisponibili(List<MosseEnum> mosseFatte) {
+		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
 		// se è l'ultima mossa del turno e non ho ancora mosso il pastore
 		if ((mosseFatte.size() == Costanti.NUMERO_MOSSE_GIOCATORE - 1)
-				&& (mosseFatte.get(0) != Mosse.MUOVI_PASTORE)
-				&& (mosseFatte.get(1) != Mosse.MUOVI_PASTORE)) {
-			mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+				&& (mosseFatte.get(0) != MosseEnum.MUOVI_PASTORE)
+				&& (mosseFatte.get(1) != MosseEnum.MUOVI_PASTORE)) {
+			mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
+			System.out.println("il client può muovere solo il pastore");
 			return mosseDisponibili;
 		} else {
 			// se ho fatto almeno una mossa
-			if (mosseFatte.size() >= 0) {
+			if (mosseFatte.size() > 0) {
+				System.out.println("il client ha fatto almeno una mossa");
 				// in base all'ultima mossa fatta
-				switch (mosseFatte.get(mosseFatte.size())) {
+				switch (mosseFatte.get(mosseFatte.size()-1)) {
 
 				case ABBATTI:
-					mosseDisponibili.add(Mosse.ACCOPPIA);
-					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					System.out.println("non può abbattere");
+					mosseDisponibili.add(MosseEnum.ACCOPPIA);
+					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 					break;
 				case ACCOPPIA:
-					mosseDisponibili.add(Mosse.ABBATTI);
-					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					System.out.println("non può accoppiare");
+					mosseDisponibili.add(MosseEnum.ABBATTI);
+					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 					break;
 				case COMPRA_TESSERA:
-					mosseDisponibili.add(Mosse.ACCOPPIA);
-					mosseDisponibili.add(Mosse.ABBATTI);
-					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-					mosseDisponibili.add(Mosse.MUOVI_PECORA);
+					System.out.println("non può comprare");
+					mosseDisponibili.add(MosseEnum.ACCOPPIA);
+					mosseDisponibili.add(MosseEnum.ABBATTI);
+					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 					break;
 				case MUOVI_PASTORE:
-					mosseDisponibili.add(Mosse.ACCOPPIA);
-					mosseDisponibili.add(Mosse.ABBATTI);
-					mosseDisponibili.add(Mosse.MUOVI_PECORA);
-					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
+					System.out.println("non può muovere il pastore");
+					mosseDisponibili.add(MosseEnum.ACCOPPIA);
+					mosseDisponibili.add(MosseEnum.ABBATTI);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
+					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					break;
 				case MUOVI_PECORA:
-					mosseDisponibili.add(Mosse.ACCOPPIA);
-					mosseDisponibili.add(Mosse.ABBATTI);
-					mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-					mosseDisponibili.add(Mosse.MUOVI_PASTORE);
+					System.out.println("non può muovere la pecora");
+					mosseDisponibili.add(MosseEnum.ACCOPPIA);
+					mosseDisponibili.add(MosseEnum.ABBATTI);
+					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					break;
 				default:
 					break;
@@ -106,21 +113,18 @@ public abstract class ControllorePartita implements Runnable {
 			}// fine if numero mosse fatte maggiore di zero
 			else {
 				// la mia prima mossa può essere una qualsiasi
-				mosseDisponibili.add(Mosse.ACCOPPIA);
-				mosseDisponibili.add(Mosse.ABBATTI);
-				mosseDisponibili.add(Mosse.COMPRA_TESSERA);
-				mosseDisponibili.add(Mosse.MUOVI_PASTORE);
-				mosseDisponibili.add(Mosse.MUOVI_PECORA);
+				mosseDisponibili.add(MosseEnum.ACCOPPIA);
+				mosseDisponibili.add(MosseEnum.ABBATTI);
+				mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
+				mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
+				mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
+				System.out.println("prima mossa->può fare quello che vuole");
 			}
 			return mosseDisponibili;
 		}
 
 	}
 
-	// TODO
-	private boolean clientConnesso() {
-		return giocatori.get(partita.getTurno() - 1).ping();
-	}
 
 	/**
 	 * metodo che riceve la mossa inviata dal client
@@ -129,10 +133,23 @@ public abstract class ControllorePartita implements Runnable {
 	 * @return
 	 * @author Valerio De Maria
 	 */
-	public Mossa riceviMossa(List<Mosse> mosseDisponibili) {
+	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
 
 		return giocatori.get(partita.getTurno() - 1).riceviMossa(
 				mosseDisponibili);
+	}
+
+	/**
+	 * per ogni client richiedo un pong
+	 * 
+	 * @param mosseDisponibili
+	 * @author Valerio De Maria
+	 */
+	private void controllaConnessioneClients(List<MosseEnum> mosseDisponibili) {
+		Mossa mossa;
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			mossa = x.riceviMossa(mosseDisponibili);
+		}
 	}
 
 	/**
@@ -153,20 +170,26 @@ public abstract class ControllorePartita implements Runnable {
 		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
 
 			mosseDisponibili.clear();
+
+			controllaConnessioneClients(mosseDisponibili);
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
 
 			Mossa mossa = riceviMossa(mosseDisponibili);
 
 			try {
+				System.out.println("vado ad eseguire la mossa");
 				mossa.eseguiMossa(partita);
 
 				// faccio eseguire su tutti i client la mossa fatta
+				System.out.println("vado ad aggiornare clients");
 				mossa.aggiornaClients(giocatori, partita.getTurno());
 
+				System.out.println("vado ad aggiornare mosse fatte");
 				mossa.aggiornaMosseFatte(mosseFatte);
+				
 			} catch (Exception e) {
 			}
-
+           
 		}// fine ciclo for
 
 	}
@@ -280,19 +303,27 @@ public abstract class ControllorePartita implements Runnable {
 		// i client in maniera trasparente rispetto alla modalità di connessione
 		trasferisciGestioneComunicazione();
 
+		System.out.println("invio la partita "+giocatori.get(0).getNome()+" e "+giocatori.get(1).getNome());
 		inviaPartita();
 
 		posizionaPastori();
 
 		finePartita = false;
 		faseFinale = false;
+		int f=0;
 		while (!finePartita) {
 
 			giocaTurno();
 			partita.incrementaTurno();
+
 			if (partita.getTurno() > connessioni.size()) {
 				partita.muoviLupo();
 				partita.setTurno(1);
+			}
+			System.out.println("ora è il turno di "+giocatori.get(partita.getTurno()-1).getNome());
+			f++;
+			if(f==4){
+				finePartita=true;
 			}
 			if (partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) {
 				// TODO comunica ai client che sono in fase finale

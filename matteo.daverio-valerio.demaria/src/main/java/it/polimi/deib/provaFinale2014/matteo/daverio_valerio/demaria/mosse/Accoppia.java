@@ -1,11 +1,12 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public class Accoppia implements Mossa {
+public class Accoppia implements Mossa,Serializable {
 
 	private int regione;
 
@@ -41,8 +42,8 @@ public class Accoppia implements Mossa {
 
 	}
 
-	public void aggiornaMosseFatte(List<Mosse> mosseFatte) {
-		mosseFatte.add(Mosse.ACCOPPIA);
+	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+		mosseFatte.add(MosseEnum.ACCOPPIA);
 
 	}
 

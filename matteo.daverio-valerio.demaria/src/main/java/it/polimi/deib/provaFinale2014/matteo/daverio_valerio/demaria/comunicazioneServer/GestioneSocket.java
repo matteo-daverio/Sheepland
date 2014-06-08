@@ -19,57 +19,23 @@ import java.net.Socket;
 public class GestioneSocket implements Gestione {
 
 	private Socket socket;
-	private String nomeClient, password, tipo;
+	private String nome, password, tipo;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Partita partita;
 
-	// costruttore
+	/**
+	 * costruttore
+	 * 
+	 * @param socket
+	 * @author Valerio De Maria
+	 */
 	public GestioneSocket(Socket socket) {
 
 		this.tipo = "socket";
 		this.socket = socket;
-		//al momento del login il client non ha nessuna partita in corso
-		this.partita=null;
-
-		try {
-
-			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
-
-			// chiedo il nomeGiocatore
-			out.reset();
-			out.writeObject(ComandiSocket.RICHIESTA_NOME);
-			out.flush();
-			String nome = new String();
-			try {
-				nome = (String) in.readObject();
-			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore in lettura nome", e);
-			}
-			this.nomeClient = nome;
-
-			// chiedo la password
-			out.reset();
-			out.writeObject(ComandiSocket.RICHIESTA_PASSWORD);
-			out.flush();
-			String password = new String();
-			try {
-				password = (String) in.readObject();
-			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore in lettura password", e);
-			}
-
-			this.password = password;
-
-			// chiudo la connessione
-			in.close();
-			out.close();
-			socket.close();
-
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
+		// al momento del login il client non ha nessuna partita in corso
+		this.partita = null;
 
 	}
 
@@ -79,7 +45,7 @@ public class GestioneSocket implements Gestione {
 	 * @author Valerio De Maria
 	 */
 	public String getNome() {
-		return nomeClient;
+		return nome;
 	}
 
 	/**
@@ -172,5 +138,66 @@ public class GestioneSocket implements Gestione {
 	 */
 	public Partita getPartita() {
 		return partita;
+	}
+
+	public void chiediDati() {
+		System.out.println("provo a chiedere nome e password");
+		try {
+
+			// dichiaro PRIMA quello d'uscita e DOPO quello d'ingresso perchè il
+			// costruttore di quello d'ingresso ha bisogno di fare subito un
+			// flush per caricare il suo header!!!!!
+
+			// The ObjectInputStream constructor blocks until it completes
+			// reading the serialization stream header. Code which waits for an
+			// ObjectInputStream to be constructed before creating the
+			// corresponding ObjectOutputStream for that stream will deadlock,
+			// since the ObjectInputStream constructor will block until a header
+			// is written to the stream, and the header will not be written to
+			// the stream until the ObjectOutputStream constructor executes.
+			
+			// TODO =>SHOUT FUCK
+			out = new ObjectOutputStream(socket.getOutputStream());
+			out.flush();
+			in = new ObjectInputStream(socket.getInputStream());
+
+			// chiedo il nomeGiocatore
+			out.reset();
+			out.writeObject(ComandiSocket.RICHIESTA_NOME);
+			out.flush();
+			String nome = new String();
+			System.out.println("aspetto il nome");
+			try {
+			
+					nome = (String) in.readObject();
+			
+			} catch (ClassNotFoundException e) {
+				LOGGER.log("errore in lettura nome", e);
+			}
+			this.nome = nome;
+			System.out.println("il nome è " + nome);
+	
+
+			// chiedo la password
+			out.reset();
+			out.writeObject(ComandiSocket.RICHIESTA_PASSWORD);
+			out.flush();
+			String password = new String();
+			System.out.println("aspetto la password");
+			try {
+			
+					password = (String) in.readObject();
+				
+			} catch (ClassNotFoundException e) {
+				LOGGER.log("errore in lettura password", e);
+			}
+
+			this.password = password;
+			System.out.println("la passw è " + password);
+
+		} catch (IOException e) {
+			LOGGER.log("non comunica il socket", e);
+			System.err.println(e.getMessage());
+		}
 	}
 }

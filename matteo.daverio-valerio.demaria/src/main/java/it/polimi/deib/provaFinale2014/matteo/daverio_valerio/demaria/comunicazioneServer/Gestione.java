@@ -38,5 +38,8 @@ public interface Gestione {
 	//utile solo per GestioneSocket
 	public void autenticazione(boolean riuscita);
 	
+	//utile solo per GestioneSocket
+	public void chiediDati();
+	
 	
 }

@@ -1,7 +1,8 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
@@ -26,15 +27,29 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 
-	// costruttore
-	public ComunicazioneSocket(Socket socket,ObjectInputStream in,ObjectOutputStream out,String nome) {
+	/**
+	 * costruttore
+	 * 
+	 * @param socket
+	 * @param in
+	 * @param out
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
+	public ComunicazioneSocket(Socket socket, ObjectInputStream in,
+			ObjectOutputStream out, String nome) {
 
 		this.socket = socket;
-		this.in=in;
-		this.out=out;
-		this.nome=nome;
+		this.in = in;
+		this.out = out;
+		this.nome = nome;
 	}
 
+	/**
+	 * invia l'oggetto partita
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void inviaPartita(Partita partita) {
 
 		try {
@@ -45,11 +60,16 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.writeObject(partita);
 			out.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in invio partita", e);
 		}
 
 	}
 
+	/**
+	 * chiudo la connessione
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void chiudiConnessione() {
 
 		try {
@@ -57,12 +77,17 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.close();
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in chiusura socket", e);
 		}
 	}
 
+	/**
+	 * comunica il movimento della pecora nera
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione) {
-		
+
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PECORA_NERA);
@@ -71,17 +96,43 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.writeInt(nuovaPosizione);
 			out.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in invio mossa pecora", e);
 		}
 
 	}
 
-	public Mossa riceviMossa(List<Mosse> mosseDisponibili) {
-		return null;
+	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
+		Mossa mossa = null;
+		try {
+			// richiedo una mossa
+			out.reset();
+			out.writeObject(ComandiSocket.RICHIESTA_DI_MOSSA);
+			out.flush();
+			// invio la lista di mosse disponibili
+			out.reset();
+			out.writeObject(mosseDisponibili);
+			out.flush();
+
+			try {
+				mossa = (Mossa) in.readObject();
+			} catch (ClassNotFoundException e) {
+				LOGGER.log("errore in ricezione mossa", e);
+			}
+
+		} catch (IOException e) {
+			LOGGER.log("errore in comunicazione richiesta mossa", e);
+		}
+
+		return mossa;
 	}
 
+	/**
+	 * comunica il movimento di un pastore
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void comunicaMovimentoPastore(int posizione) {
-		
+
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PASTORE);
@@ -89,12 +140,17 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.writeInt(posizione);
 			out.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in comunicazione movimento pastore", e);
 		}
 	}
 
+	/**
+	 * comunico l'acquisto di una tessera
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void comunicaAcquistaTessera(TipoTerreno terreno) {
-		
+
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.ACQUISTO_TESSERA);
@@ -103,13 +159,18 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.writeObject(terreno);
 			out.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in comunicazione acquisto tessera", e);
 		}
 
 	}
 
-	public void comunicaAbbattimento(int regione,int pecora) {
-		
+	/**
+	 * comunico un abbattimento
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void comunicaAbbattimento(int regione, int pecora) {
+
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.ABBATTIMENTO);
@@ -120,15 +181,20 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.reset();
 			out.writeInt(pecora);
 			out.flush();
-			
+
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in comunicazione abbattimento", e);
 		}
 
 	}
 
+	/**
+	 * comunico un accoppiamento
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void comunicaAccoppiamento(int regione) {
-		
+
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.ACCOPPIAMENTO);
@@ -137,13 +203,18 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.writeInt(regione);
 			out.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in comunicazione accoppiamento", e);
 		}
 
 	}
 
+	/**
+	 * comunico il movimento di una pecora
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void comunicaMovimentoPecora(int pecora, Strada strada) {
-		
+
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PECORA);
@@ -154,44 +225,36 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.reset();
 			out.writeObject(strada);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("errore in comunicazione movimento pecora", e);
 		}
 
 	}
 
+	/**
+	 * ritorna il nome
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public String getNome() {
 		return nome;
 	}
 
+	/**
+	 * ritorna il tipo di connessione
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public String getTipoConnessione() {
 		return "socket";
 	}
 
+	/**
+	 * setta la socket
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void setSocket(Socket socket) {
-		this.socket=socket;
-	}
-
-	public boolean ping() {
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.PING);
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			in.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (in.equals(ComandiSocket.PONG)){
-			return true;
-		}
-		else{
-			return false;
-		}
+		this.socket = socket;
 	}
 
 }

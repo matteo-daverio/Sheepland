@@ -20,13 +20,18 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.TesseraInVendita;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Partita {
+public class Partita implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1995133518807859212L;
 	private int numeroGiocatori;
 	private int turno;
 	private int contatoreRecinti;

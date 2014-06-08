@@ -6,7 +6,6 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
 
 /**
  * implementazione dell'interfaccia di RMI
@@ -14,31 +13,22 @@ import java.rmi.RemoteException;
  * @author Valerio De Maria
  * 
  */
-public class GestioneRMI implements Gestione, InterfacciaGestioneRMI {
+public class GestioneRMI implements Gestione {
 
 	private String nomeClient, password, tipo;
 	private InterfacciaClientRMI client;
 	private Partita partita;
+	//public int ID=0;
 
-	/**
-	 * metodo che i client chiamano per fare il log-in
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public boolean registrazione(String nomeClient, String password,
-			InterfacciaClientRMI client) throws RemoteException {
-
-		this.nomeClient = nomeClient;
-		this.password = password;
-		this.tipo = "RMI";
-		// interfaccia del client RMI su cui il server può chiamare i metodi
-		this.client = client;
-		// al momento del log-in il client non ha una partita in corso
-		this.partita = null;
-		// torna false se il client ha una partita in corso e la sua password è
-		// sbagliata
-		return GestorePartite.addConnessione(this);
-
+	public GestioneRMI(){
+		
+	}
+	public GestioneRMI(String nome, String password, String tipo,InterfacciaClientRMI client,Partita partita){
+		this.nomeClient=nome;
+		this.password=password;
+		this.tipo=tipo;
+		this.client=client;
+		this.partita=partita;
 	}
 
 	/**
@@ -122,6 +112,13 @@ public class GestioneRMI implements Gestione, InterfacciaGestioneRMI {
 	 */
 	public void autenticazione(boolean riuscita) {
 
+	}
+/**
+ * utile solo per socket
+ * @author Valerio De Maria
+ */
+	public void chiediDati() {
+		
 	}
 
 }

@@ -12,6 +12,11 @@ import java.util.ArrayList;
 public class PecoraNera extends Pecora {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3357558608672302317L;
+
+	/**
 	 * costruttore
 	 * 
 	 * @author Matteo Daverio

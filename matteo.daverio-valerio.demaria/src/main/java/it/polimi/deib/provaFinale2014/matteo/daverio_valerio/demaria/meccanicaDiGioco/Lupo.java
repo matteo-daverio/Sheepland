@@ -2,10 +2,15 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Lupo {
+public class Lupo implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8645412908850725351L;
 	private int posizione;
 
 	/**

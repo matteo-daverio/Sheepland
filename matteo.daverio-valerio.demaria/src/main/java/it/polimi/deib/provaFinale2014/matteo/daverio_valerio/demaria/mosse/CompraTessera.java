@@ -1,6 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
@@ -8,6 +8,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.I
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public class CompraTessera implements Mossa {
+public class CompraTessera implements Mossa,Serializable {
 
 	private TipoTerreno terreno;
 
@@ -43,8 +44,8 @@ public class CompraTessera implements Mossa {
 
 	}
 
-	public void aggiornaMosseFatte(List<Mosse> mosseFatte) {
-		mosseFatte.add(Mosse.COMPRA_TESSERA);
+	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+		mosseFatte.add(MosseEnum.COMPRA_TESSERA);
 
 	}
 

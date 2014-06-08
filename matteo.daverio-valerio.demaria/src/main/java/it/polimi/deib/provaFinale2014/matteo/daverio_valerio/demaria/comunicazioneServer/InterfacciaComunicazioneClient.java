@@ -3,7 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 import java.net.Socket;
 import java.util.List;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Mosse;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
@@ -17,7 +17,7 @@ public interface InterfacciaComunicazioneClient {
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione);
 
-	public Mossa riceviMossa(List<Mosse> mosseDisponibili);
+	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili);
 
 	public void comunicaMovimentoPastore(int posizione);
 
@@ -35,6 +35,5 @@ public interface InterfacciaComunicazioneClient {
 	
 	public void setSocket(Socket socket);
 	
-	public boolean ping();
 
 }
