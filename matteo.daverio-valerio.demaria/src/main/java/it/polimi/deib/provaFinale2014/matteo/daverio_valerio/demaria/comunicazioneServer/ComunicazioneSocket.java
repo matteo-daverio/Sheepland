@@ -137,6 +137,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.reset();
 			out.writeObject(ComandiSocket.MOVIMENTO_PASTORE);
 			out.flush();
+			out.reset();
 			out.writeInt(posizione);
 			out.flush();
 		} catch (IOException e) {
@@ -224,6 +225,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			out.flush();
 			out.reset();
 			out.writeObject(strada);
+			out.flush();
 		} catch (IOException e) {
 			LOGGER.log("errore in comunicazione movimento pecora", e);
 		}
@@ -255,6 +257,34 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 	 */
 	public void setSocket(Socket socket) {
 		this.socket = socket;
+	}
+
+	/**
+	 * al client che ora è il turno del giocatore successivo
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void comunicaCambioTurno() {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.CAMBIO_TURNO);
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void comunicaFaseFinale() {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.FASE_FINALE);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

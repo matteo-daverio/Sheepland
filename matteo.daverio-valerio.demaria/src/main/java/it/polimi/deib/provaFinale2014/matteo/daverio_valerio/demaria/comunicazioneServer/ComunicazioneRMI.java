@@ -170,4 +170,18 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		
 	}
 
+	public void comunicaCambioTurno() {
+		try {
+			client.cambioTurno();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void comunicaFaseFinale() {
+		
+		
+	}
+
 }

@@ -70,7 +70,7 @@ public abstract class ControllorePartita implements Runnable {
 			if (mosseFatte.size() > 0) {
 				System.out.println("il client ha fatto almeno una mossa");
 				// in base all'ultima mossa fatta
-				switch (mosseFatte.get(mosseFatte.size()-1)) {
+				switch (mosseFatte.get(mosseFatte.size() - 1)) {
 
 				case ABBATTI:
 					System.out.println("non può abbattere");
@@ -124,7 +124,6 @@ public abstract class ControllorePartita implements Runnable {
 		}
 
 	}
-
 
 	/**
 	 * metodo che riceve la mossa inviata dal client
@@ -185,11 +184,11 @@ public abstract class ControllorePartita implements Runnable {
 				mossa.aggiornaClients(giocatori, partita.getTurno());
 
 				System.out.println("vado ad aggiornare mosse fatte");
-				mossa.aggiornaMosseFatte(mosseFatte);
-				
+				mosseFatte=mossa.aggiornaMosseFatte(mosseFatte);
+
 			} catch (Exception e) {
 			}
-           
+
 		}// fine ciclo for
 
 	}
@@ -303,14 +302,15 @@ public abstract class ControllorePartita implements Runnable {
 		// i client in maniera trasparente rispetto alla modalità di connessione
 		trasferisciGestioneComunicazione();
 
-		System.out.println("invio la partita "+giocatori.get(0).getNome()+" e "+giocatori.get(1).getNome());
+		System.out.println("invio la partita " + giocatori.get(0).getNome()
+				+ " e " + giocatori.get(1).getNome());
 		inviaPartita();
 
 		posizionaPastori();
 
 		finePartita = false;
 		faseFinale = false;
-		int f=0;
+		int f = 0;
 		while (!finePartita) {
 
 			giocaTurno();
@@ -320,13 +320,15 @@ public abstract class ControllorePartita implements Runnable {
 				partita.muoviLupo();
 				partita.setTurno(1);
 			}
-			System.out.println("ora è il turno di "+giocatori.get(partita.getTurno()-1).getNome());
+			comunicaCambioTurno();
+			System.out.println("ora è il turno di "
+					+ giocatori.get(partita.getTurno() - 1).getNome());
 			f++;
-			if(f==4){
-				finePartita=true;
+			if (f == 4) {
+				finePartita = true;
 			}
 			if (partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) {
-				// TODO comunica ai client che sono in fase finale
+				comunicaFaseFinale();
 				faseFinale = true;
 			}
 			if (faseFinale && partita.getTurno() == connessioni.size()) {
@@ -335,9 +337,35 @@ public abstract class ControllorePartita implements Runnable {
 
 		}// fine del while
 
+		System.out.println("la partita è finita, conto i punti");
 		conteggioPunti();
 
+		System.out.println("comunico ai client che la partita è finita");
 		comunicaFinePartita();
+
+	}
+
+	/**
+	 * comunico ai giocatori che è iniziata la fase finale
+	 * 
+	 * @author Valerio De Maria
+	 */
+	private void comunicaFaseFinale() {
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			x.comunicaFaseFinale();
+		}
+
+	}
+
+	/**
+	 * comunico ai giocatori che il turno è cambiato
+	 * 
+	 * @author Valerio De Maria
+	 */
+	private void comunicaCambioTurno() {
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			x.comunicaCambioTurno();
+		}
 
 	}
 }

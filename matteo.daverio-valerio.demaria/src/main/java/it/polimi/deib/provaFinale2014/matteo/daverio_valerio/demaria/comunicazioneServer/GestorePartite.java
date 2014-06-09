@@ -42,8 +42,6 @@ public class GestorePartite implements Runnable {
 	 */
 	private synchronized static boolean giocatoreInGioco(Gestione g) {
 		for (Gestione x : giocatori) {
-			System.out.println("nel mio array ho "+ giocatori.get(0).getNome());
-			System.out.println("Il giocatore è "+x.getNome()+" l'aspirante è "+ g.getNome());
 			if ((x.getNome().equals(g.getNome()))) {
 				return true;
 			}

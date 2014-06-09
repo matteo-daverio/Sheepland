@@ -46,8 +46,9 @@ public class MuoviPecora implements Mossa,Serializable {
 
 	}
 
-	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		mosseFatte.add(MosseEnum.MUOVI_PECORA);
+		return mosseFatte;
 
 	}
 

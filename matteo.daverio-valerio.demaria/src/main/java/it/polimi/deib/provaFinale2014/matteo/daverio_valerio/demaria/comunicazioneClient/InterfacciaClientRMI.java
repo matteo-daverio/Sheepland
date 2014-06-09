@@ -50,4 +50,7 @@ public interface InterfacciaClientRMI extends Remote {
 	public void accoppiamento(int regione) throws RemoteException,IllegalShireException,
 			CannotProcreateException;
 	
+	public void faseFinale() throws RemoteException;
+	public void cambioTurno() throws RemoteException;
+	
 }

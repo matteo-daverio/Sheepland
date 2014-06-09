@@ -50,9 +50,10 @@ System.out.println("aggiorno i clients");
 
 	}
 
-	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		System.out.println("aggiungo alle mosse fatte il movimento pastore");
 		mosseFatte.add(MosseEnum.MUOVI_PASTORE);
+		return mosseFatte;
         
 	}
 

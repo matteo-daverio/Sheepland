@@ -44,8 +44,9 @@ public class CompraTessera implements Mossa,Serializable {
 
 	}
 
-	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		mosseFatte.add(MosseEnum.COMPRA_TESSERA);
+		return mosseFatte;
 
 	}
 

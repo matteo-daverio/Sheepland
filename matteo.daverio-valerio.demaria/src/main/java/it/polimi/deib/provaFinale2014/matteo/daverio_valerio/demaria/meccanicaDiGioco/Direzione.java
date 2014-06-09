@@ -1,11 +1,13 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Matteo Daverio
  * 
  */
-public class Direzione {
+public class Direzione  {
 
 	private final int posizione;
 	private final String verso;

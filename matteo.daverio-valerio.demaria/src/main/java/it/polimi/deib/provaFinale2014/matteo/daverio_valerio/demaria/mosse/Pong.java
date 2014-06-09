@@ -34,8 +34,9 @@ public class Pong implements Mossa,Serializable{
 		
 	}
 
-	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 

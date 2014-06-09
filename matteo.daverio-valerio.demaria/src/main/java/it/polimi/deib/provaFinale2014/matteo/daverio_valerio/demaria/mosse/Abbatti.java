@@ -35,8 +35,9 @@ public class Abbatti implements Mossa,Serializable {
 
 	}
 
-	public void aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
+	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		mosseFatte.add(MosseEnum.ABBATTI);
+		return mosseFatte;
 
 	}
 

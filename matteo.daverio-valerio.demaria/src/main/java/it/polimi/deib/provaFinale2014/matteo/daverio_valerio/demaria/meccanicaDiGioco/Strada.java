@@ -1,5 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,8 +8,12 @@ import java.util.ArrayList;
  * @author Matteo Daverio
  * 
  */
-public class Strada {
+public class Strada implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -497606577208406140L;
 	private final int posizione;
 	private final int numeroDado; // numero da fare con il dado per passare
 	private final int regioneDestra;

@@ -29,6 +29,10 @@ public interface InterfacciaComunicazioneClient {
 
 	public void comunicaMovimentoPecora(int pecora, Strada strada);
 	
+	public void comunicaCambioTurno();
+	
+	public void comunicaFaseFinale();
+	
 	public String getNome();
 	
 	public String getTipoConnessione();

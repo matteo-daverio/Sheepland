@@ -20,11 +20,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ClientSocket {
+public class ClientSocket implements InterfacciaComunicazioneClient {
 
 	private String ip, nome, password;
 	private int port;
@@ -73,7 +74,7 @@ public class ClientSocket {
 				}
 
 				// il server chiede la password
-				if (line.equals(ComandiSocket.RICHIESTA_PASSWORD)) {
+				else if (line.equals(ComandiSocket.RICHIESTA_PASSWORD)) {
 					do {
 						System.out.println("Password:");
 						password = inputUtente.nextLine();
@@ -84,13 +85,13 @@ public class ClientSocket {
 				}
 
 				// il server comunica che l'autenticazione è riuscita
-				if (line.equals(ComandiSocket.AUTENTICAZIONE_RIUSCITA)) {
+				else if (line.equals(ComandiSocket.AUTENTICAZIONE_RIUSCITA)) {
 					autenticato = true;
 					System.out.println("mi sono autenticato");
 				}
 
 				// il server comunica che l'autenticazione non è riuscita
-				if (line.equals(ComandiSocket.AUTENTICAZIONE_FALLITA)) {
+				else if (line.equals(ComandiSocket.AUTENTICAZIONE_FALLITA)) {
 					System.out
 							.println("Hai una partita in corso e la tua password è sbagliata!");
 				}
@@ -103,6 +104,12 @@ public class ClientSocket {
 
 	}
 
+	/**
+	 * metodo che attende di ricevere la partita
+	 * 
+	 * @throws IOException
+	 * @author Valerio De Maria
+	 */
 	public void riceviPartita() throws IOException {
 		boolean partitaRicevuta = false;
 		ComandiSocket line;
@@ -115,7 +122,7 @@ public class ClientSocket {
 
 				if (line.equals(ComandiSocket.INVIO_PARTITA)) {
 					partita = (Partita) in.readObject();
-					partitaRicevuta=true;
+					partitaRicevuta = true;
 					System.out.println("ho ricevuto la partita");
 				}
 
@@ -125,89 +132,108 @@ public class ClientSocket {
 		}
 	}
 
-	private void riceviAggiornamenti() throws IOException, NoMoreCardsException, NoMoneyException, IllegalShireTypeException, NoSheepInShireException, IllegalShireException, CannotProcreateException, IllegalStreetException{
-		
-		boolean finePartita=false;
-		List<MosseEnum> mosseDisponibili=new ArrayList<MosseEnum>();
+	/**
+	 * metodo che attende di ricevere aggiornamenti da parte del server
+	 * 
+	 * @throws IOException
+	 * @throws NoMoreCardsException
+	 * @throws NoMoneyException
+	 * @throws IllegalShireTypeException
+	 * @throws NoSheepInShireException
+	 * @throws IllegalShireException
+	 * @throws CannotProcreateException
+	 * @throws IllegalStreetException
+	 * @author Valerio De Maria
+	 */
+	private void riceviAggiornamenti() throws IOException,
+			NoMoreCardsException, NoMoneyException, IllegalShireTypeException,
+			NoSheepInShireException, IllegalShireException,
+			CannotProcreateException, IllegalStreetException {
+
+		boolean finePartita = false;
+		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
 		ComandiSocket line;
-		
-		while(!finePartita){
+
+		while (!finePartita) {
 			try {
 
 				// leggo dal buffer
 				line = (ComandiSocket) in.readObject();
 
-				switch(line){
+				switch (line) {
 				case MOVIMENTO_PECORA_NERA:
 					partita.getPecoraNera().setPosizione(in.readInt());
 					System.out.println("si è mossa la pecora nera");
 					break;
-					
+
 				case RICHIESTA_DI_MOSSA:
-					mosseDisponibili=(List<MosseEnum>)in.readObject();
-					if(mosseDisponibili.size()==0){
+					mosseDisponibili = (List<MosseEnum>) in.readObject();
+					if (mosseDisponibili.size() == 0) {
 						out.reset();
 						out.writeObject(new Pong());
 						out.flush();
 						System.out.println("ho mandato un pong");
-					}
-					else{
-					 //TODO chiedo all'utente la mossa che vuole fare
+					} else {
+						// TODO chiedo all'utente la mossa che vuole fare
 						out.reset();
 						out.writeObject(new MuoviPastore(4));
 						out.flush();
 					}
-					
+
 					break;
-					
+
 				case MOVIMENTO_PASTORE:
-					partita.getPastori().get(partita.getTurno() -1).setPosizione(in.readInt());
+					partita.getPastori().get(partita.getTurno() - 1)
+							.setPosizione(in.readInt());
 					System.out.println("ho mosso il pastore di turno");
 					break;
-				
+
 				case ACQUISTO_TESSERA:
-					partita.compraTessera((TipoTerreno)in.readObject());
+					partita.compraTessera((TipoTerreno) in.readObject());
 					break;
-					
+
 				case ABBATTIMENTO:
-					int regione =in.readInt();
-					int pecora =in.readInt();
+					int regione = in.readInt();
+					int pecora = in.readInt();
 					partita.abbatti(regione, pecora);
 					break;
-					
+
 				case ACCOPPIAMENTO:
 					partita.accoppia(in.readInt());
 					break;
-				
+
 				case MOVIMENTO_PECORA:
-					int p =in.readInt();
-					Strada strada =(Strada) in.readObject();
+					int p = in.readInt();
+					Strada strada = (Strada) in.readObject();
 					partita.muoviPecora(p, strada);
-				break;
+					break;
 				default:
 					break;
-				}//fine switch
-
+				}// fine switch
 
 			} catch (ClassNotFoundException e) {
 				LOGGER.log("errore ricezione da server", e);
 			}
 		}
 	}
+
 	/**
 	 * avvio il client socket
 	 * 
 	 * @throws IOException
 	 * @author Valerio De Maria
-	 * @throws IllegalShireTypeException 
-	 * @throws NoMoneyException 
-	 * @throws NoMoreCardsException 
-	 * @throws IllegalShireException 
-	 * @throws NoSheepInShireException 
-	 * @throws IllegalStreetException 
-	 * @throws CannotProcreateException 
+	 * @throws IllegalShireTypeException
+	 * @throws NoMoneyException
+	 * @throws NoMoreCardsException
+	 * @throws IllegalShireException
+	 * @throws NoSheepInShireException
+	 * @throws IllegalStreetException
+	 * @throws CannotProcreateException
 	 */
-	public void startClient() throws IOException, NoMoreCardsException, NoMoneyException, IllegalShireTypeException, NoSheepInShireException, IllegalShireException, CannotProcreateException, IllegalStreetException {
+	public void startClient() throws IOException, NoMoreCardsException,
+			NoMoneyException, IllegalShireTypeException,
+			NoSheepInShireException, IllegalShireException,
+			CannotProcreateException, IllegalStreetException {
 
 		// chiedo una socket al server
 		Socket socket = new Socket(ip, port);
@@ -220,7 +246,7 @@ public class ClientSocket {
 		logIn();
 
 		riceviPartita();
-		
+
 		riceviAggiornamenti();
 
 		try {
@@ -230,6 +256,66 @@ public class ClientSocket {
 		} catch (IOException e) {
 			LOGGER.log("errore in chiusura socket", e);
 		}
+	}
+
+	// NEW
+	public boolean effettuaLogin(String nome, String password)
+			throws IOException {
+
+		ComandiSocket line;
+		Socket socket;
+
+		try {
+			// chiedo una socket al server
+			socket = new Socket(ip, port);
+
+			// creo i buffer per ricevere/inviare dati con il server
+			out = new ObjectOutputStream(socket.getOutputStream());
+			out.flush();
+			in = new ObjectInputStream(socket.getInputStream());
+
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while (true) {
+			try {
+
+				// leggo dal buffer
+				line = (ComandiSocket) in.readObject();
+
+				// il server chiede il nome
+				if (line.equals(ComandiSocket.RICHIESTA_NOME)) {
+					out.reset();
+					out.writeObject(nome);
+					out.flush();
+				}
+
+				// il server chiede la password
+				else if (line.equals(ComandiSocket.RICHIESTA_PASSWORD)) {
+					out.reset();
+					out.writeObject(password);
+					out.flush();
+				}
+
+				// il server comunica che l'autenticazione è riuscita
+				else if (line.equals(ComandiSocket.AUTENTICAZIONE_RIUSCITA)) {
+					return true;
+				}
+
+				// il server comunica che l'autenticazione non è riuscita
+				else if (line.equals(ComandiSocket.AUTENTICAZIONE_FALLITA)) {
+					return false;
+				}
+
+			} catch (ClassNotFoundException e) {
+				LOGGER.log("errore ricezione da server", e);
+			}
+		}
+
 	}
 
 }

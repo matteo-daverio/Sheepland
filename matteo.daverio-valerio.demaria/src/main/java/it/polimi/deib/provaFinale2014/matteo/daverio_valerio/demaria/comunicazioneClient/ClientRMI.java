@@ -19,6 +19,8 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -27,15 +29,30 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
 
-public class ClientRMI implements InterfacciaClientRMI {
+public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazioneClient {
 
 	Scanner in = new Scanner(System.in);
-	
+
 	private String nome;
 	private String password;
 
+	private String ip_server;
+	private int porta;
+
 	private Partita partita;
 	private InterfacciaGestioneRMI server;
+
+	/**
+	 * costruttore
+	 * 
+	 * @param IP
+	 * @author Valerio De Maria
+	 */
+	public ClientRMI(String IP,int porta) {
+		ip_server = IP;
+		this.porta=porta;
+		
+	}
 
 	/**
 	 * il client riceve l'aggiornamento su un cambio di turno
@@ -88,10 +105,10 @@ public class ClientRMI implements InterfacciaClientRMI {
 	 */
 	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) {
 
-		for(MosseEnum x:mosseDisponibili){
+		for (MosseEnum x : mosseDisponibili) {
 			System.out.println(x);
 		}
-		if(mosseDisponibili.size()==0){
+		if (mosseDisponibili.size() == 0) {
 			System.out.println("invio un pong");
 			return (new Pong());
 		}
@@ -116,28 +133,29 @@ public class ClientRMI implements InterfacciaClientRMI {
 		try {
 
 			// cerco il registry del server
-			Registry registry = LocateRegistry.getRegistry("localhost",
-					ServerApplication.SERVER_PORT_RMI);
+			Registry registry = LocateRegistry.getRegistry(ip_server,
+					porta);
 
 			// scarico l'oggetto remoto del server
 			server = (InterfacciaGestioneRMI) registry.lookup("serverInAttesa");
-			
-			//int ID=server.ottieniID();
-			
-			//TODO codice talebano
-			//System.out.println(ID);
-			
+
+			// int ID=server.ottieniID();
+
+			// TODO codice talebano
+			// System.out.println(ID);
+
 			// esporto l'interfaccia client
-			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject.exportObject(this,0);
-			
+			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject
+					.exportObject(this, 0);
+
 			// eseguo il metodo registrazione dell'oggetto remoto del server
-			boolean result = server.registrazione(nome, password,stub);
-			
-			//TODO codice talebano
-			if(result)
-			System.out.println("il server mi ha accettato");
+			boolean result = server.registrazione(nome, password, stub);
+
+			// TODO codice talebano
+			if (result)
+				System.out.println("il server mi ha accettato");
 			else
-			System.out.println("il server mi ha respinto");	
+				System.out.println("il server mi ha respinto");
 
 		} catch (RemoteException e) {
 			System.err.println("Remote exception:");
@@ -147,13 +165,13 @@ public class ClientRMI implements InterfacciaClientRMI {
 		}
 
 	}
-	
-	public void logIn(){
-		
+
+	public void logIn() {
+
 		System.out.println("Nome?");
-		this.nome=in.nextLine();
+		this.nome = in.nextLine();
 		System.out.println("Password?");
-		this.password=in.nextLine();
+		this.password = in.nextLine();
 	}
 
 	public void start() {
@@ -176,9 +194,10 @@ public class ClientRMI implements InterfacciaClientRMI {
 		partita.muoviPecora(pecora, strada);
 	}
 
-	public void abbattimento(int regione,int pecora) throws NoSheepInShireException,
-			NoMoneyException, IllegalShireException {
-		partita.abbatti(regione,pecora);
+	public void abbattimento(int regione, int pecora)
+			throws NoSheepInShireException, NoMoneyException,
+			IllegalShireException {
+		partita.abbatti(regione, pecora);
 
 	}
 
@@ -190,6 +209,48 @@ public class ClientRMI implements InterfacciaClientRMI {
 
 	public boolean pong() {
 		return true;
+	}
+
+	public void cambioTurno() {
+		partita.setTurno(partita.getTurno() + 1);
+
+	}
+
+	public void faseFinale() {
+		// TODO Auto-generated method stub
+	}
+
+	//NEW
+	public boolean effettuaLogin(String nome, String password)
+			throws IOException {
+		
+
+		try {
+
+			// cerco il registry del server
+			Registry registry = LocateRegistry.getRegistry(ip_server,
+					porta);
+
+			// scarico l'oggetto remoto del server
+			server = (InterfacciaGestioneRMI) registry.lookup("serverInAttesa");
+
+			// esporto l'interfaccia client
+			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject
+					.exportObject(this, 0);
+
+			// eseguo il metodo registrazione dell'oggetto remoto del server
+			boolean result = server.registrazione(nome, password, stub);
+
+			System.out.println("ho ricevuto da server");
+            return result;
+
+		} catch (RemoteException e) {
+			System.err.println("Remote exception:");
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			System.err.println("Name " + "istanza" + " not bound.");
+		}
+		return false;
 	}
 
 }

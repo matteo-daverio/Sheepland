@@ -9,6 +9,7 @@ public class ControllorePartitaMoltiGiocatori extends ControllorePartita {
 	public ControllorePartitaMoltiGiocatori(List<Gestione> connessioni,
 			Partita partita) {
 		super(connessioni, partita);
+		super.run();
 	}
 
 	/**
@@ -20,7 +21,7 @@ public class ControllorePartitaMoltiGiocatori extends ControllorePartita {
 	@Override
 	void aggiungiPastori(List<Gestione> connessioni, Partita partita) {
 
-		for (int i = 0; i <= connessioni.size(); i++) {
+		for (int i = 0; i <= connessioni.size()-1; i++) {
 
 			partita.aggiungiPastore(connessioni.get(i).getNome(), i + 1);
 
