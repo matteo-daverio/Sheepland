@@ -1,6 +1,13 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception;
 
-public class IllegalStreetException extends Exception {
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.EccezioniDiGioco;
+
+public class IllegalStreetException extends GameException {
+
+	public IllegalStreetException(EccezioniDiGioco tipo) {
+		super(tipo);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * 

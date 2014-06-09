@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
@@ -34,21 +35,18 @@ public interface InterfacciaClientRMI extends Remote {
 	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException;
 
 	public void movimentoPastore(int posizione) throws RemoteException,
-			NoMovementException, NoMoneyException, InvalidMovementException;
+			 GameException;
 
 	public void cambioTurno(int turno) throws RemoteException;
 
-	public void acquistoTessera(TipoTerreno terreno) throws RemoteException,
-			NoMoreCardsException, NoMoneyException, IllegalShireTypeException;
+	public void acquistoTessera(TipoTerreno terreno) throws RemoteException,GameException;
 
 	public void movimentoPecora(int pecora, Strada strada)
-			throws RemoteException,IllegalStreetException, IllegalShireException;
+			throws RemoteException,GameException;
 
-	public void abbattimento(int regione,int pecora) throws RemoteException,NoSheepInShireException,
-			NoMoneyException, IllegalShireException;
+	public void abbattimento(int regione,int pecora) throws RemoteException,GameException;
 
-	public void accoppiamento(int regione) throws RemoteException,IllegalShireException,
-			CannotProcreateException;
+	public void accoppiamento(int regione) throws RemoteException,GameException;
 	
 	public void faseFinale() throws RemoteException;
 	public void cambioTurno() throws RemoteException;

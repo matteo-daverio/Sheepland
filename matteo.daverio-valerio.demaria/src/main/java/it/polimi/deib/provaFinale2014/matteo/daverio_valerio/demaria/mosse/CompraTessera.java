@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
@@ -28,8 +29,7 @@ public class CompraTessera implements Mossa,Serializable {
 
 	}
 
-	public void eseguiMossa(Partita partita) throws NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException {
+	public void eseguiMossa(Partita partita) throws GameException {
 
 		partita.compraTessera(terreno);
 	}

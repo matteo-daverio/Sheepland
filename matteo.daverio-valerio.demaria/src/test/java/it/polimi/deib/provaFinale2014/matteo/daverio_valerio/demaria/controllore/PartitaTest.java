@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
@@ -81,16 +82,14 @@ public class PartitaTest {
 
 	@Test(expected = NoMovementException.class)
 	// testo l'eccezione NoMovementException
-	public void verificaNoMovementException() throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void verificaNoMovementException() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.muoviPastore(30);
 	}
 
 	@Test(expected = NoMoneyException.class)
 	// testo l'eccezione NoMoneyException
-	public void verificaMoneyException() throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void verificaMoneyException() throws GameException {
 		partita.getPastori().get(0).setPosizione(1);
 		partita.getPastori().get(0).setDenaro(0);
 		partita.muoviPastore(17);
@@ -99,8 +98,7 @@ public class PartitaTest {
 
 	@Test(expected = InvalidMovementException.class)
 	// testo l'eccezione InvalidMovementException per strada recintata
-	public void verificaInvalidMovementException1() throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void verificaInvalidMovementException1() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.getStrade().get(17).aggiungiRecinto();
 		partita.muoviPastore(17);
@@ -108,8 +106,7 @@ public class PartitaTest {
 
 	@Test(expected = InvalidMovementException.class)
 	// testo l'eccezione InvalidMovementException per strada occupata
-	public void verificaInvalidMovementException2() throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void verificaInvalidMovementException2() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.aggiungiPastore("Matteo", 2);
 		partita.getPastori().get(1).setPosizione(17);
@@ -118,8 +115,7 @@ public class PartitaTest {
 
 	@Test
 	// movimento pastore con strada sgombra e limitrofa
-	public void muoviPastoreTest1() throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void muoviPastoreTest1() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.muoviPastore(1);
 		assertEquals("movimento pastore non corretto", 1, partita.getPastori()
@@ -133,8 +129,7 @@ public class PartitaTest {
 
 	@Test
 	// movimento pastore con strada sgombra e non limitrofa con soldi
-	public void muoviPastoreTest2() throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void muoviPastoreTest2() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.getPastori().get(0).setDenaro(20);
 		assertFalse(partita.getStrade().get(25).recintata());
@@ -171,8 +166,7 @@ public class PartitaTest {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void abbattiTest() throws NoSheepInShireException, NoMoneyException,
-			IllegalShireException {
+	public void abbattiTest() throws GameException {
 		int numeroPecore = partita.getPecore().size();
 		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(5);
@@ -194,8 +188,7 @@ public class PartitaTest {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void noSheepInShireExceptionTest1() throws NoSheepInShireException,
-			NoMoneyException, IllegalShireException {
+	public void noSheepInShireExceptionTest1() throws GameException {
 		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(5);
 		}
@@ -213,8 +206,7 @@ public class PartitaTest {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void noSheepInShireExceptionTest2() throws NoSheepInShireException,
-			NoMoneyException, IllegalShireException {
+	public void noSheepInShireExceptionTest2() throws GameException {
 		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(3);
 		}
@@ -234,8 +226,7 @@ public class PartitaTest {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void noMoneyExceptionTest() throws NoSheepInShireException,
-			NoMoneyException, IllegalShireException {
+	public void noMoneyExceptionTest() throws GameException {
 		partita.getPastori().get(0).setDenaro(0);
 		partita.getPastori().get(0).setPosizione(24);
 		partita.getPastori().get(1).setPosizione(25);
@@ -255,8 +246,7 @@ public class PartitaTest {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void illegalShireExceptionTest() throws NoSheepInShireException,
-			NoMoneyException, IllegalShireException {
+	public void illegalShireExceptionTest() throws GameException {
 		for (Pecora pecora : partita.getPecore()) {
 			pecora.setPosizione(5);
 		}
@@ -272,8 +262,7 @@ public class PartitaTest {
 	 * @throws CannotProcreateException
 	 * @author Matteo Daverio
 	 */
-	public void accoppiaTest() throws IllegalShireException,
-			CannotProcreateException {
+	public void accoppiaTest() throws GameException {
 		int numeroPecore = partita.getPecore().size();
 		partita.getPecore().get(0).setTipoPecora(Costanti.TIPO_PECORA_MONTONE);
 		partita.getPecore().get(1).setTipoPecora(Costanti.TIPO_PECORA_PECORA);
@@ -303,8 +292,7 @@ public class PartitaTest {
 	 * @throws CannotProcreateException
 	 * @author Matteo Daverio
 	 */
-	public void cannotProcreateException1() throws IllegalShireException,
-			CannotProcreateException {
+	public void cannotProcreateException1() throws GameException {
 		partita.getPecore().get(0).setTipoPecora(Costanti.TIPO_PECORA_MONTONE);
 		partita.getPecore().get(1).setTipoPecora(Costanti.TIPO_PECORA_AGNELLO);
 		for (Pecora pecora : partita.getPecore()) {
@@ -324,8 +312,7 @@ public class PartitaTest {
 	 * @throws CannotProcreateException
 	 * @author Matteo Daverio
 	 */
-	public void cannotProcreateException2() throws IllegalShireException,
-			CannotProcreateException {
+	public void cannotProcreateException2() throws GameException {
 		partita.getPecore().get(0).setTipoPecora(Costanti.TIPO_PECORA_MONTONE);
 		partita.getPecore().get(1).setTipoPecora(Costanti.TIPO_PECORA_PECORA);
 		for (Pecora pecora : partita.getPecore()) {
@@ -344,8 +331,7 @@ public class PartitaTest {
 	 * @throws CannotProcreateException
 	 * @author Matteo Daverio
 	 */
-	public void illegalShireException() throws IllegalShireException,
-			CannotProcreateException {
+	public void illegalShireException() throws GameException {
 		partita.getPecore().get(0).setTipoPecora(Costanti.TIPO_PECORA_MONTONE);
 		partita.getPecore().get(1).setTipoPecora(Costanti.TIPO_PECORA_PECORA);
 		for (Pecora pecora : partita.getPecore()) {
@@ -370,8 +356,7 @@ public class PartitaTest {
 	 * @throws NoMoneyException
 	 * @throws IllegalShireTypeException
 	 */
-	public void noMoreCardsExceptionTest() throws NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException {
+	public void noMoreCardsExceptionTest() throws GameException {
 		partita.getPastori().get(0).setPosizione(0);
 		for (int i = 0; i <= 6; i++) {
 			partita.compraTessera(TipoTerreno.PRATERIA);
@@ -386,8 +371,7 @@ public class PartitaTest {
 	 * @throws NoMoneyException
 	 * @throws IllegalShireTypeException
 	 */
-	public void noMoneyExceptionTest2() throws NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException {
+	public void noMoneyExceptionTest2() throws GameException {
 		partita.getPastori().get(0).setPosizione(0);
 		partita.getPastori().get(0).setDenaro(0);
 		partita.compraTessera(TipoTerreno.PRATERIA);
@@ -403,8 +387,7 @@ public class PartitaTest {
 	 * @throws IllegalShireTypeException
 	 * @author Matteo Daverio
 	 */
-	public void illegalShireTypeExceptionTest() throws NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException {
+	public void illegalShireTypeExceptionTest() throws GameException {
 		partita.getPastori().get(0).setPosizione(0);
 		partita.compraTessera(TipoTerreno.SABBIA);
 	}

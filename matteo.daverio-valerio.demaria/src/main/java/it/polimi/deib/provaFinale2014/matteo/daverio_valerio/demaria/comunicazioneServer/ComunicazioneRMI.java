@@ -5,6 +5,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
@@ -80,16 +81,10 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		} catch (RemoteException e) {
 
 			e.printStackTrace();
-		} catch (NoMovementException e) {
+		} catch (GameException e) {
 
 			e.printStackTrace();
-		} catch (NoMoneyException e) {
-
-			e.printStackTrace();
-		} catch (InvalidMovementException e) {
-
-			e.printStackTrace();
-		}
+		} 
 
 	}
 
@@ -99,29 +94,17 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		} catch (RemoteException e) {
 
 			e.printStackTrace();
-		} catch (NoMoreCardsException e) {
+		} catch (GameException e) {
 
 			e.printStackTrace();
-		} catch (NoMoneyException e) {
-
-			e.printStackTrace();
-		} catch (IllegalShireTypeException e) {
-
-			e.printStackTrace();
-		}
+		} 
 
 	}
 
 	public void comunicaAbbattimento(int regione, int pecora) {
 		try {
 			client.abbattimento(regione, pecora);
-		} catch (NoSheepInShireException e) {
-
-			e.printStackTrace();
-		} catch (NoMoneyException e) {
-
-			e.printStackTrace();
-		} catch (IllegalShireException e) {
+		} catch (GameException e) {
 
 			e.printStackTrace();
 		} catch (RemoteException e) {
@@ -134,9 +117,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	public void comunicaAccoppiamento(int regione) {
 		try {
 			client.accoppiamento(regione);
-		} catch (IllegalShireException e) {
-			e.printStackTrace();
-		} catch (CannotProcreateException e) {
+		} catch (GameException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
 			
@@ -148,9 +129,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	public void comunicaMovimentoPecora(int pecora, Strada strada) {
 		try {
 			client.movimentoPecora(pecora, strada);
-		} catch (IllegalStreetException e) {
-			e.printStackTrace();
-		} catch (IllegalShireException e) {
+		} catch (GameException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
 			e.printStackTrace();

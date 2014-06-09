@@ -1,10 +1,10 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.EccezioniDiGioco;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
@@ -424,12 +424,11 @@ public class Partita implements Serializable {
 	 * @throws NoMoneyException
 	 * @throws InvalidMovementException
 	 */
-	public void muoviPastore(int posizione) throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void muoviPastore(int posizione) throws GameException {
 		Pastore pastore = pastori.get(turno - 1);
 		if (pastore.getPosizione() == posizione) {
 			// posizione arrivo uguale a posizione di partenza
-			throw new NoMovementException();
+			throw new GameException(EccezioniDiGioco.MOVIMENTO_INVALIDO);
 		} else if (movimentoValido(posizione)
 				&& mossaSenzaSpesa(posizione,
 						strade.get(pastore.getPosizione()))) {
@@ -444,13 +443,13 @@ public class Partita implements Serializable {
 				spostamentoPastore(pastore, posizione);
 			} else {
 				// denaro insufficiente
-				throw new NoMoneyException();
+				throw new GameException(EccezioniDiGioco.SOLDI_INSUFFICENTI);
 			}
 		} else {
 			// movimento invalido
 			// TODO ogni tanto nei test da questa eccezione inattesa, verificare
 			// la motivazione
-			throw new InvalidMovementException();
+			throw new GameException(EccezioniDiGioco.MOVIMENTO_INVALIDO);
 		}
 
 	}
@@ -497,9 +496,9 @@ public class Partita implements Serializable {
 	 *             NoMoneyException IllegalShireException
 	 * @return void
 	 * @author Valerio De Maria
+	 * @throws GameException 
 	 */
-	public void abbatti(int regione,int pecora) throws NoSheepInShireException,
-			NoMoneyException, IllegalShireException {
+	public void abbatti(int regione,int pecora) throws GameException {
 		Pecora pecoraDaAbbattere = pecore.get(pecora);
 		if (regioneAdiacente(regione)) {
 			if (pecoraDaAbbattere != null && pecoraDaAbbattere.getPosizione()==regione) {
@@ -508,13 +507,13 @@ public class Partita implements Serializable {
 					pagaSilenzio();
 
 				} else {
-					throw new NoMoneyException();
+					throw new GameException(EccezioniDiGioco.SOLDI_INSUFFICENTI);
 				}
 			} else {
-				throw new NoSheepInShireException();
+				throw new GameException(EccezioniDiGioco.NO_PECORE_IN_REGIONE);
 			}
 		} else {
-			throw new IllegalShireException();
+			throw new GameException(EccezioniDiGioco.REGIONE_ILLEGALE);
 		}
 	}
 
@@ -527,18 +526,17 @@ public class Partita implements Serializable {
 	 * @return void
 	 * @author Valerio De Maria
 	 */
-	public void accoppia(int regione) throws IllegalShireException,
-			CannotProcreateException {
+	public void accoppia(int regione) throws GameException {
 		if (regioneAdiacente(regione)) {
 			if (esisteMontone(regione) && esistePecora(regione)) {
 				pecore.add(new Pecora(regione, Costanti.TIPO_PECORA_AGNELLO));
 			} else {
 				// nel terreno scelto non ci sono sia pecore che montoni
-				throw new CannotProcreateException();
+				throw new GameException(EccezioniDiGioco.IMPOSSIBILE_PROCREARE);
 			}
 		} else {
 			// il terreno scelto non è adiacente al pastore
-			throw new IllegalShireException();
+			throw new GameException(EccezioniDiGioco.REGIONE_ILLEGALE);
 		}
 	}
 
@@ -551,8 +549,7 @@ public class Partita implements Serializable {
 	 * @author Valerio De Maria
 	 */
 	// TODO da testare
-	public void compraTessera(TipoTerreno terreno) throws NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException {
+	public void compraTessera(TipoTerreno terreno) throws GameException {
 		if (tipoRegioneAdiacenteCorrispondente(terreno)) {
 			if (costoTessere[terreno.ordinal()] <= 4) {
 				if (pastori.get(turno - 1).getDenaro() >= costoTessere[terreno
@@ -565,14 +562,14 @@ public class Partita implements Serializable {
 									- costoTessere[terreno.ordinal()]);
 					costoTessere[terreno.ordinal()]++;
 				} else {
-					throw new NoMoneyException();
+					throw new GameException(EccezioniDiGioco.SOLDI_INSUFFICENTI);
 				}
 
 			} else {
-				throw new NoMoreCardsException();
+				throw new GameException(EccezioniDiGioco.CARTE_FINITE);
 			}
 		} else {
-			throw new IllegalShireTypeException();
+			throw new GameException(EccezioniDiGioco.REGIONE_ILLEGALE);
 		}
 	}
 
@@ -587,7 +584,7 @@ public class Partita implements Serializable {
 	 * @author Matteo Daverio
 	 */
 	public void muoviPecora(int pecora, Strada strada)
-			throws IllegalStreetException, IllegalShireException {
+			throws GameException {
 		// il pastore deve trovarsi sulla strada passata
 		if (pastori.get(turno - 1).getPosizione() == strada.getPosizione()) {
 			// la pecora deve trovarsi in un terreno adiacente alla strada su
@@ -597,10 +594,10 @@ public class Partita implements Serializable {
 							.getRegioneSinistra()) {
 				pecore.get(pecora).muoviPecora(strada);
 			} else {
-				throw new IllegalShireException();
+				throw new GameException(EccezioniDiGioco.REGIONE_ILLEGALE);
 			}
 		} else {
-			throw new IllegalStreetException();
+			throw new GameException(EccezioniDiGioco.STRADA_ILLEGALE);
 		}
 	}
 

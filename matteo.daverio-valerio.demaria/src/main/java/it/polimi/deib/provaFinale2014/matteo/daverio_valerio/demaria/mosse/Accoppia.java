@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 
 import java.io.Serializable;
@@ -25,8 +26,7 @@ public class Accoppia implements Mossa,Serializable {
 		this.regione = regione;
 	}
 
-	public void eseguiMossa(Partita partita) throws IllegalShireException,
-			CannotProcreateException {
+	public void eseguiMossa(Partita partita) throws GameException {
 
 		partita.accoppia(regione);
 

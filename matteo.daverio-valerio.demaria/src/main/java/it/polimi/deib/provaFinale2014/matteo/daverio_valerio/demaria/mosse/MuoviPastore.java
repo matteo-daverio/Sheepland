@@ -3,6 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
@@ -31,8 +32,7 @@ public class MuoviPastore implements Mossa,Serializable {
 
 	}
 
-	public void eseguiMossa(Partita partita) throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void eseguiMossa(Partita partita) throws GameException {
 
 		System.out.println("muovo il pastore");
 		partita.muoviPastore(posizione);

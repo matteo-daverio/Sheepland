@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
@@ -24,11 +25,7 @@ import java.util.List;
  */
 public interface Mossa {
 
-	public void eseguiMossa(Partita partita) throws NoMovementException,
-			NoMoneyException, InvalidMovementException, NoMoreCardsException,
-			IllegalShireTypeException, NoSheepInShireException,
-			IllegalShireException, CannotProcreateException,
-			IllegalStreetException;
+	public void eseguiMossa(Partita partita) throws GameException;
 
 	public void aggiornaClients(
 			List<InterfacciaComunicazioneClient> giocatori,int turno);

@@ -4,8 +4,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSock
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
@@ -32,7 +34,8 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Partita partita;
-
+    private ControllorePartitaClient controllore;
+	
 	/**
 	 * costruttore
 	 * 
@@ -40,68 +43,10 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	 * @param port
 	 * @author Valerio De Maria
 	 */
-	public ClientSocket(String ip, int port) {
+	public ClientSocket(String ip, int port,ControllorePartitaClient controllore) {
 		this.ip = ip;
 		this.port = port;
-	}
-
-	/**
-	 * effettua il login
-	 * 
-	 * @throws IOException
-	 * @author Valerio De Maria
-	 */
-	private void logIn() throws IOException {
-
-		boolean autenticato = false;
-		ComandiSocket line;
-		Scanner inputUtente = new Scanner(System.in);
-		while (!autenticato) {
-
-			try {
-				// leggo dal buffer
-				line = (ComandiSocket) in.readObject();
-
-				// il server chiede il nome
-				if (line.equals(ComandiSocket.RICHIESTA_NOME)) {
-					do {
-						System.out.println("Nome:");
-						nome = inputUtente.nextLine();
-					} while (nome.equals(""));
-					out.reset();
-					out.writeObject(nome);
-					out.flush();
-				}
-
-				// il server chiede la password
-				else if (line.equals(ComandiSocket.RICHIESTA_PASSWORD)) {
-					do {
-						System.out.println("Password:");
-						password = inputUtente.nextLine();
-					} while (password.equals(""));
-					out.reset();
-					out.writeObject(password);
-					out.flush();
-				}
-
-				// il server comunica che l'autenticazione è riuscita
-				else if (line.equals(ComandiSocket.AUTENTICAZIONE_RIUSCITA)) {
-					autenticato = true;
-					System.out.println("mi sono autenticato");
-				}
-
-				// il server comunica che l'autenticazione non è riuscita
-				else if (line.equals(ComandiSocket.AUTENTICAZIONE_FALLITA)) {
-					System.out
-							.println("Hai una partita in corso e la tua password è sbagliata!");
-				}
-
-			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore ricezione da server", e);
-			}
-
-		}
-
+		this.controllore=controllore;
 	}
 
 	/**
@@ -110,7 +55,7 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	 * @throws IOException
 	 * @author Valerio De Maria
 	 */
-	public void riceviPartita() throws IOException {
+	public void attendiPartita() throws IOException {
 		boolean partitaRicevuta = false;
 		ComandiSocket line;
 		while (!partitaRicevuta) {
@@ -123,7 +68,7 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 				if (line.equals(ComandiSocket.INVIO_PARTITA)) {
 					partita = (Partita) in.readObject();
 					partitaRicevuta = true;
-					System.out.println("ho ricevuto la partita");
+					controllore.riceviPartita(partita);
 				}
 
 			} catch (ClassNotFoundException e) {
@@ -136,19 +81,11 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	 * metodo che attende di ricevere aggiornamenti da parte del server
 	 * 
 	 * @throws IOException
-	 * @throws NoMoreCardsException
-	 * @throws NoMoneyException
-	 * @throws IllegalShireTypeException
-	 * @throws NoSheepInShireException
-	 * @throws IllegalShireException
-	 * @throws CannotProcreateException
-	 * @throws IllegalStreetException
 	 * @author Valerio De Maria
+	 * @throws GameException 
 	 */
-	private void riceviAggiornamenti() throws IOException,
-			NoMoreCardsException, NoMoneyException, IllegalShireTypeException,
-			NoSheepInShireException, IllegalShireException,
-			CannotProcreateException, IllegalStreetException {
+	public void riceviAggiornamenti() throws IOException,
+			GameException {
 
 		boolean finePartita = false;
 		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
@@ -162,8 +99,7 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 
 				switch (line) {
 				case MOVIMENTO_PECORA_NERA:
-					partita.getPecoraNera().setPosizione(in.readInt());
-					System.out.println("si è mossa la pecora nera");
+                    controllore.movimentoPecoraNera(in.readInt());
 					break;
 
 				case RICHIESTA_DI_MOSSA:
@@ -214,47 +150,6 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 			} catch (ClassNotFoundException e) {
 				LOGGER.log("errore ricezione da server", e);
 			}
-		}
-	}
-
-	/**
-	 * avvio il client socket
-	 * 
-	 * @throws IOException
-	 * @author Valerio De Maria
-	 * @throws IllegalShireTypeException
-	 * @throws NoMoneyException
-	 * @throws NoMoreCardsException
-	 * @throws IllegalShireException
-	 * @throws NoSheepInShireException
-	 * @throws IllegalStreetException
-	 * @throws CannotProcreateException
-	 */
-	public void startClient() throws IOException, NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException,
-			NoSheepInShireException, IllegalShireException,
-			CannotProcreateException, IllegalStreetException {
-
-		// chiedo una socket al server
-		Socket socket = new Socket(ip, port);
-		System.out.println("Connessione al server riuscita");
-
-		// creo i buffer per ricevere/inviare dati con il server
-		in = new ObjectInputStream(socket.getInputStream());
-		out = new ObjectOutputStream(socket.getOutputStream());
-
-		logIn();
-
-		riceviPartita();
-
-		riceviAggiornamenti();
-
-		try {
-			in.close();
-			out.close();
-			socket.close();
-		} catch (IOException e) {
-			LOGGER.log("errore in chiusura socket", e);
 		}
 	}
 

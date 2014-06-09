@@ -1,18 +1,19 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception;
 
-public class IllegalShireTypeException extends Exception {
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.EccezioniDiGioco;
+
+public class IllegalShireTypeException extends GameException {
+
+	public IllegalShireTypeException(EccezioniDiGioco tipo) {
+		super(tipo);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IllegalShireTypeException() {
-		super();
-	}
 
-	public IllegalShireTypeException(String s) {
-		super(s);
-	}
 
 }

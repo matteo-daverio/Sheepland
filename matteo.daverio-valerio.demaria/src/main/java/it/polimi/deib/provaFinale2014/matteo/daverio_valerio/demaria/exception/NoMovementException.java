@@ -1,17 +1,18 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception;
 
-public class NoMovementException extends Exception {
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.EccezioniDiGioco;
+
+public class NoMovementException extends GameException {
+
+	public NoMovementException(EccezioniDiGioco tipo) {
+		super(tipo);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NoMovementException() {
-		super();
-	}
 
-	public NoMovementException(String s) {
-		super(s);
-	}
 }

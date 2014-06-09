@@ -4,8 +4,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ServerApplication;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
@@ -41,6 +43,7 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 
 	private Partita partita;
 	private InterfacciaGestioneRMI server;
+	private ControllorePartitaClient controllore;
 
 	/**
 	 * costruttore
@@ -48,9 +51,10 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	 * @param IP
 	 * @author Valerio De Maria
 	 */
-	public ClientRMI(String IP,int porta) {
+	public ClientRMI(String IP,int porta,ControllorePartitaClient controllore) {
 		ip_server = IP;
 		this.porta=porta;
+		this.controllore=controllore;
 		
 	}
 
@@ -69,8 +73,7 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	 * @throws NoMoneyException
 	 * @throws NoMovementException
 	 */
-	public void movimentoPastore(int posizione) throws NoMovementException,
-			NoMoneyException, InvalidMovementException {
+	public void movimentoPastore(int posizione) throws GameException {
 		partita.muoviPastore(posizione);
 	}
 
@@ -83,19 +86,18 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	public void riceviPartita(Partita partita) {
 
 		this.partita = partita;
-		System.out.println("ho ricevuto la partita");
-		gioca();
+		controllore.riceviPartita(partita);
 
 	}
 
 	/**
-	 * ricevo un movimento della pecora nera
+	 * ricevo un movimento della pecora nera e lo passo al controllore
 	 * 
 	 * @author Valerio De Maria
 	 */
 	public void movimentoPecoraNera(int posizione) {
 
-		partita.getPecoraNera().setPosizione(posizione);
+		controllore.movimentoPecoraNera(posizione);
 	}
 
 	/**
@@ -117,92 +119,24 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		return (new MuoviPastore(3));
 	}
 
-	private void gioca() {
-
-		// TODO
-
-	}
-
-	/**
-	 * cerco il registry, scarico l'oggetto remoto del server e mi registro
-	 * 
-	 * @author Valerio De Maria
-	 */
-	private void ricercaConnessione() {
-
-		try {
-
-			// cerco il registry del server
-			Registry registry = LocateRegistry.getRegistry(ip_server,
-					porta);
-
-			// scarico l'oggetto remoto del server
-			server = (InterfacciaGestioneRMI) registry.lookup("serverInAttesa");
-
-			// int ID=server.ottieniID();
-
-			// TODO codice talebano
-			// System.out.println(ID);
-
-			// esporto l'interfaccia client
-			InterfacciaClientRMI stub = (InterfacciaClientRMI) UnicastRemoteObject
-					.exportObject(this, 0);
-
-			// eseguo il metodo registrazione dell'oggetto remoto del server
-			boolean result = server.registrazione(nome, password, stub);
-
-			// TODO codice talebano
-			if (result)
-				System.out.println("il server mi ha accettato");
-			else
-				System.out.println("il server mi ha respinto");
-
-		} catch (RemoteException e) {
-			System.err.println("Remote exception:");
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			System.err.println("Name " + "istanza" + " not bound.");
-		}
-
-	}
-
-	public void logIn() {
-
-		System.out.println("Nome?");
-		this.nome = in.nextLine();
-		System.out.println("Password?");
-		this.password = in.nextLine();
-	}
-
-	public void start() {
-
-		logIn();
-		ricercaConnessione();
-
-		// ora il client rimane in attesa di iniziare tramite "riceviPartita"
-
-	}
-
 	public void acquistoTessera(TipoTerreno terreno) throws RemoteException,
-			NoMoreCardsException, NoMoneyException, IllegalShireTypeException {
+			GameException {
 		partita.compraTessera(terreno);
 
 	}
 
 	public void movimentoPecora(int pecora, Strada strada)
-			throws IllegalStreetException, IllegalShireException {
+			throws GameException {
 		partita.muoviPecora(pecora, strada);
 	}
 
 	public void abbattimento(int regione, int pecora)
-			throws NoSheepInShireException, NoMoneyException,
-			IllegalShireException {
+			throws GameException {
 		partita.abbatti(regione, pecora);
 
 	}
 
-	public void accoppiamento(int regione) throws IllegalShireException,
-			CannotProcreateException {
+	public void accoppiamento(int regione) throws GameException {
 		partita.accoppia(regione);
 
 	}
@@ -251,6 +185,20 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 			System.err.println("Name " + "istanza" + " not bound.");
 		}
 		return false;
+	}
+	
+//usato solo per socket
+	public void attendiPartita() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+//usato solo per socket
+	public void riceviAggiornamenti() throws IOException, NoMoreCardsException,
+			NoMoneyException, IllegalShireTypeException,
+			NoSheepInShireException, IllegalShireException,
+			CannotProcreateException, IllegalStreetException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
