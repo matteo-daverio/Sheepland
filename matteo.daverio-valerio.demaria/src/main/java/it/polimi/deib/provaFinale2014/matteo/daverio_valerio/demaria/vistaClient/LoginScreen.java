@@ -5,8 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-
 /**
+ * classe che gestisce la schermata di login
  * 
  * @author Matteo Daverio
  * 
@@ -18,11 +18,11 @@ public class LoginScreen extends JFrame {
 	 */
 	private static final long serialVersionUID = 9053941280569018349L;
 
-	JFrame f = new JFrame();
-	Toolkit t = Toolkit.getDefaultToolkit();
+	JFrame loginFrame = new JFrame();
+	Toolkit toolkit = Toolkit.getDefaultToolkit();
 
 	// dimensione dello schermo
-	Dimension screenSize = t.getScreenSize();
+	Dimension screenSize = toolkit.getScreenSize();
 	double screenWidth = screenSize.getWidth();
 	double screenHeight = screenSize.getHeight();
 
@@ -37,37 +37,55 @@ public class LoginScreen extends JFrame {
 	JTextField username = new JTextField();
 	JPasswordField password = new JPasswordField();
 
+	/**
+	 * costruttore finestra login con inizializzazione frame
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public LoginScreen() {
+		loginFrame.setResizable(false);
 		if (formHeight > screenHeight) {
 			formWidth = formHeight = (int) screenHeight * 90 / 100;
 		}
-		f.setSize(formWidth, formHeight);
-		f.setTitle("Login");
-		f.setLayout(new FlowLayout());
-		f.setLocation((int) (screenWidth - formWidth) / 2,
-				(int) (screenHeight - formHeight) / 2);
-		WindowListener i = new MyWindowAdapter();
-		f.addWindowListener(i);
-		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		loginFrame.setSize(formWidth, formHeight);
+		loginFrame.setTitle("Login");
+		loginFrame.setLayout(new FlowLayout());
+		loginFrame.setLocation((int) (screenWidth - formWidth) / 2,
+				(int) (screenHeight - formHeight-40) / 2);
+		WindowListener windowListener = new MyWindowAdapter();
+		loginFrame.addWindowListener(windowListener);
+		loginFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		f.setVisible(true);
+		loginFrame.setVisible(true);
 	}
 
+	/**
+	 * crea e mostra la GUI della finestra di login
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public void createAndShowGui() {
-		Container c = f.getContentPane();
-		JPanel richiesta = richiestaLogin();
-		richiesta.setLocation((formWidth - 350) / 2, (formHeight - 60) / 4);
+		Container container = loginFrame.getContentPane();
+		JPanel requestPanel = richiestaLogin();
+		requestPanel.setLocation((formWidth - 350) / 2, (formHeight - 60) / 4);
 		JButton logButton = new JButton("Login");
-		logButton.setSize(100, 40);
-		logButton.setLocation((formWidth - 100) / 2, (formHeight - 40) / 2);
+		logButton.setSize(150, 60);
+		logButton.setFont(new Font(Font.SANS_SERIF,Font.BOLD,24));
+		logButton.setLocation((formWidth - 150) / 2, (formHeight - 60) / 2);
 		logButton.setActionCommand("Login");
 		logButton.addActionListener(new ButtonClickListener());
-		c.setLayout(null);
-		c.add(creaImmagine());
-		c.add(richiesta, 0);
-		c.add(logButton, 0);
+		container.setLayout(null);
+		container.add(creaImmagine());
+		container.add(requestPanel, 0);
+		container.add(logButton, 0);
 	}
 
+	/**
+	 * Disegna l'immagine di sfondo
+	 * 
+	 * @return JLabel contenente lo sfondo
+	 * @author Matteo Daverio
+	 */
 	public JLabel creaImmagine() {
 		JLabel immagine = new JLabel() {
 			/**
@@ -81,13 +99,18 @@ public class LoginScreen extends JFrame {
 				super.paintComponent(g);
 			}
 		};
-		add(immagine);
 		immagine.setOpaque(false);
 		immagine.setSize(formWidth, formHeight);
 		return immagine;
 
 	}
 
+	/**
+	 * crea un pannello con componenti per inserire username e password
+	 * 
+	 * @return JPanel contenente le componenti per il login
+	 * @author Matteo Daverio
+	 */
 	public JPanel richiestaLogin() {
 		JPanel richiesta = new JPanel(new GridLayout(2, 2));
 
@@ -129,18 +152,33 @@ public class LoginScreen extends JFrame {
 		}
 	}
 
+	/**
+	 * classe per la gestione del click di pulsanti
+	 * 
+	 * @author Matteo Daverio
+	 *
+	 */
 	private class ButtonClickListener implements ActionListener {
 
+		/**
+		 * gestione evento click su bottoni
+		 */
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();			
 			// viene premuto bottone per login
 			if (command.equals("Login")) {
-				// TODO reazione a conferma login
+				// lettura dati inseriti dall'utente
 				String nome = username.getText();
-				@SuppressWarnings("deprecation")
-				String pass = password.getText();
-				// TODO creazione istanza partita
-				f.dispose();
+				String pass = new String(password.getPassword());
+				
+				//TODO controllo se il login è valido
+				
+				// creazione finestra partita
+				
+				// TODO apertura finestra di gioco
+				
+				// chiusura finestra login
+				loginFrame.dispose();
 			}
 		}
 
