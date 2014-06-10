@@ -14,7 +14,9 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.net.Socket;
@@ -162,5 +164,47 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		
 		
 	}
+
+	public void comunicaInizioTurno() {
+		try {
+			client.inizioTurno();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+/*
+	public int chiediPosizionamentoPastore() {
+		try {
+			return client.posizionaPastore();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	*/
+
+	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi, List<Tessera> tessereIniziali) {
+		try {
+			client.riceviDatiGiocatori(nomi, soldi, tessereIniziali);;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaPecore(List<Pecora> pecore) {
+		try {
+			client.riceviPecore(pecore);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 
 }

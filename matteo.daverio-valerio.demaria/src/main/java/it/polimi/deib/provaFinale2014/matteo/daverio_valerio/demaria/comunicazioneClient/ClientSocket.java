@@ -14,7 +14,9 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.I
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
 
@@ -34,8 +36,8 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Partita partita;
-    private ControllorePartitaClient controllore;
-	
+	private ControllorePartitaClient controllore;
+
 	/**
 	 * costruttore
 	 * 
@@ -43,10 +45,11 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	 * @param port
 	 * @author Valerio De Maria
 	 */
-	public ClientSocket(String ip, int port,ControllorePartitaClient controllore) {
+	public ClientSocket(String ip, int port,
+			ControllorePartitaClient controllore) {
 		this.ip = ip;
 		this.port = port;
-		this.controllore=controllore;
+		this.controllore = controllore;
 	}
 
 	/**
@@ -68,7 +71,6 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 				if (line.equals(ComandiSocket.INVIO_PARTITA)) {
 					partita = (Partita) in.readObject();
 					partitaRicevuta = true;
-					controllore.riceviPartita(partita);
 				}
 
 			} catch (ClassNotFoundException e) {
@@ -82,10 +84,9 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	 * 
 	 * @throws IOException
 	 * @author Valerio De Maria
-	 * @throws GameException 
+	 * @throws GameException
 	 */
-	public void riceviAggiornamenti() throws IOException,
-			GameException {
+	public void riceviAggiornamenti() throws IOException, GameException {
 
 		boolean finePartita = false;
 		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
@@ -99,7 +100,7 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 
 				switch (line) {
 				case MOVIMENTO_PECORA_NERA:
-                    controllore.movimentoPecoraNera(in.readInt());
+					controllore.movimentoPecoraNera(in.readInt());
 					break;
 
 				case RICHIESTA_DI_MOSSA:
@@ -142,6 +143,24 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 					int p = in.readInt();
 					Strada strada = (Strada) in.readObject();
 					partita.muoviPecora(p, strada);
+					break;
+				case INIZIO_TURNO:
+					controllore.iniziaTurno();
+					break;
+				case DATI_GIOCATORI:
+					List<String> nomi = (List<String>) in.readObject();
+					controllore.riceviNomiGiocatori(nomi);
+					List<Integer> soldi = (List<Integer>) in.readObject();
+					controllore.riceviSoldiPastori(soldi);
+					List<Tessera> tessereIniziali = (List<Tessera>) in
+							.readObject();
+					controllore.riceviTessereInizialiPastori(tessereIniziali);
+
+					break;
+					
+				case INVIO_PECORE:
+					List<Pecora> pecore =(List<Pecora>)in.readObject();
+					controllore.settaPecore(pecore);
 					break;
 				default:
 					break;
@@ -206,6 +225,12 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 					return false;
 				}
 
+				/*
+				 * //il server chiede di posizionare inizialmente il pastore
+				 * else if(line.equals(ComandiSocket.POSIZIONA_PASTORE)){
+				 * out.reset(); out.writeInt(controllore.posizionaPastore());
+				 * out.flush(); }
+				 */
 			} catch (ClassNotFoundException e) {
 				LOGGER.log("errore ricezione da server", e);
 			}

@@ -27,6 +27,14 @@ public class ControllorePartitaDueGiocatori extends ControllorePartita {
 		// TODO 
 		
 	}
+
+	@Override
+	void posizionaPastori(List<InterfacciaComunicazioneClient> giocatori,
+			Partita partita) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 }

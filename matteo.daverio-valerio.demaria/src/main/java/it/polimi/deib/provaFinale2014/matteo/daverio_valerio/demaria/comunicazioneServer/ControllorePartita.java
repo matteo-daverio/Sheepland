@@ -2,7 +2,10 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.net.Socket;
@@ -168,6 +171,9 @@ public abstract class ControllorePartita implements Runnable {
 		// il giocatore compie le mosse che può fare nel turno
 		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
 
+			// avviso il giocatore di turno che è il suo momento
+			giocatori.get(partita.getTurno() - 1).comunicaInizioTurno();
+
 			mosseDisponibili.clear();
 
 			controllaConnessioneClients(mosseDisponibili);
@@ -184,7 +190,7 @@ public abstract class ControllorePartita implements Runnable {
 				mossa.aggiornaClients(giocatori, partita.getTurno());
 
 				System.out.println("vado ad aggiornare mosse fatte");
-				mosseFatte=mossa.aggiornaMosseFatte(mosseFatte);
+				mosseFatte = mossa.aggiornaMosseFatte(mosseFatte);
 
 			} catch (Exception e) {
 			}
@@ -280,13 +286,110 @@ public abstract class ControllorePartita implements Runnable {
 		}
 	}
 
-	private void posizionaPastori() {
-		// TODO devo chiedere al client dove vuole mettere inizialmente il suo
-		// pastore
-	}
+	abstract void posizionaPastori(
+			List<InterfacciaComunicazioneClient> giocatori, Partita partita);
 
 	private void comunicaFinePartita() {
 		// TODO
+	}
+
+	public void inviaDatiGiocatori() {
+
+		List<String> nomi = new ArrayList<String>();
+		List<Integer> soldi = new ArrayList<Integer>();
+		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
+
+		// creo la lista di nomi
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			nomi.add(x.getNome());
+		}
+
+		// creo la lista dei soldi
+		for (Pastore x : partita.getPastori()) {
+			soldi.add(x.getDenaro());
+		}
+
+		// creo la lista delle tessereIniziali
+		for (Pastore x : partita.getPastori()) {
+			if (x.getTessere().size() > 0) {
+				tessereIniziali.add(x.getTessere().get(0));
+			}
+		}
+
+		// invio le liste a tutti i giocatori
+		for (InterfacciaComunicazioneClient x : giocatori) {
+			x.inviaDatiGiocatori(nomi, soldi, tessereIniziali);
+		}
+	}
+
+	public void impostaDenaro() {
+		if (giocatori.size() > 2) {
+			for (Pastore x : partita.getPastori()) {
+				x.setDenaro(20);
+			}
+		} else {
+			partita.getPastori().get(0).setDenaro(30);
+			partita.getPastori().get(1).setDenaro(30);
+			partita.getPastori().get(2).setDenaro(0);
+			partita.getPastori().get(3).setDenaro(0);
+		}
+	}
+
+	public void impostaTesseraIniziale() {
+		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
+
+		// creo la lista di tessere iniziali
+		tessereIniziali.add(new Tessera(TipoTerreno.ACQUA, 0));
+		tessereIniziali.add(new Tessera(TipoTerreno.FORESTA, 0));
+		tessereIniziali.add(new Tessera(TipoTerreno.GRANO, 0));
+		tessereIniziali.add(new Tessera(TipoTerreno.PRATERIA, 0));
+		tessereIniziali.add(new Tessera(TipoTerreno.ROCCIA, 0));
+		tessereIniziali.add(new Tessera(TipoTerreno.SABBIA, 0));
+
+		int top;
+		if (giocatori.size() > 2) {
+			top = partita.getPastori().size() - 1;
+		} else
+			top = 2;
+
+		for (int i = 0; i <= top; i++) {
+
+			// scelgo un numero casuale tra 0 ed il numero di tessere iniziali
+			// rimasto -1
+			int scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO)
+					- i + 1;
+			// aggiungo la tessera iniziale scelta alle tessere del pastore
+			partita.getPastori().get(i)
+					.aggiungiTessera(tessereIniziali.get(scelta));
+			// tolgo la tessera asseganta dalle tessereIniziali disponibili
+			tessereIniziali.remove(scelta);
+		}
+
+	}
+	
+	public void inviaPosizioneInizialePecore(){
+		for(InterfacciaComunicazioneClient x:giocatori){
+			x.comunicaPecore(partita.getPecore());
+		}
+	}
+
+	public void inizializza() {
+		
+		// creo le classi di comunicazione che si occuperrano di comunicare con
+		// i client in maniera trasparente rispetto alla modalità di connessione
+		trasferisciGestioneComunicazione();
+		
+		partita.start();
+		
+		inviaPosizioneInizialePecore();
+
+		aggiungiPastori(connessioni, partita);
+
+		impostaDenaro();
+
+		impostaTesseraIniziale();
+
+		inviaDatiGiocatori();
 	}
 
 	/**
@@ -296,17 +399,13 @@ public abstract class ControllorePartita implements Runnable {
 	 */
 	public void run() {
 
-		aggiungiPastori(connessioni, partita);
-
-		// creo le classi di comunicazione che si occuperrano di comunicare con
-		// i client in maniera trasparente rispetto alla modalità di connessione
-		trasferisciGestioneComunicazione();
+		inizializza();
 
 		System.out.println("invio la partita " + giocatori.get(0).getNome()
 				+ " e " + giocatori.get(1).getNome());
 		inviaPartita();
 
-		posizionaPastori();
+		posizionaPastori(giocatori, partita);
 
 		finePartita = false;
 		faseFinale = false;

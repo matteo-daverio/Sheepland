@@ -7,8 +7,12 @@ import java.io.Serializable;
  * @author Matteo Daverio
  * 
  */
-public class Direzione  {
+public class Direzione implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7586290979331087384L;
 	private final int posizione;
 	private final String verso;
 

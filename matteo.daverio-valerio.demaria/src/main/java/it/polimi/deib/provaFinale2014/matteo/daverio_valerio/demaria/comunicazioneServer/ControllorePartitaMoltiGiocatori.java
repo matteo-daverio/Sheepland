@@ -28,5 +28,23 @@ public class ControllorePartitaMoltiGiocatori extends ControllorePartita {
 		}
 
 	}
+/*
+	@Override
+	void posizionaPastori(List<InterfacciaComunicazioneClient> giocatori, Partita partita) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			partita.getPastori()
+					.get(i)
+					.setPosizione(
+							giocatori.get(i).chiediPosizionamentoPastore());
+		}
+		
+	}
+*/
 
+	@Override
+	void posizionaPastori(List<InterfacciaComunicazioneClient> giocatori,
+			Partita partita) {
+		// TODO Auto-generated method stub
+		
+	}
 }

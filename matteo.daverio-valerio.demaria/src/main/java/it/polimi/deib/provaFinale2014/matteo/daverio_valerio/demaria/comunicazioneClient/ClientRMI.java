@@ -16,7 +16,9 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
@@ -86,7 +88,7 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	public void riceviPartita(Partita partita) {
 
 		this.partita = partita;
-		controllore.riceviPartita(partita);
+		
 
 	}
 
@@ -175,7 +177,6 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 			// eseguo il metodo registrazione dell'oggetto remoto del server
 			boolean result = server.registrazione(nome, password, stub);
 
-			System.out.println("ho ricevuto da server");
             return result;
 
 		} catch (RemoteException e) {
@@ -200,5 +201,28 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void inizioTurno() {
+		controllore.iniziaTurno();
+	}
+/*
+	public int posizionaPastore() {
+		return controllore.posizionaPastore();
+	}
+*/
+
+	public void riceviDatiGiocatori(List<String> nomi,List<Integer> soldi,List<Tessera> tessereIniziali)
+			throws RemoteException {
+		controllore.riceviNomiGiocatori(nomi);
+		controllore.riceviSoldiPastori(soldi);
+		controllore.riceviTessereInizialiPastori(tessereIniziali);
+		
+	}
+
+	public void riceviPecore(List<Pecora> pecore) throws RemoteException {
+		controllore.settaPecore(pecore);
+		
+	}
+
 
 }

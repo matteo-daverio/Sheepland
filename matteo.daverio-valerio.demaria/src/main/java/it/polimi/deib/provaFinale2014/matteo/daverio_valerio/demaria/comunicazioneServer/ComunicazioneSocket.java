@@ -5,7 +5,9 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.io.IOException;
@@ -279,6 +281,72 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.FASE_FINALE);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaInizioTurno() {
+
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.INIZIO_TURNO);
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int chiediPosizionamentoPastore() {
+
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.POSIZIONA_PASTORE);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			return in.readInt();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return-1;
+	}
+
+	public void inviaDatiGiocatori(List<String> nomi,List<Integer>soldi,List<Tessera> tessereIniziali) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.DATI_GIOCATORI);
+			out.flush();
+			out.reset();
+			out.writeObject(nomi);
+			out.flush();
+			out.reset();
+			out.writeObject(soldi);
+			out.flush();
+			out.reset();
+			out.writeObject(tessereIniziali);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaPecore(List<Pecora> pecore) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.INVIO_PECORE);
+			out.flush();
+			out.reset();
+			out.writeObject(pecore);
 			out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

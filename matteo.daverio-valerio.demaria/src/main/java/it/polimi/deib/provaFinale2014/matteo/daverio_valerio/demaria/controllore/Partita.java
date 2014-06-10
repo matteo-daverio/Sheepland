@@ -772,7 +772,7 @@ public class Partita implements Serializable {
 	 * @param posizioneStrada
 	 * @return
 	 */
-	private boolean stradaRecintata(int posizioneStrada) {
+	public boolean stradaRecintata(int posizioneStrada) {
 		return strade.get(posizioneStrada).recintata();
 	}
 
@@ -783,7 +783,7 @@ public class Partita implements Serializable {
 	 * @param posizioneStrada
 	 * @return
 	 */
-	private boolean stradaOccupata(int posizioneStrada) {
+	public boolean stradaOccupata(int posizioneStrada) {
 		for (Pastore pastore : pastori) {
 			if (pastore.getPosizione() == posizioneStrada) {
 				return true;

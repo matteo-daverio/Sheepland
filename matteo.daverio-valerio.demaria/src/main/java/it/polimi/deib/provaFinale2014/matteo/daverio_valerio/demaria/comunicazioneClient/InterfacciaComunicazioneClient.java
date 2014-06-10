@@ -20,4 +20,5 @@ public interface InterfacciaComunicazioneClient {
 	public void attendiPartita() throws IOException;
 	
 	public void riceviAggiornamenti()throws IOException,GameException;
+	
 }

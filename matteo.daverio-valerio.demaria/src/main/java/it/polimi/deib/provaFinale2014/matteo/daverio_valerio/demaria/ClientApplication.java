@@ -43,9 +43,10 @@ public class ClientApplication {
 
 		protocollo = richiestaProtocolloComunicazione();
 
-		grafica = richiestaGrafica();
-
 		IP = richiestaIP();
+		
+		grafica = richiestaGrafica();
+	
 
 		ControllorePartitaClient control = new ControllorePartitaClient(
 				protocollo, grafica, IP);

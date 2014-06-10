@@ -41,15 +41,15 @@ public class ServerApplication {
 		t1 = new Thread(gestoreThread);
 		t1.start();
 
-			// TODO codice talebano
-			System.out.println("gestore di partite creato");
-
+		// TODO codice talebano
+		System.out.println("gestore di partite creato");
 
 		// GESTIONE RMI
+		InterfacciaGestioneRMI server;
 		try {
 
 			// creo l'oggetto remoto da caricare sul server
-			InterfacciaGestioneRMI server = new ImplementazioneRMI();
+			server = new ImplementazioneRMI();
 			// esporto l'oggetto remoto
 			InterfacciaGestioneRMI stub = (InterfacciaGestioneRMI) UnicastRemoteObject
 					.exportObject(server, 0);
@@ -57,14 +57,14 @@ public class ServerApplication {
 			Registry registry = LocateRegistry.createRegistry(SERVER_PORT_RMI);
 			// associo all'oggetto remoto esportato un nome
 			registry.rebind("serverInAttesa", stub);
-			
-				// TODO codice talebano
-				System.out
-						.println("Il server RMI è pronto a ricevere connessioni");
+
+			// TODO codice talebano
+			System.out.println("Il server RMI è pronto a ricevere connessioni");
 
 		} catch (RemoteException e) {
 			System.err.println("errore esportazione RMI");
 			LOGGER.log("errore esportazione RMI", e);
+			return;
 		}
 
 		// PARTE IL CICLO DI ATTESA DI CONNESIONI SOCKET
@@ -76,25 +76,25 @@ public class ServerApplication {
 			System.err.println(e.getMessage());
 			return;
 		}
-		
-			// TODO codice talebano
-			System.out
-					.println("Il server socket si mette in attesa di connessioni");
+
+		// TODO codice talebano
+		System.out
+				.println("Il server socket si mette in attesa di connessioni");
 
 		while (true) {
 			try {
 				// socket che dedico per la comunicazione con il client
 				Socket socket = serverSocket.accept();
-				
+
 				System.out.println("ho accettato un socket");
-				
+
 				// creo un oggetto di gestioneSocket
 				Gestione connessioneSocket = new GestioneSocket(socket);
-				
+
 				System.out.println("ho creato una gestione socket");
-				
+
 				connessioneSocket.chiediDati();
-				
+
 				// se il client non ha una partita in corso lo metto in attesa
 				// di una
 				connessioneSocket.autenticazione(GestorePartite
@@ -109,6 +109,8 @@ public class ServerApplication {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
+		
+		System.out.println(server.toString());
 
 	}
 

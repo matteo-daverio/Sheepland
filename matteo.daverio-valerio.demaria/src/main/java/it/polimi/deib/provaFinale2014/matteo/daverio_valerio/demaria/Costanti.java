@@ -23,6 +23,7 @@ public class Costanti {
 	// costanti per i terreni
 	public static final int POSIZIONE_SHEEPBURG = 0;
 	public static final int NUMERO_REGIONI = 18;
+	public static final int NUMERO_TIPI_TERRENO=6;
 
 	// costanti per la partita
 	public static final int NUMERO_MOSSE_GIOCATORE = 3;
