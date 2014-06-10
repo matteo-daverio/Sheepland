@@ -1,5 +1,8 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -16,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -128,9 +132,12 @@ public class Map extends JFrame{
 	boolean abbattimentoPecora = false;
 	boolean accoppiaPecore=false;
 	boolean market = false;
+	
+	// oggetto di comunicazione con il controllore
+	ControllorePartitaClient controllorePartita;
 
-	public Map() {
-
+	public Map(ControllorePartitaClient controllorePartita) {
+		this.controllorePartita=controllorePartita;
 		map.setResizable(false);
 		int altezzaIdeale = (int) screenHeight * 90 / 100;
 		int larghezzaIdeale = altezzaIdeale * formWidth / formHeight;
@@ -589,7 +596,7 @@ public class Map extends JFrame{
 
 			if (richiestaPosizionamentoPastore) {
 				if (posizione.getTipo() == "Strada") {
-					// TODO invio di posizione.getPosizione() al controllore
+					// TODO invio di posizione.getPosizione() al controllore passare la posizione e il turno del pastore
 					if (player[0].getX() == 0) {
 						player[0].setLocation((int) mappaturaPosizione
 								.getLocalizzazione(posizione).getX()
@@ -714,32 +721,19 @@ public class Map extends JFrame{
 		 * @author Matteo Daverio
 		 */
 		private boolean controlloArea(MouseEvent e, JLabel button) {
-			// TODO Auto-generated method stub
 			return e.getX() > button.getX()
 					&& e.getY() > button.getY()
 					&& e.getX() < (button.getX() + button.getSize().getWidth())
 					&& e.getY() < (button.getY() + button.getSize().getHeight());
 		}
 
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
+		public void mouseEntered(MouseEvent e) {}
 
-		}
+		public void mouseExited(MouseEvent e) {}
 
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
+		public void mousePressed(MouseEvent e) {}
 
-		}
-
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
+		public void mouseReleased(MouseEvent e) {}
 
 	}
 	
@@ -750,12 +744,22 @@ public class Map extends JFrame{
 	// metodi di interazione con il server
 	
 	
-	// il controllore chiede il posizionamento di un pastore
+	/**
+	 * il controllore chiede il posizionamento di un pastore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public void posizionaPastore () {
 		richiestaPosizionamentoPastore=true;
+		JOptionPane.showMessageDialog(null, "Posiziona il tuo pastore", "Posiziona pastore",
+				  JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	// comunica l'inizio del turno
+	/**
+	 * comunica al pastore l'inizio del suo turno
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public void iniziaTurno () {
 		// mostra a schermo un messaggio che indica l'inizio del turno primo metodo da attivare, per
 		// far capire all'utente che può giocare
@@ -763,7 +767,13 @@ public class Map extends JFrame{
 				"Posizione", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	// il controllore lo chiama per effettuare la mossa della pecora nera a inizio turno
+	// 
+	/**
+	 * il controllore lo chiama per effettuare la mossa della pecora nera a inizio turno
+	 * 
+	 * @param nuova posizione pecoraNera
+	 * @author Matteo Daverio
+	 */
 	public void muoviPecoraNera(int posizione) {
 		pecoraNera.setLocation((int) mappaturaPosizione
 				.getLocalizzazione(new Posizione("Regione",posizione)).getX()
@@ -775,7 +785,15 @@ public class Map extends JFrame{
 		pecoraNera.repaint();
 	}
 	
-	// il controllore lo chiama per il posizionamento iniziale o movimenti successivi dei pastori
+	
+	/**
+	 * il controllore lo chiama per mostrare a schermo 
+	 * il posizionamento iniziale o i movimenti successivi dei pastori avversari
+	 * 
+	 * @param turnoGiocatore(turno del pastore avversario appena posizionato o mosso
+	 * @param posizione(nuova posizione del pastore)
+	 * @author Matteo Daverio
+	 */
 	public void muoviPastoreAvversario(int turnoGiocatore, int posizione) {
 		JLabel recinto=new JLabel();
 		recinto=Disegno.disegnaImmagine(recintoImage, recintoImage.getIconWidth(), recintoImage.getIconHeight());
@@ -794,8 +812,13 @@ public class Map extends JFrame{
 		player[turnoGiocatore-1].repaint();
 	}
 	
-	// metodo iniziale con cui le pecore vengono settate a una posizione
-	public void inizializzaPecore() {
+	/**
+	 * metodo iniziale con cui le pecore vengono settate a una posizione
+	 * 
+	 * @param pecore posizionate a inizio partita
+	 * @author Matteo Daverio
+	 */
+	public void inizializzaPecore(ArrayList<Pecora> arrayList) {
 		// TODO riceve array di pecore, scandisce l'array e le posiziona al loro posto
 	}
 	
@@ -850,5 +873,8 @@ public class Map extends JFrame{
 		JOptionPane.showMessageDialog(null, "fine turno",
 				"Posizione", JOptionPane.INFORMATION_MESSAGE);
 	}
+
+
+
 	
 }

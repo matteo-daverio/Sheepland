@@ -1,7 +1,11 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -18,31 +22,40 @@ public class LoginScreen extends JFrame {
 	 */
 	private static final long serialVersionUID = 9053941280569018349L;
 
-	JFrame loginFrame = new JFrame();
-	Toolkit toolkit = Toolkit.getDefaultToolkit();
+	private JFrame loginFrame = new JFrame();
+	private Toolkit toolkit = Toolkit.getDefaultToolkit();
 
 	// dimensione dello schermo
-	Dimension screenSize = toolkit.getScreenSize();
-	double screenWidth = screenSize.getWidth();
-	double screenHeight = screenSize.getHeight();
+	private Dimension screenSize = toolkit.getScreenSize();
+	private double screenWidth = screenSize.getWidth();
+	private double screenHeight = screenSize.getHeight();
 
 	// dimensione form
-	int formWidth = 1024;
-	int formHeight = 1024;
+	private int formWidth = 1024;
+	private int formHeight = 1024;
 
 	// immagine sfondo
-	ImageIcon sfondo = new ImageIcon("./img/login.png");
+	private ImageIcon sfondo = new ImageIcon("./img/login.png");
 
 	// campi richiesta username e password
-	JTextField username = new JTextField();
-	JPasswordField password = new JPasswordField();
+	private JTextField username = new JTextField();
+	private JPasswordField password = new JPasswordField();
+
+	// controllore partita
+	private ControllorePartitaClient controllorePartita;
+	private GuiImpl guiImpl;
+
+	// controllo di login valido
+	private boolean loginValido = false;
 
 	/**
 	 * costruttore finestra login con inizializzazione frame
 	 * 
 	 * @author Matteo Daverio
 	 */
-	public LoginScreen() {
+	public LoginScreen(ControllorePartitaClient controllorePartita, GuiImpl guiImpl) {
+		this.controllorePartita = controllorePartita;
+		this.guiImpl=guiImpl;
 		loginFrame.setResizable(false);
 		if (formHeight > screenHeight) {
 			formWidth = formHeight = (int) screenHeight * 90 / 100;
@@ -51,7 +64,7 @@ public class LoginScreen extends JFrame {
 		loginFrame.setTitle("Login");
 		loginFrame.setLayout(new FlowLayout());
 		loginFrame.setLocation((int) (screenWidth - formWidth) / 2,
-				(int) (screenHeight - formHeight-40) / 2);
+				(int) (screenHeight - formHeight - 40) / 2);
 		WindowListener windowListener = new MyWindowAdapter();
 		loginFrame.addWindowListener(windowListener);
 		loginFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -70,39 +83,14 @@ public class LoginScreen extends JFrame {
 		requestPanel.setLocation((formWidth - 350) / 2, (formHeight - 60) / 4);
 		JButton logButton = new JButton("Login");
 		logButton.setSize(150, 60);
-		logButton.setFont(new Font(Font.SANS_SERIF,Font.BOLD,24));
+		logButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
 		logButton.setLocation((formWidth - 150) / 2, (formHeight - 60) / 2);
 		logButton.setActionCommand("Login");
 		logButton.addActionListener(new ButtonClickListener());
 		container.setLayout(null);
-		container.add(creaImmagine());
+		container.add(Disegno.disegnaImmagine(sfondo, formWidth, formHeight));
 		container.add(requestPanel, 0);
 		container.add(logButton, 0);
-	}
-
-	/**
-	 * Disegna l'immagine di sfondo
-	 * 
-	 * @return JLabel contenente lo sfondo
-	 * @author Matteo Daverio
-	 */
-	public JLabel creaImmagine() {
-		JLabel immagine = new JLabel() {
-			/**
-				 * 
-				 */
-			private static final long serialVersionUID = 1L;
-
-			protected void paintComponent(Graphics g) {
-				g.drawImage(sfondo.getImage(), 0, 0, formWidth, formHeight,
-						null);
-				super.paintComponent(g);
-			}
-		};
-		immagine.setOpaque(false);
-		immagine.setSize(formWidth, formHeight);
-		return immagine;
-
 	}
 
 	/**
@@ -156,7 +144,7 @@ public class LoginScreen extends JFrame {
 	 * classe per la gestione del click di pulsanti
 	 * 
 	 * @author Matteo Daverio
-	 *
+	 * 
 	 */
 	private class ButtonClickListener implements ActionListener {
 
@@ -164,23 +152,45 @@ public class LoginScreen extends JFrame {
 		 * gestione evento click su bottoni
 		 */
 		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();			
+			String command = e.getActionCommand();
 			// viene premuto bottone per login
 			if (command.equals("Login")) {
 				// lettura dati inseriti dall'utente
 				String nome = username.getText();
 				String pass = new String(password.getPassword());
-				
-				//TODO controllo se il login è valido
-				
+
 				// creazione finestra partita
-				
-				// TODO apertura finestra di gioco
-				
+
+				do {
+					try {
+						loginValido = controllorePartita.logIn(nome, pass);
+						if (loginValido) {
+							Map mappa;
+							mappa = new Map(controllorePartita);
+							guiImpl.creaMappa(mappa);
+							mappa.creaMappa();
+						} else {				
+							username.setText("");
+							password.setText("");
+							JOptionPane.showMessageDialog(null,
+									"Password Errata", "Errore",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(null,
+								"Errore di connessione", "Errore",
+								JOptionPane.ERROR_MESSAGE);
+						LOGGER.log("Errore di connessione", e1);
+					}
+				} while (!loginValido);
 				// chiusura finestra login
 				loginFrame.dispose();
 			}
 		}
 
+		/*
+		 * JOptionPane.showMessageDialog(null, "fine turno", "Posizione",
+		 * JOptionPane.INFORMATION_MESSAGE);
+		 */
 	}
 }
