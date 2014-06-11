@@ -424,8 +424,8 @@ public class Partita implements Serializable {
 	 * @throws NoMoneyException
 	 * @throws InvalidMovementException
 	 */
-	public void muoviPastore(int posizione) throws GameException {
-		Pastore pastore = pastori.get(turno - 1);
+	public void muoviPastore(int posizione, int pastoreInGioco) throws GameException {
+		Pastore pastore = pastori.get(pastoreInGioco);
 		if (pastore.getPosizione() == posizione) {
 			// posizione arrivo uguale a posizione di partenza
 			throw new GameException(EccezioniDiGioco.MOVIMENTO_INVALIDO);
@@ -549,16 +549,16 @@ public class Partita implements Serializable {
 	 * @author Valerio De Maria
 	 */
 	// TODO da testare
-	public void compraTessera(TipoTerreno terreno) throws GameException {
+	public void compraTessera(TipoTerreno terreno,int pastoreInGioco) throws GameException {
 		if (tipoRegioneAdiacenteCorrispondente(terreno)) {
 			if (costoTessere[terreno.ordinal()] <= 4) {
-				if (pastori.get(turno - 1).getDenaro() >= costoTessere[terreno
+				if (pastori.get(pastoreInGioco).getDenaro() >= costoTessere[terreno
 						.ordinal()]) {
-					pastori.get(turno - 1).aggiungiTessera(
+					pastori.get(pastoreInGioco).aggiungiTessera(
 							new Tessera(terreno,
 									costoTessere[terreno.ordinal()]));
-					pastori.get(turno - 1).setDenaro(
-							pastori.get(turno - 1).getDenaro()
+					pastori.get(pastoreInGioco).setDenaro(
+							pastori.get(pastoreInGioco).getDenaro()
 									- costoTessere[terreno.ordinal()]);
 					costoTessere[terreno.ordinal()]++;
 				} else {
@@ -583,10 +583,10 @@ public class Partita implements Serializable {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void muoviPecora(int pecora, Strada strada)
+	public void muoviPecora(int pecora, Strada strada,int pastoreInGioco)
 			throws GameException {
 		// il pastore deve trovarsi sulla strada passata
-		if (pastori.get(turno - 1).getPosizione() == strada.getPosizione()) {
+		if (pastori.get(pastoreInGioco).getPosizione() == strada.getPosizione()) {
 			// la pecora deve trovarsi in un terreno adiacente alla strada su
 			// cui è il pastore
 			if (pecore.get(pecora).getPosizione() == strada.getRegioneDestra()

@@ -21,6 +21,8 @@ import java.util.List;
 public class CompraTessera implements Mossa,Serializable {
 
 	private TipoTerreno terreno;
+	private int pastore;
+	private String giocatore;
 
 	// costruttore
 	public CompraTessera(TipoTerreno terreno) {
@@ -29,16 +31,18 @@ public class CompraTessera implements Mossa,Serializable {
 
 	}
 
-	public void eseguiMossa(Partita partita) throws GameException {
+	public void eseguiMossa(Partita partita,String giocatore, int pastore) throws GameException {
 
-		partita.compraTessera(terreno);
+		partita.compraTessera(terreno,pastore);
+		this.giocatore=giocatore;
+		this.pastore=pastore;
 	}
 
 	public void aggiornaClients(
 			List<InterfacciaComunicazioneClient> giocatori,int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaAcquistaTessera(terreno);;
+				giocatori.get(turno-1).comunicaAcquistaTessera(terreno,giocatore,pastore);;
 	           }
 			}		
 

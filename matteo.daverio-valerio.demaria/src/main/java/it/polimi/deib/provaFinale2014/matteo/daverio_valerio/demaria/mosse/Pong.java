@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Pong implements Mossa,Serializable{
 
-	public void eseguiMossa(Partita partita) throws NoMovementException,
+	public void eseguiMossa(Partita partita,String giocatore, int pastore) throws NoMovementException,
 			NoMoneyException, InvalidMovementException, NoMoreCardsException,
 			IllegalShireTypeException, NoSheepInShireException,
 			IllegalShireException, CannotProcreateException,

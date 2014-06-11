@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaComunicazioneClient;
@@ -16,7 +18,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.CommandLine;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.GuiImpl;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.InterfacciaGrafica;
@@ -66,60 +71,53 @@ public class ControllorePartitaClient {
 	public void settaPecore(List<Pecora> pecore) {
 		schermo.settaPecore(pecore);
 	}
-	
-	public void aggiornamentoPosizionePastore(int turno,int pastore,int posizione){
+
+	public void aggiornamentoPosizionePastore(int turno, int pastore,
+			int posizione) {
 		schermo.aggiornamentoPosizionePastore(turno, pastore, posizione);
 	}
 
-	public int posizionamentoPastore(List<Integer> stradeDisponibili){
-		
-		boolean sceltaCorretta=false;
-		
-		int scelta= schermo.posizionaPastore();
-		
-		for(Integer x:stradeDisponibili){
-			if(scelta==x.intValue()){
+	public int posizionamentoPastore(List<Integer> stradeDisponibili) {
+
+		boolean sceltaCorretta = false;
+
+		int scelta = schermo.posizionaPastore();
+
+		for (Integer x : stradeDisponibili) {
+			if (scelta == x.intValue()) {
 				schermo.posizionamentoPastoreCorretto();
 				return scelta;
 			}
 		}
-		
-		do{
-		
-		schermo.posizionamentoPastoreErrato();
-		scelta=schermo.posizionaPastore();
-		
-		for(Integer x:stradeDisponibili){
-			if(scelta==x.intValue()){
-				schermo.posizionamentoPastoreCorretto();
-				sceltaCorretta=true;
+
+		do {
+
+			schermo.posizionamentoPastoreErrato();
+			scelta = schermo.posizionaPastore();
+
+			for (Integer x : stradeDisponibili) {
+				if (scelta == x.intValue()) {
+					schermo.posizionamentoPastoreCorretto();
+					sceltaCorretta = true;
+				}
 			}
-		}
-		
-		}while (!sceltaCorretta);
-		
+
+		} while (!sceltaCorretta);
+
 		return scelta;
 	}
 
-	/*
-	 * public int posizionaPastore(){ posizione=schermo.posizionaPastore();
-	 * if(partita.stradaOccupata(posizione)){ return false; }
-	 * 
-	 * partita.getPastori().get(partita.getTurno()-1).setPosizione(posizione);
-	 * 
-	 * client.inviaPosizionePastore();
-	 * 
-	 * return true;
-	 * 
-	 * }
-	 */
+	public void cambioTurno(String giocatore) {
+		schermo.cambioTurno(giocatore);
+	}
+
 	public void iniziaTurno() {
 
 		schermo.iniziaTurno();
 	}
 
 	/**
-	 * aggiorno il movimento della pecora nera e lo comunico a schermo
+	 * comunico che la pecora nera si è mossa
 	 * 
 	 * @param posizione
 	 * @author Valerio De Maria
@@ -128,6 +126,25 @@ public class ControllorePartitaClient {
 
 		schermo.muoviPecoraNera(posizione);
 	}
+	
+	public void movimentoPastore(int posizione,String giocatore,int pastore){
+		schermo.movimentoPastore(posizione,giocatore,pastore);
+	}
+	
+	public void acquistoTessera(TipoTerreno terreno,String giocatore,int pastore){
+		schermo.acquistoTessera(terreno,giocatore,pastore);
+	}
+	
+	public void movimentoPecora(int pecora, int strada,String giocatore, int pastore){
+		schermo.movimentoPecora(pecora,strada,giocatore,pastore);
+	}
+	
+	public void abbattimento(int regione, int pecora,String giocatore, int pastore){
+		schermo.abbattimento(regione,pecora,giocatore,pastore);
+	}
+	public void accoppiamento(int regione,String giocatore, int pastore){
+		schermo.accoppiamento(regione,giocatore,pastore);
+	}
 
 	/**
 	 * metodo che la grafica chiama per eseguire una mossa
@@ -135,9 +152,16 @@ public class ControllorePartitaClient {
 	 * @return
 	 * @author Valerio De Maria
 	 */
-	public boolean eseguiMossa() {
-		// TODO
-		return true;
+	public Mossa richiediMossa(List<MosseEnum> mosseDisponibili) {
+		
+		schermo.visualizzaMosseDisponibili(mosseDisponibili);
+		
+		return new MuoviPastore(9);
+	}
+	
+	public int selezionaPastore(int primo, int secondo){
+		
+		return schermo.selezionaPastore(primo,secondo);
 	}
 
 	/**
@@ -162,6 +186,8 @@ public class ControllorePartitaClient {
 	}
 
 	/**
+	 * metodo principale del controllore partita
+	 * 
 	 * @author Valerio De Maria
 	 */
 	public void start() {

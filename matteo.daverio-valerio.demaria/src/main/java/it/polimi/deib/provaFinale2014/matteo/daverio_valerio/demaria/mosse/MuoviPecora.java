@@ -21,6 +21,8 @@ public class MuoviPecora implements Mossa,Serializable {
 
 	private Strada strada;
 	private int pecora;
+	private int pastore;
+	private String giocatore;
 
 	// costruttore
 	public MuoviPecora(Strada strada, int pecora) {
@@ -30,9 +32,11 @@ public class MuoviPecora implements Mossa,Serializable {
 
 	}
 
-	public void eseguiMossa(Partita partita) throws GameException {
+	public void eseguiMossa(Partita partita,String giocatore,int pastore) throws GameException {
 
-		partita.muoviPecora(pecora, strada);
+		partita.muoviPecora(pecora, strada,pastore);
+		this.giocatore=giocatore;
+		this.pastore=pastore;
 		;
 	}
 
@@ -40,7 +44,7 @@ public class MuoviPecora implements Mossa,Serializable {
 			List<InterfacciaComunicazioneClient> giocatori,int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaMovimentoPecora(pecora, strada);
+				giocatori.get(turno-1).comunicaMovimentoPecora(pecora, strada.getPosizione(),giocatore,pastore);
 	           }
 			}		
 

@@ -19,6 +19,8 @@ import java.util.List;
 public class Accoppia implements Mossa,Serializable {
 
 	private int regione;
+	private int pastore;
+	private String giocatore;
 
 	// costruttore
 	public Accoppia(int regione) {
@@ -26,9 +28,11 @@ public class Accoppia implements Mossa,Serializable {
 		this.regione = regione;
 	}
 
-	public void eseguiMossa(Partita partita) throws GameException {
+	public void eseguiMossa(Partita partita,String giocatore, int pastore) throws GameException {
 
 		partita.accoppia(regione);
+		this.giocatore=giocatore;
+		this.pastore=pastore;
 
 	}
 
@@ -36,7 +40,7 @@ public class Accoppia implements Mossa,Serializable {
 			List<InterfacciaComunicazioneClient> giocatori,int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaAccoppiamento(regione);
+				giocatori.get(turno-1).comunicaAccoppiamento(regione,giocatore,pastore);
 	           }
 			}		
 

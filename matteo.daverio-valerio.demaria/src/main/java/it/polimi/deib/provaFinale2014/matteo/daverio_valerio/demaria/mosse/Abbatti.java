@@ -19,7 +19,8 @@ import java.util.List;
  */
 public class Abbatti implements Mossa,Serializable {
 
-	private int regione,pecora;
+	private int regione,pecora,pastore;
+	private String giocatore;
 
 	// costruttore
 	public Abbatti(int regione,int pecora) {
@@ -29,9 +30,11 @@ public class Abbatti implements Mossa,Serializable {
 
 	}
 
-	public void eseguiMossa(Partita partita) throws GameException {
+	public void eseguiMossa(Partita partita, String giocatore, int pastore) throws GameException {
 
 		partita.abbatti(regione,pecora);
+		this.giocatore=giocatore;
+		this.pastore=pastore;
 
 	}
 
@@ -45,7 +48,7 @@ public class Abbatti implements Mossa,Serializable {
 			List<InterfacciaComunicazioneClient> giocatori, int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaAbbattimento(regione,pecora);
+				giocatori.get(turno-1).comunicaAbbattimento(regione,pecora,giocatore,pastore);
 	           }
 			}		
 	}

@@ -61,13 +61,6 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	}
 
 	/**
-	 * il client riceve l'aggiornamento su un cambio di turno
-	 */
-	public void cambioTurno(int turno) {
-		partita.setTurno(turno);
-	}
-
-	/**
 	 * il client riceve che il giocatore del turno attuale ha mosso
 	 * 
 	 * @author Valerio De Maria
@@ -75,21 +68,8 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	 * @throws NoMoneyException
 	 * @throws NoMovementException
 	 */
-	public void movimentoPastore(int posizione) throws GameException {
-		partita.muoviPastore(posizione);
-	}
-
-	/**
-	 * ricevo l'istanza della partita creata dal server e l'interfaccia su cui
-	 * chiamare i metodi
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void riceviPartita(Partita partita) {
-
-		this.partita = partita;
-		
-
+	public void movimentoPastore(int posizione,String giocatore, int pastore) throws GameException {
+		controllore.movimentoPastore(posizione, giocatore, pastore);
 	}
 
 	/**
@@ -108,48 +88,37 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	 * @author Valerio De Maria
 	 */
 	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) {
-
-		for (MosseEnum x : mosseDisponibili) {
-			System.out.println(x);
-		}
+        
 		if (mosseDisponibili.size() == 0) {
-			System.out.println("invio un pong");
 			return (new Pong());
 		}
-		System.out.println("invio una mossa");
-		// TODO il client deve decidere la mossa da fare
-		return (new MuoviPastore(3));
+		return controllore.richiediMossa(mosseDisponibili);
 	}
 
-	public void acquistoTessera(TipoTerreno terreno) throws RemoteException,
+	public void acquistoTessera(TipoTerreno terreno,String giocatore,int pastore) throws RemoteException,
 			GameException {
-		partita.compraTessera(terreno);
+		controllore.acquistoTessera(terreno, giocatore, pastore);
 
 	}
 
-	public void movimentoPecora(int pecora, Strada strada)
+	public void movimentoPecora(int pecora, int strada,String giocatore, int pastore)
 			throws GameException {
-		partita.muoviPecora(pecora, strada);
+		controllore.movimentoPecora(pecora, strada, giocatore, pastore);
 	}
 
-	public void abbattimento(int regione, int pecora)
+	public void abbattimento(int regione, int pecora,String giocatore, int pastore)
 			throws GameException {
-		partita.abbatti(regione, pecora);
+		controllore.abbattimento(regione, pecora, giocatore, pastore);
 
 	}
 
-	public void accoppiamento(int regione) throws GameException {
-		partita.accoppia(regione);
+	public void accoppiamento(int regione,String giocatore, int pastore) throws GameException {
+		controllore.accoppiamento(regione, giocatore, pastore);
 
 	}
 
 	public boolean pong() {
 		return true;
-	}
-
-	public void cambioTurno() {
-		partita.setTurno(partita.getTurno() + 1);
-
 	}
 
 	public void faseFinale() {
@@ -205,11 +174,11 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	public void inizioTurno() {
 		controllore.iniziaTurno();
 	}
-/*
-	public int posizionaPastore() {
-		return controllore.posizionaPastore();
+	
+	public void cambioTurno(String giocatore) throws RemoteException {
+		controllore.cambioTurno(giocatore);
+		
 	}
-*/
 
 	public void riceviDatiGiocatori(List<String> nomi,List<Integer> soldi,List<Tessera> tessereIniziali)
 			throws RemoteException {
@@ -233,6 +202,11 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		
 		controllore.aggiornamentoPosizionePastore(turno, pastore, posizione);
 	}
+
+	public int selezionaPastore(int primo, int secondo) {
+		return controllore.selezionaPastore(primo,secondo);
+	}
+
 
 
 }

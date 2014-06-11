@@ -25,7 +25,7 @@ import java.util.List;
  */
 public interface Mossa {
 
-	public void eseguiMossa(Partita partita) throws GameException;
+	public void eseguiMossa(Partita partita,String giocatore,int pastore) throws GameException;
 
 	public void aggiornaClients(
 			List<InterfacciaComunicazioneClient> giocatori,int turno);

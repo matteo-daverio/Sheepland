@@ -53,16 +53,6 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		return null;
 	}
 
-	public void inviaPartita(Partita partita) {
-
-		try {
-			client.riceviPartita(partita);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public void chiudiConnessione() {
 		// TODO
 	}
@@ -77,9 +67,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaMovimentoPastore(int posizione) {
+	public void comunicaMovimentoPastore(int posizione,String giocatore,int pastore) {
 		try {
-			client.movimentoPastore(posizione);
+			client.movimentoPastore(posizione,giocatore,pastore);
 		} catch (RemoteException e) {
 
 			e.printStackTrace();
@@ -90,9 +80,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaAcquistaTessera(TipoTerreno terreno) {
+	public void comunicaAcquistaTessera(TipoTerreno terreno,String giocatore,int pastore) {
 		try {
-			client.acquistoTessera(terreno);
+			client.acquistoTessera(terreno,giocatore,pastore);
 		} catch (RemoteException e) {
 
 			e.printStackTrace();
@@ -103,9 +93,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaAbbattimento(int regione, int pecora) {
+	public void comunicaAbbattimento(int regione, int pecora, String giocatore, int pastore) {
 		try {
-			client.abbattimento(regione, pecora);
+			client.abbattimento(regione, pecora,giocatore,pastore);
 		} catch (GameException e) {
 
 			e.printStackTrace();
@@ -116,9 +106,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaAccoppiamento(int regione) {
+	public void comunicaAccoppiamento(int regione,String giocatore, int pastore) {
 		try {
-			client.accoppiamento(regione);
+			client.accoppiamento(regione,giocatore,pastore);
 		} catch (GameException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
@@ -128,9 +118,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 
 	}
 
-	public void comunicaMovimentoPecora(int pecora, Strada strada) {
+	public void comunicaMovimentoPecora(int pecora, int strada,String giocatore,int pastore) {
 		try {
-			client.movimentoPecora(pecora, strada);
+			client.movimentoPecora(pecora, strada,giocatore,pastore);
 		} catch (GameException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
@@ -151,27 +141,8 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		
 	}
 
-	public void comunicaCambioTurno() {
-		try {
-			client.cambioTurno();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public void comunicaFaseFinale() {
 		
-		
-	}
-
-	public void comunicaInizioTurno() {
-		try {
-			client.inizioTurno();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 
@@ -215,6 +186,37 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void comunicaTurno() {
+		try {
+			client.inizioTurno();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void aggiornaTurno(String giocatore) {
+		try {
+			client.cambioTurno(giocatore);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public int selezionaPastore(int primo, int secondo) {
+		
+		try {
+			return client.selezionaPastore(primo,secondo);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 

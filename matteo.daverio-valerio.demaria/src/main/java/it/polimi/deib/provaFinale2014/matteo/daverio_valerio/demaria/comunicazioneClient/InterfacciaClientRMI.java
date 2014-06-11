@@ -30,30 +30,27 @@ import java.util.List;
  */
 public interface InterfacciaClientRMI extends Remote {
 
-	public void riceviPartita(Partita partita) throws RemoteException;
-
 	public void movimentoPecoraNera(int posizione) throws RemoteException;
 
 	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException;
 
-	public void movimentoPastore(int posizione) throws RemoteException,
+	public void movimentoPastore(int posizione, String giocatore, int pastore) throws RemoteException,
 			 GameException;
 
-	public void cambioTurno(int turno) throws RemoteException;
+	public void acquistoTessera(TipoTerreno terreno,String giocatore,int pastore) throws RemoteException,GameException;
 
-	public void acquistoTessera(TipoTerreno terreno) throws RemoteException,GameException;
-
-	public void movimentoPecora(int pecora, Strada strada)
+	public void movimentoPecora(int pecora, int strada, String giocatore, int pastore)
 			throws RemoteException,GameException;
 
-	public void abbattimento(int regione,int pecora) throws RemoteException,GameException;
+	public void abbattimento(int regione,int pecora,String giocatore, int pastore) throws RemoteException,GameException;
 
-	public void accoppiamento(int regione) throws RemoteException,GameException;
+	public void accoppiamento(int regione,String giocatore, int pastore) throws RemoteException,GameException;
 	
 	public void faseFinale() throws RemoteException;
-	public void cambioTurno() throws RemoteException;
 	
 	public void inizioTurno()throws RemoteException;
+	
+	public void cambioTurno(String giocatore)throws RemoteException;
 	
 	public void riceviDatiGiocatori(List<String> nomi, List<Integer> soldi,List<Tessera>tessereIniziali) throws RemoteException;
 	
@@ -63,4 +60,5 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void riceviAggiornamentoPosizionamentoPastore(int turno,int pastore, int posizione) throws RemoteException;
 	
+	public int selezionaPastore(int primo, int secondo)throws RemoteException;
 }

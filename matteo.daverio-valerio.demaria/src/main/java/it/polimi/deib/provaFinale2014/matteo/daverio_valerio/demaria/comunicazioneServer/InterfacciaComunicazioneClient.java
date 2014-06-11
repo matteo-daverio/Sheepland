@@ -13,27 +13,25 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 
 public interface InterfacciaComunicazioneClient {
 
-	public void inviaPartita(Partita partita);
-
 	public void chiudiConnessione();
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione);
 
 	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili);
-
-	public void comunicaMovimentoPastore(int posizione);
-
-	public void comunicaAcquistaTessera(TipoTerreno terreno);
-
-	public void comunicaAbbattimento(int regione,int pecora);
-
-	public void comunicaAccoppiamento(int regione);
-
-	public void comunicaMovimentoPecora(int pecora, Strada strada);
 	
-	public void comunicaCambioTurno();
 	
-	public void comunicaInizioTurno();
+    //AGGIORNANO I CLIENTS CHE NON SONO DEL TURNO
+	public void comunicaMovimentoPastore(int posizione, String giocatore, int pastore);
+
+	public void comunicaAcquistaTessera(TipoTerreno terreno, String giocatore,int pastore);
+
+	public void comunicaAbbattimento(int regione,int pecora,String giocatore,int pastore);
+
+	public void comunicaAccoppiamento(int regione,String giocatore,int pastore);
+
+	public void comunicaMovimentoPecora(int pecora, int strada,String giocatore, int pastore);
+	
+	
 	
 	public void comunicaPecore(List<Pecora> pecore);
 	
@@ -51,5 +49,10 @@ public interface InterfacciaComunicazioneClient {
 	
 	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi,List<Tessera> tessereIniziali);
 	
+	public void comunicaTurno();
+	
+	public void aggiornaTurno(String giocatore);
+	
+	public int selezionaPastore(int primo, int secondo);
 
 }

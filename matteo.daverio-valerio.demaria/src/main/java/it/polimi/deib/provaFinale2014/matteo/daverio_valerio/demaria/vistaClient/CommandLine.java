@@ -1,6 +1,8 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
@@ -42,7 +44,7 @@ public class CommandLine implements InterfacciaGrafica {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Autenticazione riuscita");
+		System.out.println("Autenticazione riuscita, attendere inizio partita");
 
 	}
 
@@ -59,10 +61,15 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void iniziaTurno() {
-		System.out.println("Ora è il tuo turno");
+		System.out.println("Ora è il tuo turno!");
 
 	}
 
+	public void cambioTurno(String giocatore) {
+		System.out.println("Ora è il turno di "+giocatore);
+		
+	}
+	
 	/**
 	 * comunico il movimento spontaneo della pecora nera
 	 * 
@@ -114,11 +121,11 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void tessereInizialiPastori(List<Tessera> tessereIniziali) {
-		for (int i = 0; i <= tessereIniziali.size() - 1; i++) {
-			System.out.println("Il pastore " + i
+		for (int i = 1; i <= tessereIniziali.size(); i++) {
+			System.out.println("Il giocatore del turno " + i
 					+ " ha tessera iniziale di tipo: "
-					+ tessereIniziali.get(i).getTipo() + " con costo: "
-					+ tessereIniziali.get(i).getCosto());
+					+ tessereIniziali.get(i-1).getTipo() + " con costo: "
+					+ tessereIniziali.get(i-1).getCosto());
 		}
 
 	}
@@ -141,5 +148,52 @@ public class CommandLine implements InterfacciaGrafica {
 				+ posizione);
 
 	}
+
+	public void visualizzaMosseDisponibili(List<MosseEnum> mosseDisponibili) {
+		System.out.println("Puoi effettuare le seguenti mosse:");
+		for(int i=0; i<=mosseDisponibili.size()-1;i++){
+			System.out.println(i+") "+mosseDisponibili.get(i));
+		}
+		
+	}
+
+	public int selezionaPastore(int primo, int secondo) {
+		System.out.println("decidi quale pastore vuoi usare per giocare il tuo turno: "+primo+" oppure "+secondo);
+		int pastore;
+		do{
+			pastore=in.nextInt();
+		}while(!(pastore==primo)&&!(pastore==secondo));
+		return pastore;
+		
+	}
+
+	public void movimentoPastore(int posizione, String giocatore, int pastore) {
+		System.out.println(giocatore+" ha mosso il pastore "+pastore+" in posizione "+posizione);
+		
+	}
+
+	public void acquistoTessera(TipoTerreno terreno, String giocatore,
+			int pastore) {
+		System.out.println(giocatore+" ha acquistato una tessera "+ terreno+ " mediante il pastore "+pastore);
+		
+	}
+
+	public void movimentoPecora(int pecora, int strada, String giocatore,
+			int pastore) {
+		System.out.println(giocatore+" ha mosso la pecora "+pecora+" lungo la strada "+strada+" tramite il pastore "+pastore);
+		
+	}
+
+	public void abbattimento(int regione, int pecora, String giocatore,
+			int pastore) {
+		System.out.println(giocatore+" ha abbattuto la pecora "+pecora+" nella regione "+regione+" tramite il pastore "+pastore);
+		
+	}
+
+	public void accoppiamento(int regione, String giocatore, int pastore) {
+		System.out.println(giocatore+" ha fatto accoppiare due ovini nella regione "+regione+" mediante il pastore "+pastore);
+		
+	}
+
 
 }

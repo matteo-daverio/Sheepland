@@ -163,36 +163,67 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	public void inviaTurno(){
+		
+		for(int i=0; i<=giocatori.size()-1;i++){
+			
+			if(i==(partita.getTurno()-1)){
+				giocatori.get(i).comunicaTurno();
+			}
+			else{
+				giocatori.get(i).aggiornaTurno(giocatori.get(partita.getTurno()-1).getNome());
+			}
+		}
+	}
+	
+	public int selezionaPastore(){
+		
+		if(giocatori.size()>2){
+			return partita.getTurno()-1;
+		}
+		
+		else{
+			if((partita.getTurno()-1) ==0){
+				return giocatori.get(0).selezionaPastore(0,1);
+			}
+			else
+				return giocatori.get(1).selezionaPastore(2,3);
+		}
+	}
 	/**
 	 * svolgo le azioni da compiere per ogni turno
 	 * 
 	 * @author Valerio De Maria
 	 */
 	private void giocaTurno() {
+		
+		int pastoreInGioco;
 
+		inviaTurno();
+		
 		// la pecora nera muove all'inizio di ogni nuovo turno
 		partita.muoviPecoraNera();
 
 		// dico ai client che la pecora nera si è mossa
 		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
+		
+		pastoreInGioco=selezionaPastore();
 
 		mosseFatte.clear();
 		// il giocatore compie le mosse che può fare nel turno
-		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE; i++) {
-
-			// avviso il giocatore di turno che è il suo momento
-			giocatori.get(partita.getTurno() - 1).comunicaInizioTurno();
-
+		for (int i = 0; i <= Costanti.NUMERO_MOSSE_GIOCATORE-1; i++) {
+			
 			mosseDisponibili.clear();
 
 			controllaConnessioneClients(mosseDisponibili);
+			
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
 
 			Mossa mossa = riceviMossa(mosseDisponibili);
 
 			try {
 				System.out.println("vado ad eseguire la mossa");
-				mossa.eseguiMossa(partita);
+				mossa.eseguiMossa(partita,giocatori.get(partita.getTurno()-1).getNome(),pastoreInGioco);
 
 				// faccio eseguire su tutti i client la mossa fatta
 				System.out.println("vado ad aggiornare clients");
@@ -246,9 +277,7 @@ public class ControllorePartita implements Runnable {
 				if (x.getTipoConnessione().equals("socket")) {
 					x.setSocket(socket);
 				}
-				// invio la partita in corso sia che si sia disoconnesso un
-				// client RMI che uno Socket
-				x.inviaPartita(partita);
+
 			}
 		}
 	}
@@ -319,8 +348,8 @@ public class ControllorePartita implements Runnable {
 			}
 		} else {
 			partita.getPastori().get(0).setDenaro(30);
-			partita.getPastori().get(1).setDenaro(30);
-			partita.getPastori().get(2).setDenaro(0);
+			partita.getPastori().get(1).setDenaro(0);
+			partita.getPastori().get(2).setDenaro(30);
 			partita.getPastori().get(3).setDenaro(0);
 		}
 	}
@@ -336,11 +365,14 @@ public class ControllorePartita implements Runnable {
 		tessereIniziali.add(new Tessera(TipoTerreno.ROCCIA, 0));
 		tessereIniziali.add(new Tessera(TipoTerreno.SABBIA, 0));
 
-		int top;
+		int top,step;
 		if (giocatori.size() > 2) {
 			top = partita.getPastori().size() - 1;
-		} else
+			step=0;
+		} else{
 			top = 1;
+			step=1;
+		}
 
 		for (int i = 0; i <= top; i++) {
 
@@ -352,7 +384,7 @@ public class ControllorePartita implements Runnable {
 			}
 
 			// aggiungo la tessera iniziale scelta alle tessere del pastore
-			partita.getPastori().get(i)
+			partita.getPastori().get(i+step*i)
 					.aggiungiTessera(tessereIniziali.get(scelta));
 			// tolgo la tessera asseganta dalle tessereIniziali disponibili
 			tessereIniziali.remove(scelta);
@@ -498,13 +530,13 @@ public class ControllorePartita implements Runnable {
 				partita.muoviLupo();
 				partita.setTurno(1);
 			}
-			comunicaCambioTurno();
-			System.out.println("ora è il turno di "
-					+ giocatori.get(partita.getTurno() - 1).getNome());
+			
 			f++;
 			if (f == 4) {
 				finePartita = true;
 			}
+			
+			
 			if (partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) {
 				comunicaFaseFinale();
 				faseFinale = true;
@@ -535,15 +567,4 @@ public class ControllorePartita implements Runnable {
 
 	}
 
-	/**
-	 * comunico ai giocatori che il turno è cambiato
-	 * 
-	 * @author Valerio De Maria
-	 */
-	private void comunicaCambioTurno() {
-		for (InterfacciaComunicazioneClient x : giocatori) {
-			x.comunicaCambioTurno();
-		}
-
-	}
 }
