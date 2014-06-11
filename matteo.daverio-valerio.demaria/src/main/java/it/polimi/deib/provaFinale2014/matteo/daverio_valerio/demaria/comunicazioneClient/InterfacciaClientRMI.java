@@ -58,6 +58,9 @@ public interface InterfacciaClientRMI extends Remote {
 	public void riceviDatiGiocatori(List<String> nomi, List<Integer> soldi,List<Tessera>tessereIniziali) throws RemoteException;
 	
 	public void riceviPecore(List<Pecora> pecore) throws RemoteException;
-	//public int posizionaPastore()throws RemoteException;
+	
+	public int posizionaPastore(List<Integer> stradeDisponibili)throws RemoteException;
+	
+	public void riceviAggiornamentoPosizionamentoPastore(int turno,int pastore, int posizione) throws RemoteException;
 	
 }

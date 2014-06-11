@@ -28,7 +28,7 @@ public class Costanti {
 	// costanti per la partita
 	public static final int NUMERO_MOSSE_GIOCATORE = 3;
 	public static final int NUMERO_RECINTI_NORMALI = 20;
-	public static final int NUMERO_MASSIMO_GIOCATORI=6;
+	public static final int NUMERO_MASSIMO_GIOCATORI=4;
 	
 	//per il debug
 	public static boolean toDebug=true;

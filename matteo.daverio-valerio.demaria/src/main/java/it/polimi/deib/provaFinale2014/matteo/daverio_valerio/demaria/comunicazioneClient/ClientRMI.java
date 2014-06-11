@@ -216,12 +216,22 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		controllore.riceviNomiGiocatori(nomi);
 		controllore.riceviSoldiPastori(soldi);
 		controllore.riceviTessereInizialiPastori(tessereIniziali);
-		
 	}
 
 	public void riceviPecore(List<Pecora> pecore) throws RemoteException {
 		controllore.settaPecore(pecore);
 		
+	}
+
+	public int posizionaPastore(List<Integer> stradeDisponibili)
+			throws RemoteException {
+		return controllore.posizionamentoPastore(stradeDisponibili);
+	}
+
+	public void riceviAggiornamentoPosizionamentoPastore(int turno,
+			int pastore, int posizione) throws RemoteException {
+		
+		controllore.aggiornamentoPosizionePastore(turno, pastore, posizione);
 	}
 
 

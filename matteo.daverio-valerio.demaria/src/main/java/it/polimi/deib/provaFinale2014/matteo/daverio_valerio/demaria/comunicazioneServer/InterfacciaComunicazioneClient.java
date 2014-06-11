@@ -37,7 +37,9 @@ public interface InterfacciaComunicazioneClient {
 	
 	public void comunicaPecore(List<Pecora> pecore);
 	
-	//public int chiediPosizionamentoPastore();
+	public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili);
+	
+	public void comunicaPosizionamentoPastore(int turno, int pastore, int posizione);
 	
 	public void comunicaFaseFinale();
 	

@@ -42,8 +42,7 @@ public class ControllorePartitaClient {
 	 * @param IP
 	 * @author Valerio De Maria
 	 */
-	
-	
+
 	public ControllorePartitaClient(String protocollo, String grafica, String IP) {
 
 		this.protocollo = protocollo;
@@ -51,42 +50,74 @@ public class ControllorePartitaClient {
 		this.IP = IP;
 
 	}
-	
-	public void riceviNomiGiocatori(List<String> nomi){
+
+	public void riceviNomiGiocatori(List<String> nomi) {
 		schermo.nomiGiocatori(nomi);
 	}
-	
-	public void riceviSoldiPastori(List<Integer> soldi){
+
+	public void riceviSoldiPastori(List<Integer> soldi) {
 		schermo.soldiPastori(soldi);
 	}
-	
-	public void riceviTessereInizialiPastori(List<Tessera> tessereIniziali){
+
+	public void riceviTessereInizialiPastori(List<Tessera> tessereIniziali) {
 		schermo.tessereInizialiPastori(tessereIniziali);
 	}
-	
-	public void settaPecore(List<Pecora> pecore){
+
+	public void settaPecore(List<Pecora> pecore) {
 		schermo.settaPecore(pecore);
 	}
-	/*
-	public  int posizionaPastore(){
-		posizione=schermo.posizionaPastore();
-		if(partita.stradaOccupata(posizione)){
-			return false;
+	
+	public void aggiornamentoPosizionePastore(int turno,int pastore,int posizione){
+		schermo.aggiornamentoPosizionePastore(turno, pastore, posizione);
+	}
+
+	public int posizionamentoPastore(List<Integer> stradeDisponibili){
+		
+		boolean sceltaCorretta=false;
+		
+		int scelta= schermo.posizionaPastore();
+		
+		for(Integer x:stradeDisponibili){
+			if(scelta==x.intValue()){
+				schermo.posizionamentoPastoreCorretto();
+				return scelta;
+			}
 		}
 		
-		partita.getPastori().get(partita.getTurno()-1).setPosizione(posizione);
+		do{
 		
-		client.inviaPosizionePastore();
+		schermo.posizionamentoPastoreErrato();
+		scelta=schermo.posizionaPastore();
 		
-		return true;
+		for(Integer x:stradeDisponibili){
+			if(scelta==x.intValue()){
+				schermo.posizionamentoPastoreCorretto();
+				sceltaCorretta=true;
+			}
+		}
 		
+		}while (!sceltaCorretta);
+		
+		return scelta;
 	}
-	*/
-	public void iniziaTurno(){
-		
+
+	/*
+	 * public int posizionaPastore(){ posizione=schermo.posizionaPastore();
+	 * if(partita.stradaOccupata(posizione)){ return false; }
+	 * 
+	 * partita.getPastori().get(partita.getTurno()-1).setPosizione(posizione);
+	 * 
+	 * client.inviaPosizionePastore();
+	 * 
+	 * return true;
+	 * 
+	 * }
+	 */
+	public void iniziaTurno() {
+
 		schermo.iniziaTurno();
 	}
-	
+
 	/**
 	 * aggiorno il movimento della pecora nera e lo comunico a schermo
 	 * 
@@ -95,7 +126,6 @@ public class ControllorePartitaClient {
 	 */
 	public void movimentoPecoraNera(int posizione) {
 
-		partita.getPecoraNera().setPosizione(posizione);
 		schermo.muoviPecoraNera(posizione);
 	}
 
@@ -123,9 +153,9 @@ public class ControllorePartitaClient {
 	 */
 	public boolean logIn(String nome, String password) throws IOException {
 
-		boolean autenticato=false;
-		autenticato=client.effettuaLogin(nome, password);
-		if(autenticato){
+		boolean autenticato = false;
+		autenticato = client.effettuaLogin(nome, password);
+		if (autenticato) {
 			client.attendiPartita();
 		}
 		return autenticato;
@@ -137,12 +167,12 @@ public class ControllorePartitaClient {
 	public void start() {
 
 		if (protocollo.equals("rmi")) {
-			client = new ClientRMI(IP, Costanti.PORTA_RMI,this);
+			client = new ClientRMI(IP, Costanti.PORTA_RMI, this);
 		} else
-			client = new ClientSocket(IP, Costanti.PORTA_SOCKET,this);
+			client = new ClientSocket(IP, Costanti.PORTA_SOCKET, this);
 
 		if (grafica.equals("gui")) {
-			schermo=new GuiImpl(this);
+			schermo = new GuiImpl(this);
 		} else {
 			schermo = new CommandLine(this);
 		}

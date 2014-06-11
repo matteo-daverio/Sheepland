@@ -1,13 +1,9 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,16 +87,16 @@ public class GestorePartite implements Runnable {
 	 */
 	public synchronized static boolean addConnessione(Gestione g) {
 		if (!giocatoreInGioco(g)) {
-			System.out.println("aggiungo "+g.getNome());
+			System.out.println("aggiungo " + g.getNome());
 			connessioni.add(g);
 			giocatori.add(g);
 			return true;
 		} else {
-			System.out.println(g.getNome()+" sta giocando");
+			System.out.println(g.getNome() + " sta giocando");
 			if (passwordSbagliata(g)) {
 				return false;
 			} else {
-				System.out.println("Reintegro "+g.getNome());
+				System.out.println("Reintegro " + g.getNome());
 				reintegraClient(g.getNome(), g.getSocket());
 				return true;
 			}
@@ -121,26 +117,14 @@ public class GestorePartite implements Runnable {
 		public void run() {
 			// TODO codice talebano
 			System.out.println("controllo se ci sono partite da far partitre");
-			System.out.println(connessioni.size());
+			System.out.println("ho "+connessioni.size()+" giocatori in attesa di iniziare");
+			
 			if (connessioni.size() > 1) {
-				// TODO codice talebano
-				System.out.println("ho un numero sufficiente di giocatori");
 				Partita p = new Partita();
-				if (connessioni.size() == 2) {
-					// TODO codice talebano
-					System.out.println("ho due giocatori");
-					ControllorePartitaDueGiocatori controllore = new ControllorePartitaDueGiocatori(
-							connessioni, p);
-					partiteInCorso.add(controllore);
-					executor.submit(controllore);
-				} else {
-					// TODO codice talebano
-					System.out.println("ho più giocatori");
-					ControllorePartitaMoltiGiocatori controllore = new ControllorePartitaMoltiGiocatori(
-							connessioni, p);
-					partiteInCorso.add(controllore);
-					executor.submit(controllore);
-				}
+				ControllorePartita controllore = new ControllorePartita(
+					connessioni, p);
+				partiteInCorso.add(controllore);
+				executor.submit(controllore);
 				connessioni.clear();
 			} else
 				return;
@@ -166,12 +150,13 @@ public class GestorePartite implements Runnable {
 		while (true) {
 			if (connessioni.size() == Costanti.NUMERO_MASSIMO_GIOCATORI) {
 				// TODO codice talebano
-				System.out.println("ho raggiunto 6 giocatori!");
+				System.out.println("ho raggiunto 4 giocatori!");
 				Partita partita = new Partita();
-				ControllorePartitaMoltiGiocatori controllore = new ControllorePartitaMoltiGiocatori(
+				ControllorePartita controllore = new ControllorePartita(
 						connessioni, partita);
 				partiteInCorso.add(controllore);
 				executor.submit(controllore);
+				connessioni.clear();
 			}
 		}
 	}

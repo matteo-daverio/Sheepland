@@ -25,7 +25,13 @@ public interface InterfacciaGrafica {
     public void settaPecore(List<Pecora> pecore);
 	
 	//richiede il posizionamento di un pastore
-	public void posizionaPastore ();
+	public int posizionaPastore ();
+	
+	public void posizionamentoPastoreCorretto();
+	
+	public void posizionamentoPastoreErrato();
+	
+	public void aggiornamentoPosizionePastore(int turno,int pastore,int posizione);
 	
 	//comunica l'inizio del turno
 	public void iniziaTurno ();

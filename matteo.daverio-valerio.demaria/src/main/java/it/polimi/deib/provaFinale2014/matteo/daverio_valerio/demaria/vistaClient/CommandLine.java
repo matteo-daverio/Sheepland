@@ -46,7 +46,7 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
-	public void posizionaPastore() {
+	public int posizionaPastore() {
 		System.out
 				.println("Dove vuoi posizionare inizialmente il tuo pastore?");
 		int posPastore;
@@ -54,7 +54,7 @@ public class CommandLine implements InterfacciaGrafica {
 			posPastore = in.nextInt();
 		} while (posPastore < 0 && posPastore > 41);
 
-		//TODO chiamo un metodo sul controllore passandogli la posizione del pastore
+		return posPastore;
 
 	}
 
@@ -98,24 +98,48 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void nomiGiocatori(List<String> nomi) {
-		for(int i=0;i<=nomi.size()-1;i++){
-			System.out.println("Il giocatore del turno "+i+" è "+nomi.get(i));
+		for (int i = 0; i <= nomi.size() - 1; i++) {
+			System.out.println("Il giocatore del turno " + i + " è "
+					+ nomi.get(i));
 		}
-		
+
 	}
 
 	public void soldiPastori(List<Integer> soldi) {
-		for(int i=0;i<=soldi.size()-1;i++){
-			System.out.println("Il pastore "+i+ " ha "+soldi.get(i)+" denari");
+		for (int i = 0; i <= soldi.size() - 1; i++) {
+			System.out.println("Il pastore " + i + " ha " + soldi.get(i)
+					+ " denari");
 		}
-		
+
 	}
 
 	public void tessereInizialiPastori(List<Tessera> tessereIniziali) {
-		for(int i=0;i<=tessereIniziali.size()-1;i++){
-			System.out.println("Il pastore "+i+" ha tessera iniziale di tipo: "+tessereIniziali.get(i).getTipo()+" con costo: "+tessereIniziali.get(i).getCosto());
+		for (int i = 0; i <= tessereIniziali.size() - 1; i++) {
+			System.out.println("Il pastore " + i
+					+ " ha tessera iniziale di tipo: "
+					+ tessereIniziali.get(i).getTipo() + " con costo: "
+					+ tessereIniziali.get(i).getCosto());
 		}
-		
+
+	}
+
+	public void posizionamentoPastoreCorretto() {
+		System.out.println("hai posizionato il pastore in maniera corretta");
+
+	}
+
+	public void posizionamentoPastoreErrato() {
+		System.out
+				.println("la strada che hai inserito non è valida o è occupata!");
+
+	}
+
+	public void aggiornamentoPosizionePastore(int turno, int pastore,
+			int posizione) {
+		System.out.println("Il giocatore del turno " + turno
+				+ " ha posizionato il pastore " + pastore + " in posizione: "
+				+ posizione);
+
 	}
 
 }

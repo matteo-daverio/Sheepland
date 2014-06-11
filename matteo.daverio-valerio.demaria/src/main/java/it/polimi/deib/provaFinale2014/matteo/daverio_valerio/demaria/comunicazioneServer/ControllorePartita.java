@@ -5,6 +5,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
@@ -19,9 +20,9 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public abstract class ControllorePartita implements Runnable {
+public class ControllorePartita implements Runnable {
 
-	private List<Gestione> connessioni;
+	private List<Gestione> connessioni = new ArrayList<Gestione>();
 	private Partita partita;
 	private boolean finePartita, faseFinale;
 	private List<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
@@ -31,7 +32,15 @@ public abstract class ControllorePartita implements Runnable {
 	// costruttore
 	public ControllorePartita(List<Gestione> connessioni, Partita partita) {
 
-		this.connessioni = connessioni;
+		// a quanto pare se io faccio this.connessioni=connessioni l'array di
+		// ControllorePartita diventa lo stesso oggetto dell'array di
+		// GestorePartite perchè prende il suo riferimento come oggetto
+		// quindi sono costretto a copiarmi nell'array della mia classe ogni
+		// singolo elemento che mi viene passato
+		for (Gestione x : connessioni) {
+			this.connessioni.add(x);
+		}
+
 		this.partita = partita;
 
 	}
@@ -204,28 +213,6 @@ public abstract class ControllorePartita implements Runnable {
 	}
 
 	/**
-	 * la creazione dei pastori dipende dal numero dei giocatori della partita
-	 * 
-	 * @author Valerio De Maria
-	 */
-	abstract void aggiungiPastori(List<Gestione> connessioni, Partita partita);
-
-	/**
-	 * invio ad ogni client l'istanza della partita in corso
-	 * 
-	 * @author Valerio De Maria
-	 * @throws RemoteException
-	 */
-	private void inviaPartita() {
-
-		for (InterfacciaComunicazioneClient x : giocatori) {
-
-			x.inviaPartita(partita);
-
-		}
-	}
-
-	/**
 	 * ritorna true se il nome passato come parametro è il nome di uno dei
 	 * giocatori della partita
 	 * 
@@ -273,7 +260,9 @@ public abstract class ControllorePartita implements Runnable {
 	 */
 	private void trasferisciGestioneComunicazione() {
 
+		System.out.println(connessioni.size());
 		for (Gestione x : connessioni) {
+			System.out.println(x.getNome() + " è un mio giocatore");
 			if (x.getTipoConnessione().equals("socket")) {
 				giocatori.add(new ComunicazioneSocket(x.getSocket(), x
 						.getBufferIn(), x.getBufferOut(), x.getNome()));
@@ -286,8 +275,8 @@ public abstract class ControllorePartita implements Runnable {
 		}
 	}
 
-	abstract void posizionaPastori(
-			List<InterfacciaComunicazioneClient> giocatori, Partita partita);
+	// abstract void posizionaPastori(
+	// List<InterfacciaComunicazioneClient> giocatori, Partita partita);
 
 	private void comunicaFinePartita() {
 		// TODO
@@ -318,6 +307,7 @@ public abstract class ControllorePartita implements Runnable {
 
 		// invio le liste a tutti i giocatori
 		for (InterfacciaComunicazioneClient x : giocatori) {
+			System.out.println("Invio a " + x.getNome() + " le liste");
 			x.inviaDatiGiocatori(nomi, soldi, tessereIniziali);
 		}
 	}
@@ -350,14 +340,17 @@ public abstract class ControllorePartita implements Runnable {
 		if (giocatori.size() > 2) {
 			top = partita.getPastori().size() - 1;
 		} else
-			top = 2;
+			top = 1;
 
 		for (int i = 0; i <= top; i++) {
 
 			// scelgo un numero casuale tra 0 ed il numero di tessere iniziali
 			// rimasto -1
-			int scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO)
-					- i + 1;
+			int scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
+			if (scelta == tessereIniziali.size()) {
+				scelta = scelta - 1;
+			}
+
 			// aggiungo la tessera iniziale scelta alle tessere del pastore
 			partita.getPastori().get(i)
 					.aggiungiTessera(tessereIniziali.get(scelta));
@@ -366,30 +359,120 @@ public abstract class ControllorePartita implements Runnable {
 		}
 
 	}
-	
-	public void inviaPosizioneInizialePecore(){
-		for(InterfacciaComunicazioneClient x:giocatori){
+
+	public void inviaPosizioneInizialePecore() {
+		for (InterfacciaComunicazioneClient x : giocatori) {
 			x.comunicaPecore(partita.getPecore());
 		}
 	}
 
+	public void aggiungiPastori() {
+
+		if (giocatori.size() > 2) {
+			for (int i = 0; i <= giocatori.size() - 1; i++) {
+				partita.getPastori().add(
+						new Pastore(giocatori.get(i).getNome(), i + 1));
+			}
+		} else {
+			partita.getPastori()
+					.add(new Pastore(giocatori.get(0).getNome(), 1));
+			partita.getPastori()
+					.add(new Pastore(giocatori.get(0).getNome(), 1));
+			partita.getPastori()
+					.add(new Pastore(giocatori.get(1).getNome(), 2));
+			partita.getPastori()
+					.add(new Pastore(giocatori.get(1).getNome(), 2));
+		}
+	}
+
 	public void inizializza() {
-		
+
 		// creo le classi di comunicazione che si occuperrano di comunicare con
 		// i client in maniera trasparente rispetto alla modalità di connessione
 		trasferisciGestioneComunicazione();
-		
+
 		partita.start();
-		
+
 		inviaPosizioneInizialePecore();
 
-		aggiungiPastori(connessioni, partita);
+		aggiungiPastori();
 
 		impostaDenaro();
 
 		impostaTesseraIniziale();
 
 		inviaDatiGiocatori();
+	}
+
+	public void aggiornaPosizionamentoPastori(int turno, int pastore,
+			int posizione) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+
+			// non invio l'aggiornamento al giocatore che ha effettuato il
+			// posizionamento
+			if (i != turno - 1) {
+				giocatori.get(i).comunicaPosizionamentoPastore(turno, pastore,
+						posizione);
+			}
+
+		}
+	}
+
+	public void posizionaPastori() {
+
+		List<Integer> stradeDisponibili = new ArrayList<Integer>();
+		int posizioneScelta;
+
+		// creo la lista di strade disponibili
+		for (Strada x : partita.getStrade()) {
+			stradeDisponibili.add(x.getPosizione());
+		}
+        
+		if (giocatori.size() > 2) {
+			for (int i = 0; i <= giocatori.size() - 1; i++) {
+				posizioneScelta = giocatori.get(i).chiediPosizionamentoPastore(
+						stradeDisponibili);
+				
+				if (posizioneScelta!= -1){
+				partita.getPastori().get(i).setPosizione(posizioneScelta);
+				stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
+				aggiornaPosizionamentoPastori(i + 1, i, posizioneScelta);
+				}
+				else
+				System.out.println("errore in comunicazione richiesta posizionamento pastore");
+			}
+		} 
+		//due giocatori
+		else {
+			posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
+					stradeDisponibili);
+			partita.getPastori().get(0).setPosizione(posizioneScelta);
+			stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
+			aggiornaPosizionamentoPastori(1, 0, posizioneScelta);
+
+			posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
+					stradeDisponibili);
+			partita.getPastori().get(1).setPosizione(posizioneScelta);
+			stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
+			aggiornaPosizionamentoPastori(1, 1, posizioneScelta);
+
+			
+			posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
+					stradeDisponibili);
+			partita.getPastori().get(2).setPosizione(posizioneScelta);
+			stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
+			aggiornaPosizionamentoPastori(2, 2, posizioneScelta);
+
+			
+			posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
+					stradeDisponibili);
+			partita.getPastori().get(3).setPosizione(posizioneScelta);
+			stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
+			aggiornaPosizionamentoPastori(2, 3, posizioneScelta);
+			
+
+		}
+
 	}
 
 	/**
@@ -401,11 +484,7 @@ public abstract class ControllorePartita implements Runnable {
 
 		inizializza();
 
-		System.out.println("invio la partita " + giocatori.get(0).getNome()
-				+ " e " + giocatori.get(1).getNome());
-		inviaPartita();
-
-		posizionaPastori(giocatori, partita);
+		posizionaPastori();
 
 		finePartita = false;
 		faseFinale = false;

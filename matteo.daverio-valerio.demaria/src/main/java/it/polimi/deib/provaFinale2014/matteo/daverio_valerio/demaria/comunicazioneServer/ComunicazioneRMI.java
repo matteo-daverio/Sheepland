@@ -174,17 +174,6 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 		}
 		
 	}
-/*
-	public int chiediPosizionamentoPastore() {
-		try {
-			return client.posizionaPastore();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
-	}
-	*/
 
 	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi, List<Tessera> tessereIniziali) {
 		try {
@@ -199,6 +188,28 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
 	public void comunicaPecore(List<Pecora> pecore) {
 		try {
 			client.riceviPecore(pecore);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili) {
+
+		try {
+			return client.posizionaPastore(stradeDisponibili);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	public void comunicaPosizionamentoPastore(int turno, int pastore,
+			int posizione) {
+		try {
+			client.riceviAggiornamentoPosizionamentoPastore(turno, pastore, posizione);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
