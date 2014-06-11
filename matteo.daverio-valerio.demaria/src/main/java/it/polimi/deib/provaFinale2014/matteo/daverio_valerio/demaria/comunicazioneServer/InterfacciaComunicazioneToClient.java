@@ -11,7 +11,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
-public interface InterfacciaComunicazioneClient {
+public interface InterfacciaComunicazioneToClient {
 
 	public void chiudiConnessione();
 

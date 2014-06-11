@@ -12,12 +12,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-public interface InterfacciaComunicazioneClient {
+public interface InterfacciaComunicazioneToServer {
 
 
 	public boolean effettuaLogin(String nome,String password) throws IOException;
-	
-	public void attendiPartita() throws IOException;
 	
 	public void riceviAggiornamenti()throws IOException,GameException;
 	

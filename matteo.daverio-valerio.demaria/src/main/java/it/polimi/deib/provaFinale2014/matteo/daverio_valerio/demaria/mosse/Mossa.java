@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneToClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
@@ -28,7 +28,7 @@ public interface Mossa {
 	public void eseguiMossa(Partita partita,String giocatore,int pastore) throws GameException;
 
 	public void aggiornaClients(
-			List<InterfacciaComunicazioneClient> giocatori,int turno);
+			List<InterfacciaComunicazioneToClient> giocatori,int turno);
 
 	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte);
 

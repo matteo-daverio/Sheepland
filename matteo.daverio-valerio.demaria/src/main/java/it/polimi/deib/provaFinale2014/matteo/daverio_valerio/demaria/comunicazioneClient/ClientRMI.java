@@ -33,7 +33,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
 
-public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazioneClient {
+public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazioneToServer {
 
 	Scanner in = new Scanner(System.in);
 
@@ -158,15 +158,7 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	}
 	
 //usato solo per socket
-	public void attendiPartita() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-//usato solo per socket
-	public void riceviAggiornamenti() throws IOException, NoMoreCardsException,
-			NoMoneyException, IllegalShireTypeException,
-			NoSheepInShireException, IllegalShireException,
-			CannotProcreateException, IllegalStreetException {
+	public void riceviAggiornamenti() throws IOException, GameException {
 		// TODO Auto-generated method stub
 		
 	}

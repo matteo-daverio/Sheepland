@@ -29,7 +29,7 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public class ComunicazioneRMI implements InterfacciaComunicazioneClient {
+public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 
 	private String nome;
 	private InterfacciaClientRMI client;

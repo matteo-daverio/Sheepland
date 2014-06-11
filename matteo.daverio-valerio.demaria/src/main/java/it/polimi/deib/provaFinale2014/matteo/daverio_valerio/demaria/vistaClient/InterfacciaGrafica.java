@@ -56,4 +56,12 @@ public interface InterfacciaGrafica {
 	public void muoviPecoraNera(int posizione);
 	
 	public int selezionaPastore(int primo,int secondo);
+	
+	public int chiediMossa(int max);
+	
+	//PER ESECUZIONE MOSSA
+	
+	public int scegliRegione();
+	public int scegliStrada();
+	public int scegliPecora();
 }

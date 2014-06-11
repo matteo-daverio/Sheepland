@@ -5,6 +5,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
@@ -44,7 +45,10 @@ public class CommandLine implements InterfacciaGrafica {
 				e.printStackTrace();
 			}
 		}
+		
 		System.out.println("Autenticazione riuscita, attendere inizio partita");
+
+	    controllore.riceviAggiornamenti();
 
 	}
 
@@ -194,6 +198,36 @@ public class CommandLine implements InterfacciaGrafica {
 		System.out.println(giocatore+" ha fatto accoppiare due ovini nella regione "+regione+" mediante il pastore "+pastore);
 		
 	}
+
+	public int chiediMossa(int max) {
+		System.out.println("scrivi il numero della mossa che vuoi fare:");
+		System.out.println("il max è "+max);
+		int scelta;
+		do{
+			scelta=in.nextInt();
+		}while (scelta<0 && scelta>max);
+		
+		System.out.println("hai selezionato "+scelta);
+		
+		return scelta;
+	}
+
+	public int scegliRegione() {
+		System.out.println("Seleziona la regione:");
+		
+		return in.nextInt();
+	}
+
+	public int scegliStrada() {
+		System.out.println("Scegli la strada:");
+		return in.nextInt();
+	}
+
+	public int scegliPecora() {
+		System.out.println("Scegli la pecora:");
+		return in.nextInt();
+	}
+
 
 
 }

@@ -583,16 +583,16 @@ public class Partita implements Serializable {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void muoviPecora(int pecora, Strada strada,int pastoreInGioco)
+	public void muoviPecora(int pecora, int strada,int pastoreInGioco)
 			throws GameException {
 		// il pastore deve trovarsi sulla strada passata
-		if (pastori.get(pastoreInGioco).getPosizione() == strada.getPosizione()) {
+		if (pastori.get(pastoreInGioco).getPosizione() == strada) {
 			// la pecora deve trovarsi in un terreno adiacente alla strada su
 			// cui è il pastore
-			if (pecore.get(pecora).getPosizione() == strada.getRegioneDestra()
-					|| pecore.get(pecora).getPosizione() == strada
+			if (pecore.get(pecora).getPosizione() == strade.get(strada).getRegioneDestra()
+					|| pecore.get(pecora).getPosizione() == strade.get(strada)
 							.getRegioneSinistra()) {
-				pecore.get(pecora).muoviPecora(strada);
+				pecore.get(pecora).muoviPecora(strade.get(strada));
 			} else {
 				throw new GameException(EccezioniDiGioco.REGIONE_ILLEGALE);
 			}

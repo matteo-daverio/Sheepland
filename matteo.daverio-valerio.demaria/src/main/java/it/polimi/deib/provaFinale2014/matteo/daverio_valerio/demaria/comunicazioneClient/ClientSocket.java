@@ -29,14 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ClientSocket implements InterfacciaComunicazioneClient {
+public class ClientSocket implements InterfacciaComunicazioneToServer {
 
 	private String ip, nome, password;
 	private int port;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private Partita partita;
 	private ControllorePartitaClient controllore;
+	private ComandiSocket line;
 
 	/**
 	 * costruttore
@@ -53,33 +53,6 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	}
 
 	/**
-	 * metodo che attende di ricevere la partita
-	 * 
-	 * @throws IOException
-	 * @author Valerio De Maria
-	 */
-	public void attendiPartita() throws IOException {
-		boolean partitaRicevuta = false;
-		ComandiSocket line;
-		while (!partitaRicevuta) {
-
-			try {
-
-				// leggo dal buffer
-				line = (ComandiSocket) in.readObject();
-
-				if (line.equals(ComandiSocket.INVIO_PARTITA)) {
-					partita = (Partita) in.readObject();
-					partitaRicevuta = true;
-				}
-
-			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore ricezione da server", e);
-			}
-		}
-	}
-
-	/**
 	 * metodo che attende di ricevere aggiornamenti da parte del server
 	 * 
 	 * @throws IOException
@@ -90,7 +63,7 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 
 		boolean finePartita = false;
 		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
-		ComandiSocket line;
+		
 
 		while (!finePartita) {
 			try {
@@ -120,33 +93,51 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 					break;
 
 				case MOVIMENTO_PASTORE:
-					partita.getPastori().get(partita.getTurno() - 1)
-							.setPosizione(in.readInt());
-					System.out.println("ho mosso il pastore di turno");
+					
+					int pos=in.readInt();
+					String gio=(String)in.readObject();
+					int pas=in.readInt();
+					
+					controllore.movimentoPastore(pos, gio, pas);
 					break;
 
 				case ACQUISTO_TESSERA:
-					partita.compraTessera((TipoTerreno) in.readObject());
+					
 					break;
 
 				case ABBATTIMENTO:
+					
 					int regione = in.readInt();
 					int pecora = in.readInt();
-					partita.abbatti(regione, pecora);
+					String giocatore=(String)in.readObject();
+					int pastore=in.readInt();
+					
+					controllore.abbattimento(regione, pecora, giocatore, pastore);
 					break;
 
 				case ACCOPPIAMENTO:
-					partita.accoppia(in.readInt());
+					
+					int r=in.readInt();
+					String g=(String)in.readObject();
+					int p=in.readInt();
+					
+					controllore.accoppiamento(r, g, p);
 					break;
 
 				case MOVIMENTO_PECORA:
-					int p = in.readInt();
-					Strada strada = (Strada) in.readObject();
-					partita.muoviPecora(p, strada);
+					
+					int pecoraDaMuovere = in.readInt();
+					int stradaPassaggioPecora=in.readInt();
+					String giocatoreSpostaPecora=(String) in.readObject();
+					int pastoreSpostaPecora=in.readInt();
+	
+					controllore.movimentoPecora(pecoraDaMuovere,stradaPassaggioPecora,giocatoreSpostaPecora,pastoreSpostaPecora);
 					break;
+					
 				case INIZIO_TURNO:
 					controllore.iniziaTurno();
 					break;
+					
 				case DATI_GIOCATORI:
 					List<String> nomi = (List<String>) in.readObject();
 					controllore.riceviNomiGiocatori(nomi);
@@ -162,6 +153,7 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 					List<Pecora> pecore =(List<Pecora>)in.readObject();
 					controllore.settaPecore(pecore);
 					break;
+					
 				default:
 					break;
 				}// fine switch
@@ -176,7 +168,6 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 	public boolean effettuaLogin(String nome, String password)
 			throws IOException {
 
-		ComandiSocket line;
 		Socket socket;
 
 		try {
@@ -225,12 +216,6 @@ public class ClientSocket implements InterfacciaComunicazioneClient {
 					return false;
 				}
 
-				/*
-				 * //il server chiede di posizionare inizialmente il pastore
-				 * else if(line.equals(ComandiSocket.POSIZIONA_PASTORE)){
-				 * out.reset(); out.writeInt(controllore.posizionaPastore());
-				 * out.flush(); }
-				 */
 			} catch (ClassNotFoundException e) {
 				LOGGER.log("errore ricezione da server", e);
 			}

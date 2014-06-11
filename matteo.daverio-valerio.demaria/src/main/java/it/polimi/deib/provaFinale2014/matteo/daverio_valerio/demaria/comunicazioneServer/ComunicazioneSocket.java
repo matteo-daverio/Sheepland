@@ -22,7 +22,7 @@ import java.util.List;
  * @author Valerio De Maria
  * 
  */
-public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
+public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	private Socket socket;
 	private String nome;
@@ -353,6 +353,61 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneClient {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void comunicaMovimentoPastore(int posizione, String giocatore,
+			int pastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaAcquistaTessera(TipoTerreno terreno, String giocatore,
+			int pastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaAbbattimento(int regione, int pecora, String giocatore,
+			int pastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaAccoppiamento(int regione, String giocatore, int pastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaMovimentoPecora(int pecora, int strada,
+			String giocatore, int pastore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void comunicaPosizionamentoPastore(int turno, int pastore,
+			int posizione) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaTurno() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void aggiornaTurno(String giocatore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int selezionaPastore(int primo, int secondo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -25,7 +25,7 @@ public class ControllorePartita implements Runnable {
 	private List<Gestione> connessioni = new ArrayList<Gestione>();
 	private Partita partita;
 	private boolean finePartita, faseFinale;
-	private List<InterfacciaComunicazioneClient> giocatori = new ArrayList<InterfacciaComunicazioneClient>();
+	private List<InterfacciaComunicazioneToClient> giocatori = new ArrayList<InterfacciaComunicazioneToClient>();
 	private List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
 	private List<MosseEnum> mosseFatte = new ArrayList<MosseEnum>();
 
@@ -53,7 +53,7 @@ public class ControllorePartita implements Runnable {
 	 */
 	private void comunicaMovimentoPecoraNera(int nuovaPosizione) {
 
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 
 			x.comunicaMovimentoPecoraNera(nuovaPosizione);
 
@@ -158,7 +158,7 @@ public class ControllorePartita implements Runnable {
 	 */
 	private void controllaConnessioneClients(List<MosseEnum> mosseDisponibili) {
 		Mossa mossa;
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			mossa = x.riceviMossa(mosseDisponibili);
 		}
 	}
@@ -253,7 +253,7 @@ public class ControllorePartita implements Runnable {
 	 */
 	public boolean contieneClient(String nome) {
 
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			if (x.getNome().equals(nome)) {
 				return true;
 			}
@@ -271,7 +271,7 @@ public class ControllorePartita implements Runnable {
 	 * @author Valerio De Maria
 	 */
 	public void aggiornaComunicazione(String nome, Socket socket) {
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			if (x.getNome().equals(nome)) {
 				// se il client che si è disconesso è Socket aggiorno la socket
 				if (x.getTipoConnessione().equals("socket")) {
@@ -318,7 +318,7 @@ public class ControllorePartita implements Runnable {
 		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
 
 		// creo la lista di nomi
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			nomi.add(x.getNome());
 		}
 
@@ -335,7 +335,7 @@ public class ControllorePartita implements Runnable {
 		}
 
 		// invio le liste a tutti i giocatori
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			System.out.println("Invio a " + x.getNome() + " le liste");
 			x.inviaDatiGiocatori(nomi, soldi, tessereIniziali);
 		}
@@ -393,7 +393,7 @@ public class ControllorePartita implements Runnable {
 	}
 
 	public void inviaPosizioneInizialePecore() {
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			x.comunicaPecore(partita.getPecore());
 		}
 	}
@@ -561,7 +561,7 @@ public class ControllorePartita implements Runnable {
 	 * @author Valerio De Maria
 	 */
 	private void comunicaFaseFinale() {
-		for (InterfacciaComunicazioneClient x : giocatori) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
 			x.comunicaFaseFinale();
 		}
 

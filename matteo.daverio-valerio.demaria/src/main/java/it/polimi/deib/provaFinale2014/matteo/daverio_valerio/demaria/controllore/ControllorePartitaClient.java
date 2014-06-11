@@ -3,12 +3,13 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllor
 import java.io.IOException;
 import java.util.List;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientSocket;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaComunicazioneClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaComunicazioneToServer;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
@@ -20,8 +21,11 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Abbatti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Accoppia;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.CommandLine;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.GuiImpl;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.InterfacciaGrafica;
@@ -35,7 +39,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient
 public class ControllorePartitaClient {
 
 	private final String protocollo, grafica, IP;
-	private InterfacciaComunicazioneClient client;
+	private InterfacciaComunicazioneToServer client;
 	private InterfacciaGrafica schermo;
 	private Partita partita;
 
@@ -154,7 +158,44 @@ public class ControllorePartitaClient {
 	 */
 	public Mossa richiediMossa(List<MosseEnum> mosseDisponibili) {
 		
+		int mossaScelta;
+		
 		schermo.visualizzaMosseDisponibili(mosseDisponibili);
+		
+		mossaScelta=schermo.chiediMossa(mosseDisponibili.size()-1);
+		
+		switch(mosseDisponibili.get(mossaScelta)){
+		
+		case MUOVI_PASTORE:
+			int posizione;
+			posizione=schermo.scegliStrada();
+			return new MuoviPastore(posizione);
+		
+		case MUOVI_PECORA:
+			int pecoraScelta;
+			int strada;
+			pecoraScelta=schermo.scegliPecora();
+			strada=schermo.scegliStrada();
+			return new MuoviPecora(strada,pecoraScelta);
+			
+		case COMPRA_TESSERA:
+			//TODO
+			break;
+		case ABBATTI:
+			int regione;
+			int pScelta;
+			pScelta=schermo.scegliPecora();
+			regione=schermo.scegliRegione();
+			return new Abbatti(regione,pScelta);
+		
+		case ACCOPPIA:
+			int reg;
+			reg=schermo.scegliRegione();
+			return new Accoppia(reg);
+		
+		default:
+		break;
+		}
 		
 		return new MuoviPastore(9);
 	}
@@ -178,11 +219,22 @@ public class ControllorePartitaClient {
 	public boolean logIn(String nome, String password) throws IOException {
 
 		boolean autenticato = false;
+		
 		autenticato = client.effettuaLogin(nome, password);
-		if (autenticato) {
-			client.attendiPartita();
-		}
+		
 		return autenticato;
+	}
+	
+	public void riceviAggiornamenti(){
+		try {
+			client.riceviAggiornamenti();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

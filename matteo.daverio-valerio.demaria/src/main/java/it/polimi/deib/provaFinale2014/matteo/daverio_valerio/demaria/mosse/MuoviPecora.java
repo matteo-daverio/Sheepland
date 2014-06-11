@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneToClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class MuoviPecora implements Mossa,Serializable {
 
-	private Strada strada;
+	private int strada;
 	private int pecora;
 	private int pastore;
 	private String giocatore;
 
 	// costruttore
-	public MuoviPecora(Strada strada, int pecora) {
+	public MuoviPecora(int strada, int pecora) {
 
 		this.strada = strada;
 		this.pecora = pecora;
@@ -41,10 +41,10 @@ public class MuoviPecora implements Mossa,Serializable {
 	}
 
 	public void aggiornaClients(
-			List<InterfacciaComunicazioneClient> giocatori,int turno) {
+			List<InterfacciaComunicazioneToClient> giocatori,int turno) {
 		for (int i=0;i<=giocatori.size();i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaMovimentoPecora(pecora, strada.getPosizione(),giocatore,pastore);
+				giocatori.get(turno-1).comunicaMovimentoPecora(pecora, strada,giocatore,pastore);
 	           }
 			}		
 

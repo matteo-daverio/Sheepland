@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneToClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
@@ -45,11 +45,13 @@ public class MuoviPastore implements Mossa, Serializable {
 
 	}
 
-	public void aggiornaClients(List<InterfacciaComunicazioneClient> giocatori,
+	public void aggiornaClients(List<InterfacciaComunicazioneToClient> giocatori,
 			int turno) {
 		System.out.println("aggiorno i clients");
-		for (int i = 0; i <= giocatori.size(); i++) {
+		System.out.println("size giocatori: "+giocatori.size());
+		for (int i = 0; i <= giocatori.size()-1; i++) {
 			if (i != (turno - 1)) {
+				System.out.println("invio aggiornamento");
 				giocatori.get(turno - 1).comunicaMovimentoPastore(posizione,
 						giocatore, pastore);
 			}
@@ -63,7 +65,7 @@ public class MuoviPastore implements Mossa, Serializable {
 			m.add(x);
 		}
 		System.out.println("aggiungo alle mosse fatte il movimento pastore");
-		mosseFatte.add(MosseEnum.MUOVI_PASTORE);
+		m.add(MosseEnum.MUOVI_PASTORE);
 		return m;
 
 	}
