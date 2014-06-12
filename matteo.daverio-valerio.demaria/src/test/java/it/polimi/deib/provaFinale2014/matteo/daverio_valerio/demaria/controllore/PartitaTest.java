@@ -4,15 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 
 import org.junit.Before;
@@ -80,44 +75,44 @@ public class PartitaTest {
 		assertEquals("incrementatore turno sbagliato", 1, partita.getTurno());
 	}
 
-	@Test(expected = NoMovementException.class)
+	@Test(expected = GameException.class)
 	// testo l'eccezione NoMovementException
 	public void verificaNoMovementException() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
-		partita.muoviPastore(30);
+		partita.muoviPastore(30,0);
 	}
 
-	@Test(expected = NoMoneyException.class)
+	@Test(expected = GameException.class)
 	// testo l'eccezione NoMoneyException
 	public void verificaMoneyException() throws GameException {
 		partita.getPastori().get(0).setPosizione(1);
 		partita.getPastori().get(0).setDenaro(0);
-		partita.muoviPastore(17);
+		partita.muoviPastore(17,0);
 		// TODO controlla il movimento pastore in 17, ogni tanto da errore
 	}
 
-	@Test(expected = InvalidMovementException.class)
+	@Test(expected = GameException.class)
 	// testo l'eccezione InvalidMovementException per strada recintata
 	public void verificaInvalidMovementException1() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.getStrade().get(17).aggiungiRecinto();
-		partita.muoviPastore(17);
+		partita.muoviPastore(17,0);
 	}
 
-	@Test(expected = InvalidMovementException.class)
+	@Test(expected = GameException.class)
 	// testo l'eccezione InvalidMovementException per strada occupata
 	public void verificaInvalidMovementException2() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.aggiungiPastore("Matteo", 2);
 		partita.getPastori().get(1).setPosizione(17);
-		partita.muoviPastore(17);
+		partita.muoviPastore(17,0);
 	}
 
 	@Test
 	// movimento pastore con strada sgombra e limitrofa
 	public void muoviPastoreTest1() throws GameException {
 		partita.getPastori().get(0).setPosizione(30);
-		partita.muoviPastore(1);
+		partita.muoviPastore(1,0);
 		assertEquals("movimento pastore non corretto", 1, partita.getPastori()
 				.get(0).getPosizione());
 		assertEquals("il pastore spende denaro per movimenti gratis", 20,
@@ -133,7 +128,7 @@ public class PartitaTest {
 		partita.getPastori().get(0).setPosizione(30);
 		partita.getPastori().get(0).setDenaro(20);
 		assertFalse(partita.getStrade().get(25).recintata());
-		partita.muoviPastore(25);
+		partita.muoviPastore(25,0);
 		assertEquals("movimento pastore non corretto", 25, partita.getPastori()
 				.get(0).getPosizione());
 		assertEquals("non viene speso 1 denaro", 19, partita.getPastori()
@@ -178,7 +173,7 @@ public class PartitaTest {
 				.getPecore().size());
 	}
 
-	@Test(expected = NoSheepInShireException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * controllo che se il pastore si trova in una strada adiacente alla regione
 	 * richiesta, ma in quella regione non ci sono pecore, solleva un'eccezione
@@ -196,7 +191,7 @@ public class PartitaTest {
 		partita.abbatti(3,0);
 	}
 	
-	@Test(expected = NoSheepInShireException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * tutte le pecore eccetto la pecora 0 sono in posizione 5, tento abbattimento
 	 * della pecora 0 in posizione 5
@@ -215,7 +210,7 @@ public class PartitaTest {
 		partita.abbatti(3,0);
 	}
 
-	@Test(expected = NoMoneyException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * controllo che se il pastore non ha denaro, e si trova in una regione con
 	 * delle pecore abbattibili, ma è visto da altri pastori, solleva
@@ -236,7 +231,7 @@ public class PartitaTest {
 		partita.abbatti(3,0);
 	}
 
-	@Test(expected = IllegalShireException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * controllo che solleva un eccezione tentare un abbattimento su una regione
 	 * sprovvista di pecore
@@ -284,7 +279,7 @@ public class PartitaTest {
 				.getPecore().size());
 	}
 
-	@Test(expected = CannotProcreateException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * solleva eccezione se nella regione non ci sono sia montoni sia pecore
 	 * 
@@ -304,7 +299,7 @@ public class PartitaTest {
 		partita.accoppia(11);
 	}
 
-	@Test(expected = CannotProcreateException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * solleva eccezione se non ci sono pecore nella regione scelta
 	 * 
@@ -323,7 +318,7 @@ public class PartitaTest {
 		partita.accoppia(11);
 	}
 
-	@Test(expected = IllegalShireException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * solleva eccezione se il terreno inserito non è adiacente al pastore
 	 * 
@@ -348,7 +343,7 @@ public class PartitaTest {
 
 	}
 
-	@Test(expected = NoMoreCardsException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * attende eccezione se il pastore vuole acquistare delle tessere di una tipologia di cui non ce ne sono più
 	 * 
@@ -359,11 +354,11 @@ public class PartitaTest {
 	public void noMoreCardsExceptionTest() throws GameException {
 		partita.getPastori().get(0).setPosizione(0);
 		for (int i = 0; i <= 6; i++) {
-			partita.compraTessera(TipoTerreno.PRATERIA);
+			partita.compraTessera(TipoTerreno.PRATERIA,0);
 		}
 	}
 
-	@Test(expected = NoMoneyException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * attende eccezione se il giocatore tenta di acquistare una tessera senza avere soldi
 	 * 
@@ -374,11 +369,11 @@ public class PartitaTest {
 	public void noMoneyExceptionTest2() throws GameException {
 		partita.getPastori().get(0).setPosizione(0);
 		partita.getPastori().get(0).setDenaro(0);
-		partita.compraTessera(TipoTerreno.PRATERIA);
-		partita.compraTessera(TipoTerreno.PRATERIA);
+		partita.compraTessera(TipoTerreno.PRATERIA,0);
+		partita.compraTessera(TipoTerreno.PRATERIA,0);
 	}
 
-	@Test(expected = IllegalShireTypeException.class)
+	@Test(expected = GameException.class)
 	/**
 	 * attende eccezione se un pastore tenta di acquistare una tipologia di terreno non adiacente a lui
 	 * 
@@ -389,7 +384,7 @@ public class PartitaTest {
 	 */
 	public void illegalShireTypeExceptionTest() throws GameException {
 		partita.getPastori().get(0).setPosizione(0);
-		partita.compraTessera(TipoTerreno.SABBIA);
+		partita.compraTessera(TipoTerreno.SABBIA,0);
 	}
 
 	/**
@@ -399,6 +394,12 @@ public class PartitaTest {
 	 * 
 	 */
 	class MiaPartita extends Partita {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		int lancioDado() {
 			return 6;
