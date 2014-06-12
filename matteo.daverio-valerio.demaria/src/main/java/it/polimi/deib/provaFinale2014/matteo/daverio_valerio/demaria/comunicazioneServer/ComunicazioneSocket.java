@@ -319,7 +319,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		return-1;
 	}
 
-	public void inviaDatiGiocatori(List<String> nomi,List<Integer>soldi,List<Tessera> tessereIniziali) {
+	public void inviaDatiGiocatori(List<String> nomi,List<Integer>soldi) {
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.DATI_GIOCATORI);
@@ -329,9 +329,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.flush();
 			out.reset();
 			out.writeObject(soldi);
-			out.flush();
-			out.reset();
-			out.writeObject(tessereIniziali);
 			out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -408,6 +405,36 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	public int selezionaPastore(int primo, int secondo) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void comunicaMossaSbagliata() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void inviaTesseraIniziale(Tessera tesseraIniziale) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mossaCorretta() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void inviaPunteggi(List<Integer> punteggiFinali, List<String> nomi) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaDenaro(int denaro) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaNumeroRecinti(int recinti) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

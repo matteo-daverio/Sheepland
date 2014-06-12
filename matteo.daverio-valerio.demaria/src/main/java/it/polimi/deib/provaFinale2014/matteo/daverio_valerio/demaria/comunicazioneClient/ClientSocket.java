@@ -143,9 +143,6 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					controllore.riceviNomiGiocatori(nomi);
 					List<Integer> soldi = (List<Integer>) in.readObject();
 					controllore.riceviSoldiPastori(soldi);
-					List<Tessera> tessereIniziali = (List<Tessera>) in
-							.readObject();
-					controllore.riceviTessereInizialiPastori(tessereIniziali);
 
 					break;
 					

@@ -40,9 +40,12 @@ public class CompraTessera implements Mossa,Serializable {
 
 	public void aggiornaClients(
 			List<InterfacciaComunicazioneToClient> giocatori,int turno) {
-		for (int i=0;i<=giocatori.size();i++) {
+		for (int i=0;i<=giocatori.size()-1;i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaAcquistaTessera(terreno,giocatore,pastore);;
+				giocatori.get(i).comunicaAcquistaTessera(terreno,giocatore,pastore);;
+	           }
+	           else{
+	        	   giocatori.get(i).mossaCorretta();
 	           }
 			}		
 

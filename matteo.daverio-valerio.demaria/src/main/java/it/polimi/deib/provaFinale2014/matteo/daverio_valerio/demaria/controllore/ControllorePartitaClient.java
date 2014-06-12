@@ -23,6 +23,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Abbatti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Accoppia;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.CompraTessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPecora;
@@ -68,8 +69,8 @@ public class ControllorePartitaClient {
 		schermo.soldiPastori(soldi);
 	}
 
-	public void riceviTessereInizialiPastori(List<Tessera> tessereIniziali) {
-		schermo.tessereInizialiPastori(tessereIniziali);
+	public void riceviTesseraIniziale(Tessera tesseraIniziale) {
+		schermo.tesseraIniziale(tesseraIniziale);
 	}
 
 	public void settaPecore(List<Pecora> pecore) {
@@ -179,8 +180,29 @@ public class ControllorePartitaClient {
 			return new MuoviPecora(strada,pecoraScelta);
 			
 		case COMPRA_TESSERA:
-			//TODO
+			int tipoTerreno;
+			tipoTerreno=schermo.scegliTipoTerreno();
+			
+		    switch(tipoTerreno){
+		    case 1:
+		    	return new CompraTessera(TipoTerreno.ACQUA);
+		    case 2:
+		    	return new CompraTessera(TipoTerreno.FORESTA);
+		    case 3:
+		    	return new CompraTessera(TipoTerreno.GRANO);
+		    case 4:
+		    	return new CompraTessera(TipoTerreno.PRATERIA);
+		    case 5:
+		    	return new CompraTessera(TipoTerreno.ROCCIA);
+		    case 6:
+		    	return new CompraTessera(TipoTerreno.SABBIA);
+
+		    default:
+		    	break;
+		    }
+		    
 			break;
+			
 		case ABBATTI:
 			int regione;
 			int pScelta;
@@ -203,6 +225,30 @@ public class ControllorePartitaClient {
 	public int selezionaPastore(int primo, int secondo){
 		
 		return schermo.selezionaPastore(primo,secondo);
+	}
+	
+	public void mossaSbagliata(){
+		schermo.mossaSbagliata();
+	}
+	
+	public void mossaCorretta(){
+		schermo.mossaCorretta();
+	}
+	
+	public void faseFinale(){
+		schermo.faseFinale();
+	}
+	
+	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi){
+		schermo.punteggiFinali(punteggiFinali,nomi);
+	}
+	
+	public void comunicaDenaro(int denaro){
+		schermo.comunicaDenaro(denaro);
+	}
+	
+	public void comunicaNumeroRecinti(int recinti){
+		schermo.comunicaNumeroRecinti(recinti);
 	}
 
 	/**

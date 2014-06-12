@@ -48,12 +48,13 @@ public class MuoviPastore implements Mossa, Serializable {
 	public void aggiornaClients(List<InterfacciaComunicazioneToClient> giocatori,
 			int turno) {
 		System.out.println("aggiorno i clients");
-		System.out.println("size giocatori: "+giocatori.size());
 		for (int i = 0; i <= giocatori.size()-1; i++) {
 			if (i != (turno - 1)) {
-				System.out.println("invio aggiornamento");
-				giocatori.get(turno - 1).comunicaMovimentoPastore(posizione,
+				giocatori.get(i).comunicaMovimentoPastore(posizione,
 						giocatore, pastore);
+			}
+			else{
+				giocatori.get(i).mossaCorretta();
 			}
 		}
 

@@ -122,7 +122,7 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	}
 
 	public void faseFinale() {
-		// TODO Auto-generated method stub
+		controllore.faseFinale();
 	}
 
 	//NEW
@@ -172,11 +172,10 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		
 	}
 
-	public void riceviDatiGiocatori(List<String> nomi,List<Integer> soldi,List<Tessera> tessereIniziali)
+	public void riceviDatiGiocatori(List<String> nomi,List<Integer> soldi)
 			throws RemoteException {
 		controllore.riceviNomiGiocatori(nomi);
 		controllore.riceviSoldiPastori(soldi);
-		controllore.riceviTessereInizialiPastori(tessereIniziali);
 	}
 
 	public void riceviPecore(List<Pecora> pecore) throws RemoteException {
@@ -197,6 +196,37 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 
 	public int selezionaPastore(int primo, int secondo) {
 		return controllore.selezionaPastore(primo,secondo);
+	}
+
+	public void mossaSbagliata() throws RemoteException {
+		controllore.mossaSbagliata();
+		
+	}
+
+	public void tesseraIniziale(Tessera tesseraIniziale) throws RemoteException {
+		controllore.riceviTesseraIniziale(tesseraIniziale);
+		
+	}
+
+	public void mossaCorretta() throws RemoteException {
+		controllore.mossaCorretta();
+		
+	}
+
+	public void punteggiFinali(List<Integer> punteggiFinali,List<String> nomi)
+			throws RemoteException {
+		controllore.punteggiFinali(punteggiFinali,nomi);
+		
+	}
+
+	public void comunicaDenaro(int denaro) {
+		controllore.comunicaDenaro(denaro);
+		
+	}
+
+	public void comunicaNumeroRecinti(int recinti) {
+	controllore.comunicaNumeroRecinti(recinti);
+		
 	}
 
 

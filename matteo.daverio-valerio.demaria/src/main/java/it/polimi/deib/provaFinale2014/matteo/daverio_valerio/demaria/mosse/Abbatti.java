@@ -46,9 +46,12 @@ public class Abbatti implements Mossa,Serializable {
 
 	public void aggiornaClients(
 			List<InterfacciaComunicazioneToClient> giocatori, int turno) {
-		for (int i=0;i<=giocatori.size();i++) {
+		for (int i=0;i<=giocatori.size()-1;i++) {
 	           if(i!=(turno-1)){
-				giocatori.get(turno-1).comunicaAbbattimento(regione,pecora,giocatore,pastore);
+				giocatori.get(i).comunicaAbbattimento(regione,pecora,giocatore,pastore);
+	           }
+	           else{
+	        	   giocatori.get(i).mossaCorretta();
 	           }
 			}		
 	}

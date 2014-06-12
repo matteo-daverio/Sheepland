@@ -82,6 +82,10 @@ public class Partita implements Serializable {
 	public PecoraNera getPecoraNera() {
 		return pecoraNera;
 	}
+	
+	public Map<Integer, TipoTerreno> getMappaRegioni(){
+		return mappaRegioni;
+	}
 
 	public Lupo getLupo() {
 		return lupo;

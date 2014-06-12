@@ -124,16 +124,11 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
-	public void tessereInizialiPastori(List<Tessera> tessereIniziali) {
-		for (int i = 1; i <= tessereIniziali.size(); i++) {
-			System.out.println("Il giocatore del turno " + i
-					+ " ha tessera iniziale di tipo: "
-					+ tessereIniziali.get(i-1).getTipo() + " con costo: "
-					+ tessereIniziali.get(i-1).getCosto());
-		}
+	public void tesseraIniziale(Tessera tesseraIniziale) {
+			System.out.println("La tua tessera iniziale è:  " +tesseraIniziale.getTipo());
 
 	}
-
+	
 	public void posizionamentoPastoreCorretto() {
 		System.out.println("hai posizionato il pastore in maniera corretta");
 
@@ -205,7 +200,7 @@ public class CommandLine implements InterfacciaGrafica {
 		int scelta;
 		do{
 			scelta=in.nextInt();
-		}while (scelta<0 && scelta>max);
+		}while (scelta<0 || scelta>max);
 		
 		System.out.println("hai selezionato "+scelta);
 		
@@ -226,6 +221,48 @@ public class CommandLine implements InterfacciaGrafica {
 	public int scegliPecora() {
 		System.out.println("Scegli la pecora:");
 		return in.nextInt();
+	}
+
+	public void mossaSbagliata() {
+		System.out.println("La mossa che hai fatto è sbagliata");
+		
+	}
+
+	public int scegliTipoTerreno() {
+		System.out.println("Seleziona il numero corrispondete al tipo di terreno di cui vuoi comprare la tessera:");
+		System.out.println("1-ACQUA,2-FORESTA,3-GRANO,4-PRATERIA,5-ROCCIA,6-SABBIA");
+		int scelta;
+		do{
+			scelta=in.nextInt();
+		}while(scelta<0||scelta>6);
+		return scelta;
+	}
+
+	public void mossaCorretta() {
+		System.out.println("La mossa è stata eseguita correttamente");
+		
+	}
+
+	public void faseFinale() {
+		System.out.println("Da ora inizia la fase finale del gioco!");		
+	}
+
+	public void punteggiFinali(List<Integer> punteggiFinali,List<String> nomi) {
+		System.out.println("I punteggi finali sono i seguenti:");
+		for (int i=0;i<=punteggiFinali.size()-1;i++){
+			System.out.println(nomi.get(i)+" ha ottenuto: "+punteggiFinali.get(i));
+		}
+		
+	}
+
+	public void comunicaDenaro(int denaro) {
+		System.out.println("Il tuo denaro è: "+ denaro);
+		
+	}
+
+	public void comunicaNumeroRecinti(int recinti) {
+		System.out.println("I recinti usati sono: "+recinti);
+		
 	}
 
 

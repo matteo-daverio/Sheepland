@@ -47,12 +47,24 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void setSocket(Socket socket);
 	
-	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi,List<Tessera> tessereIniziali);
+	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi);
 	
 	public void comunicaTurno();
 	
 	public void aggiornaTurno(String giocatore);
 	
+	public void inviaTesseraIniziale(Tessera tesseraIniziale);
+	
 	public int selezionaPastore(int primo, int secondo);
+	
+	public void comunicaMossaSbagliata();
+	
+	public void mossaCorretta();
+	
+	public void inviaPunteggi(List<Integer> punteggiFinali,List<String> nomi);
+	
+	public void comunicaDenaro(int denaro);
+	
+	public void comunicaNumeroRecinti(int recinti);
 
 }

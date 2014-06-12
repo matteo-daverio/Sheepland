@@ -22,7 +22,7 @@ public interface InterfacciaGrafica {
 	public void soldiPastori(List<Integer>soldi);
 	
 	//setta le tessere iniziali dei pastori
-	public void tessereInizialiPastori(List<Tessera> tessereIniziali);
+	public void tesseraIniziale(Tessera tesseraIniziale);
 	
 	//visualizza la posizione iniziale delle pecore
     public void settaPecore(List<Pecora> pecore);
@@ -59,9 +59,24 @@ public interface InterfacciaGrafica {
 	
 	public int chiediMossa(int max);
 	
+	public void mossaSbagliata();
+	
+	public void mossaCorretta();
+	
+	public void faseFinale();
+	
+	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi);
+	
+	public void comunicaDenaro(int denaro);
+	
+	public void comunicaNumeroRecinti(int recinti);
+	
 	//PER ESECUZIONE MOSSA
 	
 	public int scegliRegione();
 	public int scegliStrada();
 	public int scegliPecora();
+	//1-ACQUA,2-FORESTA,3-GRANO,4-PRATERIA,5-ROCCIA,6-SABBIA;
+	public int scegliTipoTerreno();
+	
 }

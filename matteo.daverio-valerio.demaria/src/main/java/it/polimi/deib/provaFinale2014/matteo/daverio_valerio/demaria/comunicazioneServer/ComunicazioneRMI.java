@@ -142,13 +142,18 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 	}
 
 	public void comunicaFaseFinale() {
-		
+		try {
+			client.faseFinale();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
-	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi, List<Tessera> tessereIniziali) {
+	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi) {
 		try {
-			client.riceviDatiGiocatori(nomi, soldi, tessereIniziali);;
+			client.riceviDatiGiocatori(nomi, soldi);;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -217,6 +222,57 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+
+	public void comunicaMossaSbagliata() {
+		try {
+			client.mossaSbagliata();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	public void inviaTesseraIniziale(Tessera tesseraIniziale) {
+		try {
+			client.tesseraIniziale(tesseraIniziale);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void mossaCorretta() {
+		try {
+			client.mossaCorretta();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void inviaPunteggi(List<Integer> punteggiFinali,List<String> nomi) {
+		try {
+			client.punteggiFinali(punteggiFinali,nomi);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaDenaro(int denaro) {
+		//client.comunicaDenaro(denaro);
+		
+	}
+
+	public void comunicaNumeroRecinti(int recinti) {
+		//client.comunicaNumeroRecinti(recinti);
+		
 	}
 
 
