@@ -17,7 +17,7 @@ public interface InterfacciaComunicazioneToClient {
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione);
 
-	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili);
+	//public Mossa riceviMossa(List<MosseEnum> mosseDisponibili);
 	
 	
     //AGGIORNANO I CLIENTS CHE NON SONO DEL TURNO
@@ -35,7 +35,7 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void comunicaPecore(List<Pecora> pecore);
 	
-	public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili);
+	//public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili);
 	
 	public void comunicaPosizionamentoPastore(int turno, int pastore, int posizione);
 	
@@ -66,5 +66,11 @@ public interface InterfacciaComunicazioneToClient {
 	public void comunicaDenaro(int denaro);
 	
 	public void comunicaNumeroRecinti(int recinti);
+	
+	/////METODI NUOVI
+	
+	public void inviaRichiestaMossa(List<MosseEnum> mosseDisponibili);
+	
+	public void inviaRichiestaPosizionamento(List<Integer> stradeDisponibili);
 
 }

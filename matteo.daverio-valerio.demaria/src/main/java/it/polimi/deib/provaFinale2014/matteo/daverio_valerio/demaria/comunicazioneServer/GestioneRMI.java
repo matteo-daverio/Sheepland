@@ -18,7 +18,6 @@ public class GestioneRMI implements Gestione {
 	private String nomeClient, password, tipo;
 	private InterfacciaClientRMI client;
 	private Partita partita;
-	//public int ID=0;
 
 	public GestioneRMI(){
 		

@@ -4,7 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 
 import java.rmi.RemoteException;
 
-public class ImplementazioneRMI implements InterfacciaGestioneRMI {
+public class ImplementazioneGestioneRMI implements InterfacciaGestioneRMI {
 
 	public boolean registrazione(String nomeClient, String password,
 			InterfacciaClientRMI client) throws RemoteException {

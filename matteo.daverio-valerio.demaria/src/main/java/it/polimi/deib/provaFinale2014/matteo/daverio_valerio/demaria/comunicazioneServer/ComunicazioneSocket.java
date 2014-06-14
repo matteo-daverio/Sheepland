@@ -26,7 +26,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	private Socket socket;
 	private String nome;
-	private ObjectInputStream in;
 	private ObjectOutputStream out;
 
 	/**
@@ -38,11 +37,10 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	 * @param nome
 	 * @author Valerio De Maria
 	 */
-	public ComunicazioneSocket(Socket socket, ObjectInputStream in,
+	public ComunicazioneSocket(Socket socket,
 			ObjectOutputStream out, String nome) {
 
 		this.socket = socket;
-		this.in = in;
 		this.out = out;
 		this.nome = nome;
 	}
@@ -433,6 +431,23 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	}
 
 	public void comunicaNumeroRecinti(int recinti) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//NUOVI METODI
+	
+	public void posizionamentoPastoreCorretto() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void inviaRichiestaMossa(List<MosseEnum> mosseDisponibili) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void inviaRichiestaPosizionamento(List<Integer> stradeDisponibili) {
 		// TODO Auto-generated method stub
 		
 	}

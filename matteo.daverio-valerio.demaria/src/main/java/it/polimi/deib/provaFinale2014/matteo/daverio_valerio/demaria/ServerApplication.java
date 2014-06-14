@@ -4,7 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.ImplementazioneRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.ImplementazioneGestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class ServerApplication {
 		try {
 
 			// creo l'oggetto remoto da caricare sul server
-			server = new ImplementazioneRMI();
+			server = new ImplementazioneGestioneRMI();
 			// esporto l'oggetto remoto
 			InterfacciaGestioneRMI stub = (InterfacciaGestioneRMI) UnicastRemoteObject
 					.exportObject(server, 0);

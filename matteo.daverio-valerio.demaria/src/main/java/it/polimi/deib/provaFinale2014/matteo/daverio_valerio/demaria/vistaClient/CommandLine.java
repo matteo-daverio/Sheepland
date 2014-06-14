@@ -265,6 +265,20 @@ public class CommandLine implements InterfacciaGrafica {
 		
 	}
 
+	
+	//NUOVI METODI/////////
+	public void richiestaPosizionamentoPastore() {
+		System.out.println("Posiziona pastore");
+		
+		controllore.posizioneInserita(in.nextInt());
+		
+	}
+
+	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

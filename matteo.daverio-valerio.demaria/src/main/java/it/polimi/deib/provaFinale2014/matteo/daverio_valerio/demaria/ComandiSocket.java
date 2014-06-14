@@ -3,6 +3,9 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 import java.io.Serializable;
 
 public enum ComandiSocket implements Serializable{
+	
+	//DA SERVER A CLIENT
+	
 	MOVIMENTO_PECORA_NERA,
 	CAMBIO_TURNO,
 	FASE_FINALE,
@@ -12,7 +15,12 @@ public enum ComandiSocket implements Serializable{
 	RICHIESTA_NOME,RICHIESTA_PASSWORD,AUTENTICAZIONE_RIUSCITA,AUTENTICAZIONE_FALLITA,
 	LOG_IN,
 	INIZIO_TURNO,
-	POSIZIONA_PASTORE,
+	RICHIESTA_POSIZIONE_PASTORE,
 	DATI_GIOCATORI,
-	INVIO_PECORE
+	INVIO_PECORE,
+	
+	//DA CLIENT A SERVER
+	
+	POSIZIONE_PASTORE,
+	MOSSA
 }

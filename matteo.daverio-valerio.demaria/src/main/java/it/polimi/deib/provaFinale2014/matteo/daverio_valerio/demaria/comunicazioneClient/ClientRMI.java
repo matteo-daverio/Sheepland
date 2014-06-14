@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ServerApplication;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaServerRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
@@ -46,6 +47,7 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	private Partita partita;
 	private InterfacciaGestioneRMI server;
 	private ControllorePartitaClient controllore;
+	private InterfacciaServerRMI serverRMI;
 
 	/**
 	 * costruttore
@@ -81,20 +83,15 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 
 		controllore.movimentoPecoraNera(posizione);
 	}
-
-	/**
-	 * il server richiede al client di inviargli una mossa
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) {
+/*
+		public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) {
         
 		if (mosseDisponibili.size() == 0) {
 			return (new Pong());
 		}
 		return controllore.richiediMossa(mosseDisponibili);
 	}
-
+*/
 	public void acquistoTessera(TipoTerreno terreno,String giocatore,int pastore) throws RemoteException,
 			GameException {
 		controllore.acquistoTessera(terreno, giocatore, pastore);
@@ -125,7 +122,6 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		controllore.faseFinale();
 	}
 
-	//NEW
 	public boolean effettuaLogin(String nome, String password)
 			throws IOException {
 		
@@ -182,12 +178,12 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		controllore.settaPecore(pecore);
 		
 	}
-
+/*
 	public int posizionaPastore(List<Integer> stradeDisponibili)
 			throws RemoteException {
 		return controllore.posizionamentoPastore(stradeDisponibili);
 	}
-
+*/
 	public void riceviAggiornamentoPosizionamentoPastore(int turno,
 			int pastore, int posizione) throws RemoteException {
 		
@@ -228,6 +224,47 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 	controllore.comunicaNumeroRecinti(recinti);
 		
 	}
+	
+	//// NUOVI METODI
+
+	public void riceviStubServer(InterfacciaServerRMI serverRMI)
+			throws RemoteException {
+		this.serverRMI=serverRMI;
+		
+	}
+
+
+	public void richiestaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException {
+		controllore.richiestaMossa(mosseDisponibili);
+		
+	}
+
+	public void richiestaPosizionamento(List<Integer> stradeDisponibili) throws RemoteException {
+		controllore.richiestaPosizionamentoPastore(stradeDisponibili);
+		
+	}
+
+	public void inviaPosizionePastore(int posizione) {
+		try {
+			this.serverRMI.riceviPosizionePastore(posizione);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void inviaMossa(Mossa mossa) {
+		try {
+			this.serverRMI.riceviMossa(mossa);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
 
 
 

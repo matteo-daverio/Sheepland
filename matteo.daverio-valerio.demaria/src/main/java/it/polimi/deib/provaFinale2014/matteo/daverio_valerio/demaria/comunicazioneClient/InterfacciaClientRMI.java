@@ -2,6 +2,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaServerRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
@@ -32,7 +33,7 @@ public interface InterfacciaClientRMI extends Remote {
 
 	public void movimentoPecoraNera(int posizione) throws RemoteException;
 
-	public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException;
+	//public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException;
 
 	public void movimentoPastore(int posizione, String giocatore, int pastore) throws RemoteException,
 			 GameException;
@@ -56,7 +57,7 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void riceviPecore(List<Pecora> pecore) throws RemoteException;
 	
-	public int posizionaPastore(List<Integer> stradeDisponibili)throws RemoteException;
+	//public int posizionaPastore(List<Integer> stradeDisponibili)throws RemoteException;
 	
 	public void riceviAggiornamentoPosizionamentoPastore(int turno,int pastore, int posizione) throws RemoteException;
 	
@@ -73,4 +74,12 @@ public interface InterfacciaClientRMI extends Remote {
 	public void comunicaDenaro(int denaro)throws RemoteException;
 	
 	public void comunicaNumeroRecinti(int recinti)throws RemoteException;
+	
+	///// NUOVI METODI  //////
+	
+	public void riceviStubServer(InterfacciaServerRMI serverRMI) throws RemoteException;
+	
+	public void richiestaMossa(List<MosseEnum> mosseDisponibili)throws RemoteException;
+	
+	public void richiestaPosizionamento(List<Integer> stradeDisponibili)throws RemoteException;
 }

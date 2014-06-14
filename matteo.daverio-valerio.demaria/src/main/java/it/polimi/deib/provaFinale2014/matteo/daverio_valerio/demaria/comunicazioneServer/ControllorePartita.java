@@ -3,6 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
@@ -11,9 +12,11 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.net.Socket;
-import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * gestisce l'evolversi della partita
@@ -25,14 +28,24 @@ public class ControllorePartita implements Runnable {
 
 	private List<Gestione> connessioni = new ArrayList<Gestione>();
 	private Partita partita;
-	private boolean finePartita, faseFinale;
+	private boolean  faseFinale;
 	private List<InterfacciaComunicazioneToClient> giocatori = new ArrayList<InterfacciaComunicazioneToClient>();
 	private List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
 	private List<MosseEnum> mosseFatte = new ArrayList<MosseEnum>();
 	private List<Integer> punteggiFinali = new ArrayList<Integer>();
 	private List<String> nomi = new ArrayList<String>();
+	List<Integer> stradeDisponibili = new ArrayList<Integer>();
+	private int pastoreInGioco, numeroMosse;
+	private InterfacciaServerRMI stubServerRMI;
+	// pool di thread
+	ExecutorService ricezioniSocket = Executors.newCachedThreadPool();
 
-	// costruttore
+	/**
+	 * COSTRUTTORE
+	 * @param connessioni
+	 * @param partita
+	 * @author Valerio De Maria
+	 */
 	public ControllorePartita(List<Gestione> connessioni, Partita partita) {
 
 		// a quanto pare se io faccio this.connessioni=connessioni l'array di
@@ -47,6 +60,78 @@ public class ControllorePartita implements Runnable {
 		this.partita = partita;
 
 	}
+
+//////  METODI DA RIVEDERE ////////////////7//////
+/*
+	private void controllaConnessioneClients(List<MosseEnum> mosseDisponibili) {
+		Mossa mossa;
+		for (InterfacciaComunicazioneToClient x : giocatori) {
+			mossa = x.riceviMossa(mosseDisponibili);
+		}
+	}
+
+*/
+
+	private int selezionaPastore() {
+
+		if (giocatori.size() > 2) {
+			return partita.getTurno() - 1;
+		}
+
+		else {
+			if ((partita.getTurno() - 1) == 0) {
+				return giocatori.get(0).selezionaPastore(0, 1);
+			} else
+				return giocatori.get(1).selezionaPastore(2, 3);
+		}
+	}
+
+
+
+///// METODI CHIAMATI DAL GESTORE PARTITE /////////////////////////
+
+	/**
+	 * ritorna true se il nome passato come parametro è il nome di uno dei
+	 * giocatori della partita
+	 * 
+	 * @param nome
+	 * @return
+	 * @author Valerio De Maria
+	 */
+	public boolean contieneClient(String nome) {
+
+		for (InterfacciaComunicazioneToClient x : giocatori) {
+			if (x.getNome().equals(nome)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	/**
+	 * aggiorno i parametri di comunicazione client e reinvio la partita in
+	 * corso al client disconnesso
+	 * 
+	 * @param nome
+	 * @param socket
+	 * @author Valerio De Maria
+	 */
+	public void aggiornaComunicazione(String nome, Socket socket) {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
+			if (x.getNome().equals(nome)) {
+				// se il client che si è disconesso è Socket aggiorno la socket
+				if (x.getTipoConnessione().equals("socket")) {
+					x.setSocket(socket);
+				}
+
+			}
+		}
+	}
+
+
+
+///////////////////////////////////////METODI LOCALI////////////////////////////////////////////
 
 	/**
 	 * comunico a tutti i giocatori il movimento della pecora nera
@@ -93,7 +178,6 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
-					mosseDisponibili.add(MosseEnum.FINISCI_TURNO);
 					break;
 				case ACCOPPIA:
 					System.out.println("non può accoppiare");
@@ -101,7 +185,6 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
-					mosseDisponibili.add(MosseEnum.FINISCI_TURNO);
 					break;
 				case COMPRA_TESSERA:
 					System.out.println("non può comprare");
@@ -109,7 +192,6 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
-					mosseDisponibili.add(MosseEnum.FINISCI_TURNO);
 					break;
 				case MUOVI_PASTORE:
 					System.out.println("non può muovere il pastore");
@@ -117,7 +199,6 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
-					mosseDisponibili.add(MosseEnum.FINISCI_TURNO);
 					break;
 				case MUOVI_PECORA:
 					System.out.println("non può muovere la pecora");
@@ -125,7 +206,6 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
-					mosseDisponibili.add(MosseEnum.FINISCI_TURNO);
 					break;
 				default:
 					break;
@@ -138,41 +218,14 @@ public class ControllorePartita implements Runnable {
 				mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 				mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 				mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
-				mosseDisponibili.add(MosseEnum.FINISCI_TURNO);
 				System.out.println("prima mossa->può fare quello che vuole");
 			}
 			return mosseDisponibili;
 		}
 
 	}
-
-	/**
-	 * metodo che riceve la mossa inviata dal client
-	 * 
-	 * @param mosseDisponibili
-	 * @return
-	 * @author Valerio De Maria
-	 */
-	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
-
-		return giocatori.get(partita.getTurno() - 1).riceviMossa(
-				mosseDisponibili);
-	}
-
-	/**
-	 * per ogni client richiedo un pong
-	 * 
-	 * @param mosseDisponibili
-	 * @author Valerio De Maria
-	 */
-	private void controllaConnessioneClients(List<MosseEnum> mosseDisponibili) {
-		Mossa mossa;
-		for (InterfacciaComunicazioneToClient x : giocatori) {
-			mossa = x.riceviMossa(mosseDisponibili);
-		}
-	}
-
-	public void inviaTurno() {
+	
+	private void inviaTurno() {
 
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 
@@ -184,21 +237,7 @@ public class ControllorePartita implements Runnable {
 			}
 		}
 	}
-
-	public int selezionaPastore() {
-
-		if (giocatori.size() > 2) {
-			return partita.getTurno() - 1;
-		}
-
-		else {
-			if ((partita.getTurno() - 1) == 0) {
-				return giocatori.get(0).selezionaPastore(0, 1);
-			} else
-				return giocatori.get(1).selezionaPastore(2, 3);
-		}
-	}
-
+	
 	private void comunicaDenaro() {
 		System.out.println("Ora comunico il denaro");
 		if (giocatori.size() > 2) {
@@ -215,73 +254,13 @@ public class ControllorePartita implements Runnable {
 			}
 		}
 	}
-	//System.out.println("")
-
+	
 	private void comunicaNumRecinti() {
 		for (InterfacciaComunicazioneToClient x : giocatori) {
 			x.comunicaNumeroRecinti(partita.getContatoreRecinti());
 		}
 	}
-
-	/**
-	 * svolgo le azioni da compiere per ogni turno
-	 * 
-	 * @author Valerio De Maria
-	 */
-	private void giocaTurno() {
-
-		int pastoreInGioco;
-
-		inviaTurno();
-
-		// la pecora nera muove all'inizio di ogni nuovo turno
-		partita.muoviPecoraNera();
-
-		// dico ai client che la pecora nera si è mossa
-		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
-
-		pastoreInGioco = selezionaPastore();
-
-		mosseFatte.clear();
-		int numMosse = 0;
-		// il giocatore compie le mosse che può fare nel turno
-		while (numMosse < Costanti.NUMERO_MOSSE_GIOCATORE) {
-
-			mosseDisponibili.clear();
-
-			controllaConnessioneClients(mosseDisponibili);
-
-			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
-
-			Mossa mossa = riceviMossa(mosseDisponibili);
-
-			try {
-				System.out.println("vado ad eseguire la mossa");
-				mossa.eseguiMossa(partita, giocatori
-						.get(partita.getTurno() - 1).getNome(), pastoreInGioco);
-
-				// faccio eseguire su tutti i client la mossa fatta
-				System.out.println("vado ad aggiornare clients");
-				mossa.aggiornaClients(giocatori, partita.getTurno());
-
-				System.out.println("vado ad aggiornare mosse fatte");
-				mosseFatte = mossa.aggiornaMosseFatte(mosseFatte);
-
-				comunicaDenaro();
-
-				comunicaNumRecinti();
-
-				numMosse++;
-
-			} catch (Exception e) {
-
-				giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata();
-			}
-
-		}// fine ciclo while
-
-	}
-
+	
 	private void conteggioPunti() {
 
 		int punteggioTotale;
@@ -321,58 +300,14 @@ public class ControllorePartita implements Runnable {
 		}
 
 	}
-
+	
 	private void comunicaPunteggiFinali(List<Integer> punteggiFinali) {
 		for (InterfacciaComunicazioneToClient x : giocatori) {
 			x.inviaPunteggi(punteggiFinali, nomi);
 		}
 
 	}
-
-	/**
-	 * ritorna true se il nome passato come parametro è il nome di uno dei
-	 * giocatori della partita
-	 * 
-	 * @param nome
-	 * @return
-	 * @author Valerio De Maria
-	 */
-	public boolean contieneClient(String nome) {
-
-		for (InterfacciaComunicazioneToClient x : giocatori) {
-			if (x.getNome().equals(nome)) {
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	/**
-	 * aggiorno i parametri di comunicazione client e reinvio la partita in
-	 * corso al client disconnesso
-	 * 
-	 * @param nome
-	 * @param socket
-	 * @author Valerio De Maria
-	 */
-	public void aggiornaComunicazione(String nome, Socket socket) {
-		for (InterfacciaComunicazioneToClient x : giocatori) {
-			if (x.getNome().equals(nome)) {
-				// se il client che si è disconesso è Socket aggiorno la socket
-				if (x.getTipoConnessione().equals("socket")) {
-					x.setSocket(socket);
-				}
-
-			}
-		}
-	}
-
-	/**
-	 * per ogni client creo una nuova classe di comunicazione soket o RMI
-	 * 
-	 * @author Valerio De Maria
-	 */
+	
 	private void trasferisciGestioneComunicazione() {
 
 		System.out.println(connessioni.size());
@@ -380,21 +315,26 @@ public class ControllorePartita implements Runnable {
 			System.out.println(x.getNome() + " è un mio giocatore");
 			if (x.getTipoConnessione().equals("socket")) {
 				giocatori.add(new ComunicazioneSocket(x.getSocket(), x
-						.getBufferIn(), x.getBufferOut(), x.getNome()));
+						.getBufferOut(), x.getNome()));
+				ricezioniSocket.submit(new ThreadRicezioneSocket(x
+						.getBufferIn(),this));
 			} else {
 
+
 				giocatori.add(new ComunicazioneRMI(x.getNome(), x
-						.getInterfacciaClient()));
+						.getInterfacciaClient(), this));
+				
+				
 			}
 
 		}
 	}
-
+	
 	private void comunicaFinePartita() {
 		// TODO
 	}
-
-	public void inviaDatiGiocatori() {
+	
+	private void inviaDatiGiocatori() {
 
 		List<Integer> soldi = new ArrayList<Integer>();
 		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
@@ -428,8 +368,8 @@ public class ControllorePartita implements Runnable {
 		}
 
 	}
-
-	public void impostaDenaro() {
+	
+	private void impostaDenaro() {
 		if (giocatori.size() > 2) {
 			for (Pastore x : partita.getPastori()) {
 				x.setDenaro(20);
@@ -441,8 +381,8 @@ public class ControllorePartita implements Runnable {
 			partita.getPastori().get(3).setDenaro(0);
 		}
 	}
-
-	public void impostaTesseraIniziale() {
+	
+	private void impostaTesseraIniziale() {
 		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
 
 		// creo la lista di tessere iniziali
@@ -479,14 +419,14 @@ public class ControllorePartita implements Runnable {
 		}
 
 	}
-
-	public void inviaPosizioneInizialePecore() {
+	
+	private void inviaPosizioneInizialePecore() {
 		for (InterfacciaComunicazioneToClient x : giocatori) {
 			x.comunicaPecore(partita.getPecore());
 		}
 	}
-
-	public void aggiungiPastori() {
+	
+	private void aggiungiPastori() {
 
 		if (giocatori.size() > 2) {
 			for (int i = 0; i <= giocatori.size() - 1; i++) {
@@ -504,8 +444,8 @@ public class ControllorePartita implements Runnable {
 					.add(new Pastore(giocatori.get(1).getNome(), 2));
 		}
 	}
-
-	public void inizializza() {
+	
+	private void inizializza() {
 
 		// creo le classi di comunicazione che si occuperrano di comunicare con
 		// i client in maniera trasparente rispetto alla modalità di connessione
@@ -523,8 +463,8 @@ public class ControllorePartita implements Runnable {
 
 		inviaDatiGiocatori();
 	}
-
-	public void aggiornaPosizionamentoPastori(int turno, int pastore,
+	
+	private void aggiornaPosizionamentoPastori(int turno, int pastore,
 			int posizione) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 
@@ -537,62 +477,167 @@ public class ControllorePartita implements Runnable {
 
 		}
 	}
+	
+	private void comunicaFaseFinale() {
+		for (InterfacciaComunicazioneToClient x : giocatori) {
+			x.comunicaFaseFinale();
+		}
 
-	public void posizionaPastori() {
+	}
+	private void creaStradeDisponibili() {
 
-		List<Integer> stradeDisponibili = new ArrayList<Integer>();
-		int posizioneScelta;
-
-		// creo la lista di strade disponibili
 		for (Strada x : partita.getStrade()) {
 			stradeDisponibili.add(x.getPosizione());
 		}
+	}
 
-		if (giocatori.size() > 2) {
-			for (int i = 0; i <= giocatori.size() - 1; i++) {
-				posizioneScelta = giocatori.get(i).chiediPosizionamentoPastore(
-						stradeDisponibili);
+	private void inviaRichiestaPosizionamentoPastore() {
 
-				if (posizioneScelta != -1) {
-					partita.getPastori().get(i).setPosizione(posizioneScelta);
-					stradeDisponibili.remove(stradeDisponibili
-							.indexOf(posizioneScelta));
-					aggiornaPosizionamentoPastori(i + 1, i, posizioneScelta);
-				} else
-					System.out
-							.println("errore in comunicazione richiesta posizionamento pastore");
+		giocatori.get(partita.getTurno()).inviaRichiestaPosizionamento(
+				stradeDisponibili);
+
+	}
+
+	private void chiediMosse() {
+		if (numeroMosse == 3) {
+			// cambio il turno
+			if (partita.getTurno() == giocatori.size()) {
+				partita.setTurno(partita.getTurno() + 1);
+			} else {
+				partita.setTurno(1);
 			}
+
+			// il lupo muove a fine turno
+			partita.muoviLupo();
+
+			// faccio giocare il turno al giocatore successivo
+			giocaTurno();
+
+		} else {
+
+			mosseDisponibili.clear();
+
+			// TODO gestire la disconnessione
+			// controllaConnessioneClients(mosseDisponibili);
+
+			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
+
+			// dico al client che deve inviarmi una mossa
+			giocatori.get(partita.getTurno()-1).inviaRichiestaMossa(mosseDisponibili);
 		}
-		// due giocatori
+
+	}
+
+	private void controlloFinePartita() {
+
+		if ((partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) && !faseFinale) {
+			comunicaFaseFinale();
+			faseFinale = true;
+		}
+		if (faseFinale && partita.getTurno() == connessioni.size()) {
+			finePartita();
+		}
+
+	}
+
+	private void giocaTurno() {
+
+		controlloFinePartita();
+
+		// aggiorno i giocatori sul turno attuale
+		inviaTurno();
+
+		// la pecora nera muove all'inizio di ogni nuovo turno
+		partita.muoviPecoraNera();
+
+		// dico ai client che la pecora nera si è mossa
+		comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
+
+		// TODO bisogna gestire il caso di due giocatori
+		// pastoreInGioco = selezionaPastore();
+
+		numeroMosse = 0;
+		mosseFatte.clear();
+
+		chiediMosse();
+
+	}
+
+	private void finePartita() {
+
+		System.out.println("la partita è finita, conto i punti");
+		conteggioPunti();
+
+		comunicaPunteggiFinali(punteggiFinali);
+
+		System.out.println("comunico ai client che la partita è finita");
+		comunicaFinePartita();
+
+	}
+
+//////////METODO CHE VENGONO CHIAMATI DALLE CLASSI CHE RICEVONO INFO DAL CLIENT/////////
+	public void riceviMossa(Mossa mossa) {
+
+		try {
+
+			// eseguo la mossa
+			System.out.println("vado ad eseguire la mossa");
+			mossa.eseguiMossa(partita, giocatori.get(partita.getTurno() - 1)
+					.getNome(), pastoreInGioco);
+
+			// dico a tutti i client la mossa fatta
+			System.out.println("vado ad aggiornare clients");
+			mossa.aggiornaClients(giocatori, partita.getTurno());
+
+			// aggiorno l'array di mosse fatte
+			System.out.println("vado ad aggiornare mosse fatte");
+			mosseFatte = mossa.aggiornaMosseFatte(mosseFatte);
+
+			// al giocatore che ha giocato comunico il denaro del pastore che ha
+			// eseguito la mossa
+			comunicaDenaro();
+
+			// invio a tutti il numero attuale dei recinti
+			comunicaNumRecinti();
+
+			numeroMosse++;
+
+		} catch (Exception e) {
+
+			// dico al client che ha eseguito la mossa che essa non era valida e
+			// di conseguenza non aggiorno il contatore delle mosse
+			giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata();
+		}
+
+		chiediMosse();
+
+	}
+
+	public void riceviPosizionamentoPastore(int posizioneScelta) {
+
+		// setto posizione pastore
+		partita.getPastori().get(partita.getTurno() - 1)
+				.setPosizione(posizioneScelta);
+
+		// aggiorno le strade disponibili per il posizionamento dei pastori
+		stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
+
+		// invio ai client l'aggiornamento sul posizionamento pastore
+		aggiornaPosizionamentoPastori(partita.getTurno(),
+				partita.getTurno() - 1, posizioneScelta);
+
+		// se hanno posizionato tutti i pastori
+		if (partita.getTurno() == giocatori.size()) {
+			partita.setTurno(1);
+			giocaTurno();
+		}
+		// se manca qualche pastore da essere posizionato
 		else {
-			posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
-					stradeDisponibili);
-			partita.getPastori().get(0).setPosizione(posizioneScelta);
-			stradeDisponibili
-					.remove(stradeDisponibili.indexOf(posizioneScelta));
-			aggiornaPosizionamentoPastori(1, 0, posizioneScelta);
 
-			posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
-					stradeDisponibili);
-			partita.getPastori().get(1).setPosizione(posizioneScelta);
-			stradeDisponibili
-					.remove(stradeDisponibili.indexOf(posizioneScelta));
-			aggiornaPosizionamentoPastori(1, 1, posizioneScelta);
-
-			posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
-					stradeDisponibili);
-			partita.getPastori().get(2).setPosizione(posizioneScelta);
-			stradeDisponibili
-					.remove(stradeDisponibili.indexOf(posizioneScelta));
-			aggiornaPosizionamentoPastori(2, 2, posizioneScelta);
-
-			posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
-					stradeDisponibili);
-			partita.getPastori().get(3).setPosizione(posizioneScelta);
-			stradeDisponibili
-					.remove(stradeDisponibili.indexOf(posizioneScelta));
-			aggiornaPosizionamentoPastori(2, 3, posizioneScelta);
-
+			// incremento turno
+			partita.setTurno(partita.getTurno() + 1);
+			// chiedo al client del turno di posizionare il pastore
+			inviaRichiestaPosizionamentoPastore();
 		}
 
 	}
@@ -606,56 +651,169 @@ public class ControllorePartita implements Runnable {
 
 		inizializza();
 
-		posizionaPastori();
+		// inizializzo l'array delle strade disponibili che serve per
+		// posizionare inizialmente i pastori
+		creaStradeDisponibili();
 
-		finePartita = false;
-		faseFinale = false;
-		int f = 0;
-		while (!finePartita) {
-
-			giocaTurno();
-			partita.incrementaTurno();
-
-			if (partita.getTurno() > connessioni.size()) {
-				partita.muoviLupo();
-				partita.setTurno(1);
-			}
-
-			f++;
-			if (f == 4) {
-				finePartita = true;
-			}
-
-			if (partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) {
-				comunicaFaseFinale();
-				faseFinale = true;
-			}
-			if (faseFinale && partita.getTurno() == connessioni.size()) {
-				finePartita = true;
-			}
-
-		}// fine del while
-
-		System.out.println("la partita è finita, conto i punti");
-		conteggioPunti();
-
-		comunicaPunteggiFinali(punteggiFinali);
-
-		System.out.println("comunico ai client che la partita è finita");
-		comunicaFinePartita();
-
-	}
-
-	/**
-	 * comunico ai giocatori che è iniziata la fase finale
-	 * 
-	 * @author Valerio De Maria
-	 */
-	private void comunicaFaseFinale() {
-		for (InterfacciaComunicazioneToClient x : giocatori) {
-			x.comunicaFaseFinale();
-		}
+		//metodo iniziale della "macchina a stati"
+		inviaRichiestaPosizionamentoPastore();
 
 	}
 
 }
+// //////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+ * VECCHIO CICLO PRINCIPALE posizionaPastori();
+ * 
+ * finePartita = false; faseFinale = false; int f = 0; while (!finePartita) {
+ * 
+ * giocaTurno(); partita.incrementaTurno();
+ * 
+ * if (partita.getTurno() > connessioni.size()) { partita.muoviLupo();
+ * partita.setTurno(1); }
+ * 
+ * f++; if (f == 4) { finePartita = true; }
+ * 
+ * if (partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) {
+ * comunicaFaseFinale(); faseFinale = true; } if (faseFinale &&
+ * partita.getTurno() == connessioni.size()) { finePartita = true; }
+ * 
+ * }// fine del while
+ * 
+ * System.out.println("la partita è finita, conto i punti"); conteggioPunti();
+ * 
+ * comunicaPunteggiFinali(punteggiFinali);
+ * 
+ * System.out.println("comunico ai client che la partita è finita");
+ * comunicaFinePartita();
+ */
+
+/////////////VECCHI METODI////////////////////
+
+/*
+public void posizionaPastori() {
+
+	int posizioneScelta;
+
+	// creo la lista di strade disponibili
+	for (Strada x : partita.getStrade()) {
+		stradeDisponibili.add(x.getPosizione());
+	}
+
+	if (giocatori.size() > 2) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+
+			posizioneScelta = giocatori.get(i).chiediPosizionamentoPastore(
+					stradeDisponibili);
+
+			if (posizioneScelta != -1) {
+				partita.getPastori().get(i).setPosizione(posizioneScelta);
+				stradeDisponibili.remove(stradeDisponibili
+						.indexOf(posizioneScelta));
+				aggiornaPosizionamentoPastori(i + 1, i, posizioneScelta);
+			} else
+				System.out
+						.println("errore in comunicazione richiesta posizionamento pastore");
+		}
+	}
+	// due giocatori
+	else {
+		posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
+				stradeDisponibili);
+		partita.getPastori().get(0).setPosizione(posizioneScelta);
+		stradeDisponibili
+				.remove(stradeDisponibili.indexOf(posizioneScelta));
+		aggiornaPosizionamentoPastori(1, 0, posizioneScelta);
+
+		posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
+				stradeDisponibili);
+		partita.getPastori().get(1).setPosizione(posizioneScelta);
+		stradeDisponibili
+				.remove(stradeDisponibili.indexOf(posizioneScelta));
+		aggiornaPosizionamentoPastori(1, 1, posizioneScelta);
+
+		posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
+				stradeDisponibili);
+		partita.getPastori().get(2).setPosizione(posizioneScelta);
+		stradeDisponibili
+				.remove(stradeDisponibili.indexOf(posizioneScelta));
+		aggiornaPosizionamentoPastori(2, 2, posizioneScelta);
+
+		posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
+				stradeDisponibili);
+		partita.getPastori().get(3).setPosizione(posizioneScelta);
+		stradeDisponibili
+				.remove(stradeDisponibili.indexOf(posizioneScelta));
+		aggiornaPosizionamentoPastori(2, 3, posizioneScelta);
+
+	}
+
+}
+*/
+
+/*
+private void giocaTurno() {
+
+	int pastoreInGioco;
+
+	inviaTurno();
+
+	// la pecora nera muove all'inizio di ogni nuovo turno
+	partita.muoviPecoraNera();
+
+	// dico ai client che la pecora nera si è mossa
+	comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
+
+	pastoreInGioco = selezionaPastore();
+
+	mosseFatte.clear();
+	int numMosse = 0;
+	// il giocatore compie le mosse che può fare nel turno
+	while (numMosse < Costanti.NUMERO_MOSSE_GIOCATORE) {
+
+		mosseDisponibili.clear();
+
+		controllaConnessioneClients(mosseDisponibili);
+
+		mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
+
+		Mossa mossa = riceviMossa(mosseDisponibili);
+
+		try {
+			System.out.println("vado ad eseguire la mossa");
+			mossa.eseguiMossa(partita, giocatori
+					.get(partita.getTurno() - 1).getNome(), pastoreInGioco);
+
+			// faccio eseguire su tutti i client la mossa fatta
+			System.out.println("vado ad aggiornare clients");
+			mossa.aggiornaClients(giocatori, partita.getTurno());
+
+			System.out.println("vado ad aggiornare mosse fatte");
+			mosseFatte = mossa.aggiornaMosseFatte(mosseFatte);
+
+			comunicaDenaro();
+
+			comunicaNumRecinti();
+
+			numMosse++;
+
+		} catch (Exception e) {
+
+			giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata();
+		}
+
+	}// fine ciclo while
+
+}
+*/
+
+/*
+public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
+
+	return giocatori.get(partita.getTurno() - 1).riceviMossa(
+			mosseDisponibili);
+}
+*/
+
+

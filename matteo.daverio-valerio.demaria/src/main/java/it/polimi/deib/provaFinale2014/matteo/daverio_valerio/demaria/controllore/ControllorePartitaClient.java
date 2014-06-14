@@ -1,6 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
@@ -43,6 +44,8 @@ public class ControllorePartitaClient {
 	private InterfacciaComunicazioneToServer client;
 	private InterfacciaGrafica schermo;
 	private Partita partita;
+	private List<Integer> stradeDisponibili = new ArrayList<Integer>();
+	private List<MosseEnum> mosseDisponibili= new ArrayList<MosseEnum>();
 
 	/**
 	 * costruttore
@@ -81,7 +84,39 @@ public class ControllorePartitaClient {
 			int posizione) {
 		schermo.aggiornamentoPosizionePastore(turno, pastore, posizione);
 	}
-
+	
+	public void richiestaPosizionamentoPastore(List<Integer> stradeDisponibili){
+		
+		//aggiorno la mia lista locale di strade diponibili
+		this.stradeDisponibili.clear();
+		for(Integer x:stradeDisponibili){
+			this.stradeDisponibili.add(x);
+		}
+		schermo.richiestaPosizionamentoPastore();
+	}
+	
+	//la grafica invia la posizione al controllore client
+	public void posizioneInserita(int posizione){
+		
+		boolean pastorePosizionato=false;
+		
+		for(Integer x: this.stradeDisponibili){
+			if(posizione==x){
+				schermo.posizionamentoPastoreCorretto();
+				client.inviaPosizionePastore(posizione);
+				pastorePosizionato=true;
+			}
+		}
+		
+		if(!pastorePosizionato){
+			
+			schermo.posizionamentoPastoreErrato();
+			schermo.richiestaPosizionamentoPastore();
+		}
+		
+		
+	}
+/* VECCHIO METODO
 	public int posizionamentoPastore(List<Integer> stradeDisponibili) {
 
 		boolean sceltaCorretta = false;
@@ -111,7 +146,7 @@ public class ControllorePartitaClient {
 
 		return scelta;
 	}
-
+*/
 	public void cambioTurno(String giocatore) {
 		schermo.cambioTurno(giocatore);
 	}
@@ -150,13 +185,93 @@ public class ControllorePartitaClient {
 	public void accoppiamento(int regione,String giocatore, int pastore){
 		schermo.accoppiamento(regione,giocatore,pastore);
 	}
+	
+	public void richiestaMossa(List<MosseEnum> mosseDisponibili){
+		
+		//aggiorno la mia lista locale di mosse disponibili
+		for(MosseEnum x:mosseDisponibili){
+			
+			this.mosseDisponibili.add(x);
+			
+		}
+		
+		schermo.richiestaMossa(mosseDisponibili);
+	}
 
-	/**
-	 * metodo che la grafica chiama per eseguire una mossa
-	 * 
-	 * @return
-	 * @author Valerio De Maria
-	 */
+	public void mossaFatta(int mossaScelta){
+		
+		
+		switch(this.mosseDisponibili.get(mossaScelta)){
+			
+		case MUOVI_PASTORE:
+			int posizione;
+			
+			//SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO
+			posizione=schermo.scegliStrada();
+			client.inviaMossa(new MuoviPastore(posizione));
+			break;
+		
+		case MUOVI_PECORA:
+			int pecoraScelta;
+			int strada;
+			
+			//SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO
+			pecoraScelta=schermo.scegliPecora();
+			strada=schermo.scegliStrada();
+			client.inviaMossa( new MuoviPecora(strada,pecoraScelta));
+			break;
+			
+		case COMPRA_TESSERA:
+			int tipoTerreno;
+			
+			//SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO
+			tipoTerreno=schermo.scegliTipoTerreno();
+			
+		    switch(tipoTerreno){
+		    case 1:
+		    	client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA));
+		    case 2:
+		    	client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA));
+		    case 3:
+		    	client.inviaMossa(new CompraTessera(TipoTerreno.GRANO));
+		    case 4:
+		    	client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA));
+		    case 5:
+		    	client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA));
+		    case 6:
+		    	client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA));
+		 
+		    default:
+		    	break;
+		    }
+		    
+			break;
+			
+		case ABBATTI:
+			int regione;
+			int pScelta;
+			
+			//SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO
+			pScelta=schermo.scegliPecora();
+			regione=schermo.scegliRegione();
+			client.inviaMossa(new Abbatti(regione,pScelta));
+			break;
+		
+		case ACCOPPIA:
+			int reg;
+			
+			//SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO
+			reg=schermo.scegliRegione();
+			client.inviaMossa(new Accoppia(reg));
+			break;
+		
+		default:
+		break;
+		}
+			
+		}
+		
+/* VECCHIO METODO
 	public Mossa richiediMossa(List<MosseEnum> mosseDisponibili) {
 		
 		int mossaScelta;
@@ -221,7 +336,7 @@ public class ControllorePartitaClient {
 		
 		return new MuoviPastore(9);
 	}
-	
+	*/
 	public int selezionaPastore(int primo, int secondo){
 		
 		return schermo.selezionaPastore(primo,secondo);

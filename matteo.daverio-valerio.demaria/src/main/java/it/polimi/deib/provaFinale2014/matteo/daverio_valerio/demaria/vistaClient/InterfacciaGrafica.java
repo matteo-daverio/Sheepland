@@ -28,7 +28,16 @@ public interface InterfacciaGrafica {
     public void settaPecore(List<Pecora> pecore);
 	
 	//richiede il posizionamento di un pastore
-	public int posizionaPastore ();
+	//public int posizionaPastore ();
+    
+    
+    
+
+    public void richiestaPosizionamentoPastore();
+    
+    public void richiestaMossa(List<MosseEnum> mosseDisponibili);
+    
+    
 	
 	public void posizionamentoPastoreCorretto();
 	
@@ -57,7 +66,7 @@ public interface InterfacciaGrafica {
 	
 	public int selezionaPastore(int primo,int secondo);
 	
-	public int chiediMossa(int max);
+	//public int chiediMossa(int max);
 	
 	public void mossaSbagliata();
 	
