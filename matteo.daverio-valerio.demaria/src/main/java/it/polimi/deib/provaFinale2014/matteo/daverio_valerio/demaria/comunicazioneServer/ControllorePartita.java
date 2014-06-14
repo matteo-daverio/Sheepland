@@ -493,7 +493,7 @@ public class ControllorePartita implements Runnable {
 
 	private void inviaRichiestaPosizionamentoPastore() {
 
-		giocatori.get(partita.getTurno()).inviaRichiestaPosizionamento(
+		giocatori.get(partita.getTurno()-1).inviaRichiestaPosizionamento(
 				stradeDisponibili);
 
 	}
@@ -521,6 +521,8 @@ public class ControllorePartita implements Runnable {
 			// controllaConnessioneClients(mosseDisponibili);
 
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
+			
+			System.out.println("dimensione mosse disponibili=>"+mosseDisponibili.size());
 
 			// dico al client che deve inviarmi una mossa
 			giocatori.get(partita.getTurno()-1).inviaRichiestaMossa(mosseDisponibili);

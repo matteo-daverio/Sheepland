@@ -4,13 +4,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -275,7 +272,18 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
-		// TODO Auto-generated method stub
+		for(int i=0; i<=mosseDisponibili.size()-1;i++){
+			System.out.println("Le mose che puoi fare sono le seguenti:");
+			System.out.println(i+") "+mosseDisponibili.get(i));
+
+		}
+		System.out.println("Inserisci il numero della moosa che vuoi fare:");
+		int mossaScelta;
+		do{
+			mossaScelta=in.nextInt();
+		}while (mossaScelta<0 ||mossaScelta>mosseDisponibili.size());
+		
+		controllore.mossaFatta(mossaScelta);
 		
 	}
 
