@@ -41,15 +41,31 @@ public class Posizione {
 		return posizione;
 	}
 	
+	/**
+	 * setta se la posizione è una strada o una regione
+	 * 
+	 * @param tipo
+	 * @author Matteo Daverio
+	 */
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 
+	/**
+	 * 
+	 * @param pos
+	 * @author Matteo Daverio
+	 */
 	public void setPosizione(int pos) {
 		this.posizione = pos;
 	}
 
 	@Override
+	/**
+	 * override del metodo equals per le hashmap
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public boolean equals(Object o) {
 		if(o instanceof Posizione && ((Posizione) o).getPosizione()==this.posizione && ((Posizione) o).getTipo().equals(this.tipo)) {
 			return true;
@@ -58,6 +74,11 @@ public class Posizione {
 	}
 
 	@Override
+	/**
+	 * override del metodo di hashing per le hashmap
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public int hashCode() {
 		int hash = 5;
         hash = 89 * hash + (this.tipo != null ? this.tipo.hashCode() : 0);

@@ -2,12 +2,16 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClien
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
 import javax.swing.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * classe che gestisce la schermata di login
@@ -47,6 +51,7 @@ public class LoginScreen extends JFrame {
 
 	// controllo di login valido
 	private boolean loginValido = false;
+	
 
 	/**
 	 * costruttore finestra login con inizializzazione frame
@@ -117,6 +122,7 @@ public class LoginScreen extends JFrame {
 
 		return richiesta;
 	}
+	
 
 	/**
 	 * 

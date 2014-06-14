@@ -12,53 +12,57 @@ public class GuiImpl implements InterfacciaGrafica {
 
 	ControllorePartitaClient controllorePartita;
 	Map mappa;
-	
+	LoginScreen loginScreen;
+
 	public GuiImpl(ControllorePartitaClient controllorePartita) {
-		this.controllorePartita= controllorePartita;
-	}
-	
-	public void start() {
-		LoginScreen loginScreen=new LoginScreen(controllorePartita,this);
-		loginScreen.createAndShowGui();
+		this.controllorePartita = controllorePartita;
 	}
 
-	public void creaMappa(Map mappa) {
-		this.mappa=mappa;
+	public void start() {
+		loginScreen = new LoginScreen(controllorePartita, this);
+		loginScreen.createAndShowGui();
 	}
 
 	public void nomiGiocatori(List<String> nomi) {
 		mappa.numeroGiocatori(nomi.size());
-		for(int i=0;i<nomi.size();i++) {
+		for (int i = 0; i < nomi.size(); i++) {
 			mappa.aggiornaNome(nomi.get(i), i);
 		}
 	}
 
 	public void soldiPastori(List<Integer> soldi) {
-		for(int i=0;i<soldi.size();i++) {
+		for (int i = 0; i < soldi.size(); i++) {
 			mappa.impostaDenaro(soldi.get(i), i);
-		}
+	}
 	}
 
-	public void tessereInizialiPastori(List<Tessera> tessereIniziali) {
+	public void tesseraIniziale(Tessera tesseraIniziale) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void settaPecore(List<Pecora> pecore) {
+		mappa.inizializzaPecore(pecore);
+	}
+
+	public void richiestaPosizionamentoPastore() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public int posizionaPastore() {
-		return mappa.posizionaPastore();
+	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void posizionamentoPastoreCorretto() {
-		mappa.posizionePastoreCorretta();
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void posizionamentoPastoreErrato() {
-		mappa.posizionePastoreErrata();
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void aggiornamentoPosizionePastore(int turno, int pastore,
@@ -119,9 +123,34 @@ public class GuiImpl implements InterfacciaGrafica {
 		return 0;
 	}
 
-	public int chiediMossa(int max) {
+	public void mossaSbagliata() {
 		// TODO Auto-generated method stub
-		return 0;
+		
+	}
+
+	public void mossaCorretta() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void faseFinale() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaDenaro(int denaro) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void comunicaNumeroRecinti(int recinti) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public int scegliRegione() {
@@ -139,5 +168,24 @@ public class GuiImpl implements InterfacciaGrafica {
 		return 0;
 	}
 
+	public int scegliTipoTerreno() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+
+	public void creaMappa(Map mappa) {
+		this.mappa = mappa;
+	}
+
+	
+
+
+
+
+	
+
+	
 
 }
