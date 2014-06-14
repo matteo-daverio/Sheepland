@@ -162,6 +162,13 @@ public interface InterfacciaGrafica {
 	 */
 	public void muoviPecoraNera(int posizione);
 	
+	/**
+	 * comunico alla grafica il movimento del lupo
+	 * @param posizione
+	 * @author Valerio De Maria
+	 */
+	public void muoviLupo(int posizione);
+	
 	//per selezionare il pastore in partite a due giocatori
 	//public int selezionaPastore(int primo,int secondo);
 	
@@ -197,7 +204,7 @@ public interface InterfacciaGrafica {
 	 * @param denaro
 	 * @author Valerio De Maria
 	 */
-	public void comunicaDenaro(int denaro);
+	public void comunicaDenaro(List<Integer> denaroPastori);
 	
 	/**
 	 * dico alla grafica qual'è il numero di recinti USATI fino ad ora
@@ -206,6 +213,7 @@ public interface InterfacciaGrafica {
 	 */
 	public void comunicaNumeroRecinti(int recinti);
 	
+	/*
 	//PER ESECUZIONE MOSSA
 	
 	//metodi che vengo eseguiti a seguito di una richiesta di una determinata mossa da parte
@@ -217,5 +225,5 @@ public interface InterfacciaGrafica {
 	public int scegliPecora();
 	//1-ACQUA,2-FORESTA,3-GRANO,4-PRATERIA,5-ROCCIA,6-SABBIA;
 	public int scegliTipoTerreno();
-	
+	*/
 }

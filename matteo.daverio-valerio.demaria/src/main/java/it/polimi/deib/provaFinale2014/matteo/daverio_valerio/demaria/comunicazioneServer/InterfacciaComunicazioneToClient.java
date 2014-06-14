@@ -16,9 +16,9 @@ public interface InterfacciaComunicazioneToClient {
 	public void chiudiConnessione();
 
 	public void comunicaMovimentoPecoraNera(int nuovaPosizione);
-
-	//public Mossa riceviMossa(List<MosseEnum> mosseDisponibili);
 	
+	public void comunicaMovimentoLupo(int nuovaPosizione);
+
 	
     //AGGIORNANO I CLIENTS CHE NON SONO DEL TURNO
 	public void comunicaMovimentoPastore(int posizione, String giocatore, int pastore);
@@ -30,6 +30,8 @@ public interface InterfacciaComunicazioneToClient {
 	public void comunicaAccoppiamento(int regione,String giocatore,int pastore);
 
 	public void comunicaMovimentoPecora(int pecora, int strada,String giocatore, int pastore);
+	
+	
 	
 	
 	
@@ -55,7 +57,7 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void inviaTesseraIniziale(Tessera tesseraIniziale);
 	
-	public int selezionaPastore(int primo, int secondo);
+	//public int selezionaPastore(int primo, int secondo);
 	
 	public void comunicaMossaSbagliata();
 	
@@ -63,7 +65,7 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void inviaPunteggi(List<Integer> punteggiFinali,List<String> nomi);
 	
-	public void comunicaDenaro(int denaro);
+	public void comunicaDenaro(List<Integer> denaroPastori);
 	
 	public void comunicaNumeroRecinti(int recinti);
 	

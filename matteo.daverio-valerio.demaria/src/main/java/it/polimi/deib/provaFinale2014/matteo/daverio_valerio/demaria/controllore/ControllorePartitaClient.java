@@ -128,6 +128,10 @@ public class ControllorePartitaClient {
 
 		schermo.muoviPecoraNera(posizione);
 	}
+	
+	public void movimentoLupo(int posizione){
+		schermo.muoviLupo(posizione);
+	}
 
 	public void movimentoPastore(int posizione, String giocatore, int pastore) {
 		schermo.movimentoPastore(posizione, giocatore, pastore);
@@ -180,8 +184,8 @@ public class ControllorePartitaClient {
 		schermo.punteggiFinali(punteggiFinali, nomi);
 	}
 
-	public void comunicaDenaro(int denaro) {
-		schermo.comunicaDenaro(denaro);
+	public void comunicaDenaro(List<Integer> denaroPastori) {
+		schermo.comunicaDenaro(denaroPastori);
 	}
 
 	public void comunicaNumeroRecinti(int recinti) {
@@ -237,6 +241,44 @@ public class ControllorePartitaClient {
 
 	}
 
+	public void muoviPastore(int posizione){
+		client.inviaMossa(new MuoviPastore(posizione));
+	}
+
+	public void muoviPecora(int strada,int pecoraScelta){
+		client.inviaMossa(new MuoviPecora(strada,pecoraScelta));
+	}
+	
+	public void compraTessera(int tipoTerreno){
+		
+		switch (tipoTerreno) {
+		case 1:
+			client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA));
+		case 2:
+			client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA));
+		case 3:
+			client.inviaMossa(new CompraTessera(TipoTerreno.GRANO));
+		case 4:
+			client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA));
+		case 5:
+			client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA));
+		case 6:
+			client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA));
+
+		default:
+			break;
+		}
+		
+	}
+	
+	public void abbatti(int regione, int pScelta){
+		client.inviaMossa(new Abbatti(regione,pScelta));
+	}
+	
+	public void accoppia(int regione){
+		client.inviaMossa(new Accoppia(regione));
+	}
+	/*
 	public void mossaFatta(int mossaScelta) {
 
 		switch (this.mosseDisponibili.get(mossaScelta)) {
@@ -308,7 +350,7 @@ public class ControllorePartitaClient {
 		}
 
 	}
-
+*/
 	public void riceviAggiornamenti() {
 		try {
 			client.riceviAggiornamenti();

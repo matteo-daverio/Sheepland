@@ -17,7 +17,7 @@ import java.net.Socket;
 import java.util.List;
 
 /**
- * classe che parla con client socket
+ * classe che invia messaggi ai client socket
  * 
  * @author Valerio De Maria
  * 
@@ -29,7 +29,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	private ObjectOutputStream out;
 
 	/**
-	 * costruttore
+	 * COSTRUTTORE
 	 * 
 	 * @param socket
 	 * @param in
@@ -46,26 +46,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	}
 
 	/**
-	 * invia l'oggetto partita
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void inviaPartita(Partita partita) {
-
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.INVIO_PARTITA);
-			out.flush();
-			out.reset();
-			out.writeObject(partita);
-			out.flush();
-		} catch (IOException e) {
-			LOGGER.log("errore in invio partita", e);
-		}
-
-	}
-
-	/**
 	 * chiudo la connessione
 	 * 
 	 * @author Valerio De Maria
@@ -73,7 +53,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	public void chiudiConnessione() {
 
 		try {
-			in.close();
 			out.close();
 			socket.close();
 		} catch (IOException e) {
@@ -101,8 +80,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	}
 
-	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
-		Mossa mossa = null;
+	public void inviaRichiestaMossa(List<MosseEnum> mosseDisponibili){
 		try {
 			// richiedo una mossa
 			out.reset();
@@ -113,17 +91,10 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(mosseDisponibili);
 			out.flush();
 
-			try {
-				mossa = (Mossa) in.readObject();
-			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore in ricezione mossa", e);
-			}
-
 		} catch (IOException e) {
 			LOGGER.log("errore in comunicazione richiesta mossa", e);
 		}
 
-		return mossa;
 	}
 
 	/**
@@ -259,22 +230,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		this.socket = socket;
 	}
 
-	/**
-	 * al client che ora è il turno del giocatore successivo
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void comunicaCambioTurno() {
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.CAMBIO_TURNO);
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public void comunicaFaseFinale() {
 		try {
 			out.reset();
@@ -287,7 +242,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		
 	}
 
-	public void comunicaInizioTurno() {
+	public void comunicaTurno() {
 
 		try {
 			out.reset();
@@ -298,23 +253,19 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		}
 	}
 
-	public int chiediPosizionamentoPastore() {
+	public void inviaRichiestaPosizionamento(List<Integer> stradeDisponibili) {
 
 		try {
 			out.reset();
-			out.writeObject(ComandiSocket.POSIZIONA_PASTORE);
+			out.writeObject(ComandiSocket.RICHIESTA_POSIZIONE_PASTORE);
+			out.flush();
+			out.reset();
+			out.writeObject(stradeDisponibili);
 			out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			return in.readInt();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return-1;
 	}
 
 	public void inviaDatiGiocatori(List<String> nomi,List<Integer>soldi) {
@@ -390,11 +341,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		
 	}
 
-	public void comunicaTurno() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void aggiornaTurno(String giocatore) {
 		// TODO Auto-generated method stub
 		
@@ -425,11 +371,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		
 	}
 
-	public void comunicaDenaro(int denaro) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void comunicaNumeroRecinti(int recinti) {
 		// TODO Auto-generated method stub
 		
@@ -442,12 +383,12 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		
 	}
 
-	public void inviaRichiestaMossa(List<MosseEnum> mosseDisponibili) {
+	public void comunicaDenaro(List<Integer> denaroPastori) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void inviaRichiestaPosizionamento(List<Integer> stradeDisponibili) {
+	public void comunicaMovimentoLupo(int nuovaPosizione) {
 		// TODO Auto-generated method stub
 		
 	}

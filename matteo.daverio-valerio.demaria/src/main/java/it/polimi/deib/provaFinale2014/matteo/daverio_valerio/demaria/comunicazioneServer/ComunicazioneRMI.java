@@ -243,7 +243,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		}
 
 	}
-
+/*
 	public int selezionaPastore(int primo, int secondo) {
 
 		try {
@@ -254,7 +254,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		}
 		return -1;
 	}
-
+*/
 	public void comunicaMossaSbagliata() {
 		try {
 			client.mossaSbagliata();
@@ -295,8 +295,13 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 
 	}
 
-	public void comunicaDenaro(int denaro) {
-		// client.comunicaDenaro(denaro);
+	public void comunicaDenaro(List<Integer> denaroPastori) {
+		try {
+			client.comunicaDenaro(denaroPastori);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -320,6 +325,16 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 	public void inviaRichiestaPosizionamento(List<Integer> stradeDisponibili) {
 		try {
 			client.richiestaPosizionamento(stradeDisponibili);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void comunicaMovimentoLupo(int nuovaPosizione) {
+		try {
+			client.movimentoLupo(nuovaPosizione);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -189,10 +189,11 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		
 		controllore.aggiornamentoPosizionePastore(turno, pastore, posizione);
 	}
-
+/*
 	public int selezionaPastore(int primo, int secondo) {
 		return controllore.selezionaPastore(primo,secondo);
 	}
+*/
 
 	public void mossaSbagliata() throws RemoteException {
 		controllore.mossaSbagliata();
@@ -215,8 +216,8 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		
 	}
 
-	public void comunicaDenaro(int denaro) {
-		controllore.comunicaDenaro(denaro);
+	public void comunicaDenaro(List<Integer> denaroPastori) {
+		controllore.comunicaDenaro(denaroPastori);
 		
 	}
 
@@ -261,6 +262,11 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	public void movimentoLupo(int posizione) throws RemoteException {
+		controllore.movimentoLupo(posizione);
 		
 	}
 

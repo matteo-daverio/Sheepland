@@ -33,7 +33,7 @@ public interface InterfacciaClientRMI extends Remote {
 
 	public void movimentoPecoraNera(int posizione) throws RemoteException;
 
-	//public Mossa inviaMossa(List<MosseEnum> mosseDisponibili) throws RemoteException;
+	public void movimentoLupo(int posizione)throws RemoteException;
 
 	public void movimentoPastore(int posizione, String giocatore, int pastore) throws RemoteException,
 			 GameException;
@@ -61,7 +61,7 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void riceviAggiornamentoPosizionamentoPastore(int turno,int pastore, int posizione) throws RemoteException;
 	
-	public int selezionaPastore(int primo, int secondo)throws RemoteException;
+	//public int selezionaPastore(int primo, int secondo)throws RemoteException;
 	
 	public void mossaSbagliata()throws RemoteException;
 	
@@ -71,7 +71,7 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void punteggiFinali(List<Integer> punteggiFinali,List<String> nomi)throws RemoteException;
 
-	public void comunicaDenaro(int denaro)throws RemoteException;
+	public void comunicaDenaro(List<Integer> denaroPastori)throws RemoteException;
 	
 	public void comunicaNumeroRecinti(int recinti)throws RemoteException;
 	

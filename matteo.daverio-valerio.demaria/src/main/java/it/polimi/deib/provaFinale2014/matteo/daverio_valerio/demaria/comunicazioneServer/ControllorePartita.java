@@ -37,6 +37,7 @@ public class ControllorePartita implements Runnable {
 	List<Integer> stradeDisponibili = new ArrayList<Integer>();
 	private int pastoreInGioco, numeroMosse;
 	private InterfacciaServerRMI stubServerRMI;
+	private List<Integer> denaroPastori =new ArrayList<Integer>();
 	// pool di thread
 	ExecutorService ricezioniSocket = Executors.newCachedThreadPool();
 
@@ -71,7 +72,8 @@ public class ControllorePartita implements Runnable {
 	}
 
 */
-
+	
+/*
 	private int selezionaPastore() {
 
 		if (giocatori.size() > 2) {
@@ -86,7 +88,7 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
-
+*/
 
 ///// METODI CHIAMATI DAL GESTORE PARTITE /////////////////////////
 
@@ -239,20 +241,19 @@ public class ControllorePartita implements Runnable {
 	}
 	
 	private void comunicaDenaro() {
-		System.out.println("Ora comunico il denaro");
-		if (giocatori.size() > 2) {
-			giocatori.get(partita.getTurno() - 1).comunicaDenaro(
-					partita.getPastori().get(partita.getTurno() - 1)
-							.getDenaro());
-		} else {
-			if (partita.getTurno() == 1) {
-				giocatori.get(0).comunicaDenaro(
-						partita.getPastori().get(0).getDenaro());
-			} else {
-				giocatori.get(0).comunicaDenaro(
-						partita.getPastori().get(0).getDenaro());
-			}
+
+		//creo la lista aggiornata del denaro dei pastori
+		denaroPastori.clear();
+		for(int i=0;i<=partita.getPastori().size()-1;i++){
+			
+			denaroPastori.add(partita.getPastori().get(i).getDenaro());
+			
 		}
+		
+		//invio a tutti i giocatori la lista del denaro dei pastori
+			for(InterfacciaComunicazioneToClient x:giocatori){
+				x.comunicaDenaro(denaroPastori);
+			}
 	}
 	
 	private void comunicaNumRecinti() {
@@ -497,6 +498,13 @@ public class ControllorePartita implements Runnable {
 				stradeDisponibili);
 
 	}
+	
+	private void comunicaMovimentoLupo(){
+		
+		for(InterfacciaComunicazioneToClient x:giocatori){
+			x.comunicaMovimentoLupo(partita.getLupo().getPosizione());
+		}
+	}
 
 	private void chiediMosse() {
 		if (numeroMosse == 3) {
@@ -509,6 +517,9 @@ public class ControllorePartita implements Runnable {
 
 			// il lupo muove a fine turno
 			partita.muoviLupo();
+			
+			//comunico ai client il movimento del lupo
+			comunicaMovimentoLupo();
 
 			// faccio giocare il turno al giocatore successivo
 			giocaTurno();
@@ -603,6 +614,7 @@ public class ControllorePartita implements Runnable {
 			comunicaNumRecinti();
 
 			numeroMosse++;
+			
 
 		} catch (Exception e) {
 
@@ -611,6 +623,9 @@ public class ControllorePartita implements Runnable {
 			giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata();
 		}
 
+		//dico al client che ha eseguito la mossa che essa era corretta
+		giocatori.get(partita.getTurno()-1).mossaCorretta();
+		
 		chiediMosse();
 
 	}

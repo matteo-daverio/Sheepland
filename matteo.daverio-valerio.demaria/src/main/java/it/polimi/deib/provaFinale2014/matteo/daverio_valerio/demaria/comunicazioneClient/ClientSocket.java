@@ -17,6 +17,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.N
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
 
@@ -218,6 +219,16 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 			}
 		}
 
+	}
+
+	public void inviaPosizionePastore(int posizione) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void inviaMossa(Mossa mossa) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
