@@ -2,6 +2,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -15,14 +16,16 @@ public class Strada implements Serializable {
 	 */
 	private static final long serialVersionUID = -497606577208406140L;
 	private final int posizione;
-	private final int numeroDado; // numero da fare con il dado per passare
+	// numero da fare con il dado per passare
+	private final int numeroDado; 
 	private final int regioneDestra;
 	private final int regioneSinistra;
 	private boolean recinto;
-	private ArrayList<Direzione> strade;
+	private List<Direzione> strade;
 
 	/**
 	 * costruttore strada
+	 * da modificare quando creeremo il metodo inizializzazione
 	 * 
 	 * @param posizione
 	 * @param regioneDestra
@@ -31,8 +34,8 @@ public class Strada implements Serializable {
 	 * @author Matteo Daverio
 	 */
 	public Strada(int posizione, int regioneDestra, int regioneSinistra,
-			int numeroDado) // da modificare quando creeremo il metodo
-							// inizializzazione
+			int numeroDado) 
+	
 	{
 		recinto = false;
 		this.posizione = posizione;
@@ -67,7 +70,7 @@ public class Strada implements Serializable {
 	 * @return lista di strade adiacenti
 	 * @author Matteo Daverio
 	 */
-	public ArrayList<Direzione> getStrade() {
+	public List<Direzione> getStrade() {
 		return strade;
 	}
 

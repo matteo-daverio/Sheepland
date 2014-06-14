@@ -37,8 +37,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void tesseraIniziale(Tessera tesseraIniziale) {
-		// TODO Auto-generated method stub
-		
+		mappa.tesseraIniziale(tesseraIniziale.getTipo());
 	}
 
 	public void settaPecore(List<Pecora> pecore) {
@@ -46,8 +45,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void richiestaPosizionamentoPastore() {
-		// TODO Auto-generated method stub
-		
+		mappa.richiestaPosizionamentoPastore();
 	}
 
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
@@ -109,19 +107,14 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void cambioTurno(String giocatore) {
-		// TODO Auto-generated method stub
-		
+		mappa.cambioTurno(giocatore);
 	}
 
 	public void muoviPecoraNera(int posizione) {
-		// TODO Auto-generated method stub
-		
+		mappa.muoviPecoraNera(posizione);
 	}
 
-	public int selezionaPastore(int primo, int secondo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	public void mossaSbagliata() {
 		// TODO Auto-generated method stub
@@ -134,23 +127,27 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void faseFinale() {
-		// TODO Auto-generated method stub
-		
+		mappa.faseFinale();
 	}
 
 	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
-		// TODO Auto-generated method stub
-		
+		mappa.punteggiFinali(punteggiFinali, nomi);
 	}
 
 	public void comunicaDenaro(int denaro) {
-		// TODO Auto-generated method stub
-		
+		// TODO per farlo ho bisogno di conoscere il turno del giocatore
 	}
 
 	public void comunicaNumeroRecinti(int recinti) {
-		// TODO Auto-generated method stub
-		
+		mappa.aggiornaRecinti(recinti);
+	}
+
+	
+
+	
+
+	public void creaMappa(Map mappa) {
+		this.mappa = mappa;
 	}
 
 	public int scegliRegione() {
@@ -171,12 +168,6 @@ public class GuiImpl implements InterfacciaGrafica {
 	public int scegliTipoTerreno() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	
-
-	public void creaMappa(Map mappa) {
-		this.mappa = mappa;
 	}
 
 	

@@ -40,119 +40,111 @@ public class Map extends JFrame {
 	private static final long serialVersionUID = -3256210950304048274L;
 
 	// Immagini presenti a schermo
-	ImageIcon mappa = new ImageIcon("./img/Game_Board.jpg");
-	ImageIcon terrainCardImage = new ImageIcon("./img/tessereTerreno.jpeg");
-	ImageIcon moveCharacterImage = new ImageIcon("./img/iconaPersonaggio.png");
-	ImageIcon moveSheepImage = new ImageIcon("./img/iconaPecora.png");
-	ImageIcon buyTerrainCard = new ImageIcon("./img/acquistoTessere.png");
-	ImageIcon enclosureNumberImage = new ImageIcon("./img/numeroRecinti.png");
-	ImageIcon killSheepImage = new ImageIcon("./img/abbattimento.png");
-	ImageIcon marrySheepImage = new ImageIcon("./img/accoppiamento.png");
+	private ImageIcon mappa = new ImageIcon("./img/Game_Board.jpg");
+	private ImageIcon terrainCardImage = new ImageIcon("./img/tessereTerreno.jpeg");
+	private ImageIcon moveCharacterImage = new ImageIcon("./img/iconaPersonaggio.png");
+	private ImageIcon moveSheepImage = new ImageIcon("./img/iconaPecora.png");
+	private ImageIcon buyTerrainCard = new ImageIcon("./img/acquistoTessere.png");
+	private ImageIcon enclosureNumberImage = new ImageIcon("./img/numeroRecinti.png");
+	private ImageIcon killSheepImage = new ImageIcon("./img/abbattimento.png");
+	private ImageIcon marrySheepImage = new ImageIcon("./img/accoppiamento.png");
 
-	ImageIcon player1Image = new ImageIcon("./img/giocatore1.png");
-	ImageIcon player2Image = new ImageIcon("./img/giocatore2.png");
-	ImageIcon player3Image = new ImageIcon("./img/giocatore3.png");
-	ImageIcon player4Image = new ImageIcon("./img/giocatore4.png");
+	private ImageIcon player1Image = new ImageIcon("./img/giocatore1.png");
+	private ImageIcon player2Image = new ImageIcon("./img/giocatore2.png");
+	private ImageIcon player3Image = new ImageIcon("./img/giocatore3.png");
+	private ImageIcon player4Image = new ImageIcon("./img/giocatore4.png");
 
-	ImageIcon recintoImage = new ImageIcon("./img/recinto.png");
+	private ImageIcon recintoImage = new ImageIcon("./img/recinto.png");
 
 	// immagini animali
-	ImageIcon pecoraNeraImage = new ImageIcon("./img/pecoraNera.png");
-	ImageIcon pecoraImage = new ImageIcon("./img/pecora.png");
-	ImageIcon montoneImage = new ImageIcon("./img/montone.png");
-	ImageIcon agnelloImage = new ImageIcon("./img/agnello.png");
-	ImageIcon lupoImage = new ImageIcon("./img/lupo.png");
+	private ImageIcon lupoImage = new ImageIcon("./img/lupo.png");
 
-	Point puntoAttuale = new Point();
+	private Point puntoAttuale = new Point();
 
-	File file = new File("./img/Game_Board_Nascosta.png");
-	BufferedImage image;
-	BufferedImage mappaNascosta;
+	private File file = new File("./img/Game_Board_Nascosta.png");
+	private BufferedImage image;
+	private BufferedImage mappaNascosta;
 
 	// contatori presenti a schermo
-	JLabel contatoreRecintiRimanenti = new JLabel();
-	JLabel contatoreTessereGrano = new JLabel();
-	JLabel costoGrano = new JLabel();
-	JLabel contatoreTessereForesta = new JLabel();
-	JLabel costoForesta = new JLabel();
-	JLabel contatoreTesserePrateria = new JLabel();
-	JLabel costoPrateria = new JLabel();
-	JLabel contatoreTessereRoccia = new JLabel();
-	JLabel costoRoccia = new JLabel();
-	JLabel contatoreTessereAcqua = new JLabel();
-	JLabel costoAcqua = new JLabel();
-	JLabel contatoreTessereSabbia = new JLabel();
-	JLabel costoSabbia = new JLabel();
-	JLabel[] contatoreDenaroPlayer = new JLabel[4];
+	private JLabel contatoreRecintiRimanenti = new JLabel();
+	private JLabel contatoreTessereGrano = new JLabel();
+	private JLabel costoGrano = new JLabel();
+	private JLabel contatoreTessereForesta = new JLabel();
+	private JLabel costoForesta = new JLabel();
+	private JLabel contatoreTesserePrateria = new JLabel();
+	private JLabel costoPrateria = new JLabel();
+	private JLabel contatoreTessereRoccia = new JLabel();
+	private JLabel costoRoccia = new JLabel();
+	private JLabel contatoreTessereAcqua = new JLabel();
+	private JLabel costoAcqua = new JLabel();
+	private JLabel contatoreTessereSabbia = new JLabel();
+	private JLabel costoSabbia = new JLabel();
+	private JLabel[] contatoreDenaroPlayer = new JLabel[4];
 
 	// label del nome del giocatore
-	JLabel[] nomePlayer = new JLabel[4];
-	JLabel immagineGiocatore1 = new JLabel();
-	JLabel immagineGiocatore2 = new JLabel();
-	JLabel immagineGiocatore3 = new JLabel();
-	JLabel immagineGiocatore4 = new JLabel();
+	private JLabel[] nomePlayer = new JLabel[4];
+	private JLabel immagineGiocatore1 = new JLabel();
+	private JLabel immagineGiocatore2 = new JLabel();
+	private JLabel immagineGiocatore3 = new JLabel();
+	private JLabel immagineGiocatore4 = new JLabel();
 
 	// Frame
-	JFrame map = new JFrame();
-	JLabel tessereTerreno;
-	Container c;
-	SignificatoColori significatoColori = new SignificatoColori();
-	MappaturaPosizioni mappaturaPosizione = new MappaturaPosizioni();
-	PosizioniLupo posizioniLupo = new PosizioniLupo();
-	PosizioniPecore posizioniPecore = new PosizioniPecore();
-	PosizioniMontoni posizioniMontoni = new PosizioniMontoni();
-	PosizioniAgnelli posizioniAgnelli = new PosizioniAgnelli();
+	private JFrame map = new JFrame();
+	private JLabel tessereTerreno;
+	private Container c;
+	private SignificatoColori significatoColori = new SignificatoColori();
+	private MappaturaPosizioni mappaturaPosizione = new MappaturaPosizioni();
+	private PosizioniLupo posizioniLupo = new PosizioniLupo();
+	private PosizioniPecore posizioniPecore = new PosizioniPecore();
+	private PosizioniMontoni posizioniMontoni = new PosizioniMontoni();
+	private PosizioniAgnelli posizioniAgnelli = new PosizioniAgnelli();
 
 	// Dimensioni schermo
-	Toolkit t = Toolkit.getDefaultToolkit();
-	Dimension screenSize = t.getScreenSize();
-	double screenWidth = screenSize.getWidth();
-	double screenHeight = screenSize.getHeight();
-	int formWidth = 1452;
-	int formHeight = 1292;
+	private Toolkit t = Toolkit.getDefaultToolkit();
+	private Dimension screenSize = t.getScreenSize();
+	private double screenWidth = screenSize.getWidth();
+	private double screenHeight = screenSize.getHeight();
+	private int formWidth = 1452;
+	private int formHeight = 1292;
 
 	// bottoni
-	JLabel bottoneMovimentoPersonaggio = new JLabel();
-	JLabel bottoneMovimentoPecora = new JLabel();
-	JLabel bottoneAcquistoTessere = new JLabel();
-	JLabel bottoneAbbattiPecora = new JLabel();
-	JLabel bottoneAccoppiaPecore = new JLabel();
+	private JLabel bottoneMovimentoPersonaggio = new JLabel();
+	private JLabel bottoneMovimentoPecora = new JLabel();
+	private JLabel bottoneAcquistoTessere = new JLabel();
+	private JLabel bottoneAbbattiPecora = new JLabel();
+	private JLabel bottoneAccoppiaPecore = new JLabel();
 
 	// pedine
 	// JLabel player1 = new JLabel();
-	JLabel[] player = new JLabel[4];
+	private JLabel[] player = new JLabel[4];
 
 	// pecora nera
-	Ovino pecoraNera;
+	private Ovino pecoraNera;
 
 	// ovini e loro contatori
-	Ovino[] pecora = new Ovino[19];
-	JLabel[] contatorePecore = new JLabel[19];
-	Ovino[] montone = new Ovino[19];
-	JLabel[] contatoreMontoni = new JLabel[19];
-	Ovino[] agnello = new Ovino[19];
-	JLabel[] contatoreAgnelli = new JLabel[19];
-	Posizione posizioneAttuale = new Posizione("Strada", 0);
+	private Ovino[] pecora = new Ovino[19];
+	private JLabel[] contatorePecore = new JLabel[19];
+	private Ovino[] montone = new Ovino[19];
+	private JLabel[] contatoreMontoni = new JLabel[19];
+	private Ovino[] agnello = new Ovino[19];
+	private JLabel[] contatoreAgnelli = new JLabel[19];
+	private Posizione posizioneAttuale = new Posizione("Strada", 0);
 
 	// lupo
-	JLabel lupo = new JLabel();
+	private JLabel lupo = new JLabel();
 
 	// variabili macchina a stati
-	int numeroGiocatori;
-	boolean richiestaPosizionamentoPastore = false;
-	boolean movimentoPastore = false;
-	boolean movimentoPecora = false;
-	boolean acquistaTessere = false;
-	boolean abbattimentoPecora = false;
-	boolean accoppiaPecore = false;
-	boolean mioTurno = false;
-
-	// variabili di ritorno
-	int posizioneInizialePastore = -20;
-	int posizioneCorretta = -1;
+	private int numeroGiocatori;
+	private boolean richiestaPosizionamentoPastore = false;
+	private boolean movimentoPastore = false;
+	private boolean movimentoPecora = false;
+	private boolean acquistaTessere = false;
+	private boolean abbattimentoPecora = false;
+	private boolean accoppiaPecore = false;
+	private boolean mioTurno = false;
 
 	// oggetto di comunicazione con il controllore
-	ControllorePartitaClient controllorePartita;
+	private ControllorePartitaClient controllorePartita;
 
 	public Map(ControllorePartitaClient controllorePartita) {
 		this.controllorePartita = controllorePartita;
@@ -1205,7 +1197,6 @@ public class Map extends JFrame {
 
 	private void posizionaPastore(Posizione posizione, JLabel pedina,
 			String path) {
-		posizioneInizialePastore = posizione.getPosizione();
 		// TODO passare al server posizioneInizialePastore, se true andare
 		// avanti a posizionare
 		pedina = new Pedina(path);
@@ -1298,6 +1289,8 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	public void muoviPecoraNera(int posizione) {
+		JOptionPane.showMessageDialog(null, "La pecora nera si sta muovendo!", "Pecora Nera",
+				JOptionPane.INFORMATION_MESSAGE);
 		pecoraNera.setLocation(
 				(int) mappaturaPosizione.getLocalizzazione(
 						new Posizione("Regione", posizione)).getX()
@@ -1589,5 +1582,44 @@ public class Map extends JFrame {
 		// resetta il valore delle variabili di stato dei pulsanti
 		aggiornaVariabili(0);
 	}
+	
+	/**
+	 * riceve la richiesta di posizionare il pastore
+	 * 
+	 * @author Matteo Daverio
+	 */
+	public void richiestaPosizionamentoPastore(){
+		richiestaPosizionamentoPastore=true;
+		JOptionPane.showMessageDialog(null, "Posiziona il tuo pastore", "Posizione",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	
+	public void cambioTurno(String giocatore) {
+		JOptionPane.showMessageDialog(null, "Ora è il turno del giocatore " + giocatore, "Cambio Turno",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void faseFinale() {
+		JOptionPane.showMessageDialog(null, "Il gioco entra in fase finale! Ultimo turno di gioco", "Fase finale",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
 
+	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
+		for(int i=0;i<numeroGiocatori;i++){
+			JOptionPane.showMessageDialog(null, "Il giocatore " + nomi.get(i) + " ha ottenuto " + punteggiFinali.get(i) + " punti!", "Punteggi finali",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	
+	public void aggiornaDenaro(int denaro) {
+		// TODO per farlo devo conoscere il mio turno
+	}
+	
+	public void aggiornaRecinti(int recintiUsati) {
+		int recintiRimanenti=Costanti.NUMERO_RECINTI_NORMALI-recintiUsati;
+		contatoreRecintiRimanenti.setText(String.valueOf(recintiRimanenti));
+		contatoreRecintiRimanenti.repaint();
+	}
+	
 }

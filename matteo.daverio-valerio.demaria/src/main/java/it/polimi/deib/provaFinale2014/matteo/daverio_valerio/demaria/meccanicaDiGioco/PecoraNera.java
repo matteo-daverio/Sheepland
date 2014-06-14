@@ -2,7 +2,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -35,8 +35,8 @@ public class PecoraNera extends Pecora {
 	 * @author Matteo Daverio
 	 */
 
-	public int fugaPecoraNera(int lancioDado, ArrayList<Pastore> pastori,
-			ArrayList<Strada> strade) {
+	public int fugaPecoraNera(int lancioDado, List<Pastore> pastori,
+			List<Strada> strade) {
 		Strada strada = esisteStrada(lancioDado, strade);
 		if (strada != null && !strada.recintata()
 				&& !stradaOccupata(strada, pastori)) {
@@ -59,7 +59,7 @@ public class PecoraNera extends Pecora {
 	 * @author Matteo Daverio
 	 */
 
-	private Strada esisteStrada(int lancioDado, ArrayList<Strada> strade) {
+	private Strada esisteStrada(int lancioDado, List<Strada> strade) {
 		for (Strada strada : strade) {
 			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado) {
 				return strada;
@@ -87,7 +87,7 @@ public class PecoraNera extends Pecora {
 	 * @return se la strada è occupata da un pastore
 	 * @author Matteo Daverio
 	 */
-	private boolean stradaOccupata(Strada strada, ArrayList<Pastore> pastori) {
+	private boolean stradaOccupata(Strada strada, List<Pastore> pastori) {
 		for (Pastore pastore : pastori) {
 			if (pastore.getPosizione() == strada.getPosizione()) {
 				return true;

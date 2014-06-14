@@ -3,7 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaD
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Lupo implements Serializable {
 
@@ -51,16 +51,13 @@ public class Lupo implements Serializable {
 	 * @return nuova posizione del lupo
 	 * @author Matteo Daverio
 	 */
-	public int muoviLupo(int lancioDado, ArrayList<Strada> strade) {
+	public int muoviLupo(int lancioDado, List<Strada> strade) {
 		// strada su cui il lupo DOVREBBE passare
 		Strada strada = esisteStrada(lancioDado, strade);
-		// controlla se la strada esiste
-		if (strada != null) {
-			// se non è recintata, oppure tutte le strade intorno sono recintate
-			if (!strada.recintata() || tutteRecintate(strade)) {
+		// controlla se la strada esiste, se non è recintata, oppure tutte le strade intorno sono recintate
+		if (strada != null &&(!strada.recintata() || tutteRecintate(strade))) {
 				// il lupo si muove
 				effettuaMovimento(strada);
-			}
 		}
 		return posizione;
 	}
@@ -72,7 +69,7 @@ public class Lupo implements Serializable {
 	 * @return true se il lupo ha mangiato una pecora
 	 * @author Matteo Daverio
 	 */
-	public ArrayList<Pecora> mangiaPecora(ArrayList<Pecora> pecore) {
+	public List<Pecora> mangiaPecora(List<Pecora> pecore) {
 		for (Pecora pecora : pecore) {
 			if (posizione == pecora.getPosizione()) {
 				pecore.remove(pecora);
@@ -99,7 +96,7 @@ public class Lupo implements Serializable {
 	 * @return strada che il lupo dovrebbe saltare
 	 * @author Matteo Daverio
 	 */
-	private Strada esisteStrada(int lancioDado, ArrayList<Strada> strade) {
+	private Strada esisteStrada(int lancioDado, List<Strada> strade) {
 		for (Strada strada : strade) {
 			if (stradaAdiacente(strada) && strada.getNumeroDado() == lancioDado) {
 				return strada;
@@ -141,7 +138,7 @@ public class Lupo implements Serializable {
 	 * @return se le strade intorno al lupo sono tutte recintate
 	 * @author Matteo Daverio
 	 */
-	private boolean tutteRecintate(ArrayList<Strada> strade) {
+	private boolean tutteRecintate(List<Strada> strade) {
 		for (Strada strada : strade) {
 			// se la strada è adiacente al lupo e non è recintata
 			if (stradaAdiacente(strada) && !strada.recintata()) {

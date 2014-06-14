@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -18,7 +19,7 @@ public class Pastore implements Serializable {
 	private static final long serialVersionUID = 580595892472677932L;
 	private int posizione;
 	private int denaro;
-	private ArrayList<Tessera> tessere = new ArrayList<Tessera>();
+	private List<Tessera> tessere = new ArrayList<Tessera>();
 	private String nomeGiocatore;
 	private int turnoDiGioco;
 
@@ -84,7 +85,7 @@ public class Pastore implements Serializable {
 	 * 
 	 * @return tessere possedute dal pastore
 	 */
-	public ArrayList<Tessera> getTessere() {
+	public List<Tessera> getTessere() {
 		return tessere;
 	}
 
