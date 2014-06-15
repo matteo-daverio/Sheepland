@@ -80,41 +80,94 @@ public class ControllorePartitaClient {
 
 	// / METODI CHE ESEGUONO I METODI DELL'INTERFACCIA GRAFICA //////
 
+	/**
+	 * avverte il client che non c'è più una connessione con il server
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void segnalaDisconnessione() {
 		schermo.segnalaDisconnessione();
 	}
 
+	/**
+	 * invia alla grafica i dati aggiornati dopo che il client si è riconnesso
+	 * 
+	 * @param pecore
+	 * @param posPecoraNera
+	 * @param posLupo
+	 * @param pastori
+	 * @author Valerio De Maria
+	 */
 	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
 			int posPecoraNera, int posLupo, List<Pastore> pastori) {
 		schermo.aggiornamentoPostDisconnessione(pecore, posPecoraNera, posLupo,
 				pastori);
 	}
 
+	/**
+	 * 
+	 * @param nomi
+	 * @author Valerio De Maria
+	 */
 	public void riceviNomiGiocatori(List<String> nomi) {
 		schermo.nomiGiocatori(nomi);
 	}
 
+	/**
+	 * 
+	 * @param soldi
+	 * @author Valerio De Maria
+	 */
 	public void riceviSoldiPastori(List<Integer> soldi) {
 		schermo.soldiPastori(soldi);
 	}
 
+	/**
+	 * 
+	 * @param tesseraIniziale
+	 * @author Valerio De Maria
+	 */
 	public void riceviTesseraIniziale(Tessera tesseraIniziale) {
 		schermo.tesseraIniziale(tesseraIniziale);
 	}
 
+	/**
+	 * 
+	 * @param pecore
+	 * @author Valerio De Maria
+	 */
 	public void settaPecore(List<Pecora> pecore) {
 		schermo.settaPecore(pecore);
 	}
 
-	public void riceviStrade(List<Strada> strade){
+	/**
+	 * 
+	 * @param strade
+	 * @author Valerio De Maria
+	 */
+	public void riceviStrade(List<Strada> strade) {
 		schermo.riceviStrade(strade);
 	}
-	
+
+	/**
+	 * dice al client dove ha posizionato il pastore l'avversario
+	 * 
+	 * @param turno
+	 * @param pastore
+	 * @param posizione
+	 * @author Valerio De Maria
+	 */
 	public void aggiornamentoPosizionePastore(int turno, int pastore,
 			int posizione) {
 		schermo.aggiornamentoPosizionePastore(turno, pastore, posizione);
 	}
 
+	/**
+	 * invia alla grafica la richiesta di posizionamento del pastore
+	 * 
+	 * @param stradeDisponibili
+	 * @author Valerio De Maria
+	 */
 	public void richiestaPosizionamentoPastore(List<Integer> stradeDisponibili) {
 
 		// aggiorno la mia lista locale di strade diponibili
@@ -126,10 +179,25 @@ public class ControllorePartitaClient {
 		schermo.richiestaPosizionamentoPastore();
 	}
 
+	/**
+	 * dice alla grafica che è cambiato il turno e gli dice chi è il giocatore
+	 * del turno attuale
+	 * 
+	 * @param giocatore
+	 * @param pecore
+	 * @author Valerio De Maria
+	 */
 	public void cambioTurno(String giocatore, List<Pecora> pecore) {
 		schermo.cambioTurno(giocatore, pecore);
 	}
 
+	/**
+	 * dice alla grafica che è il turno del giocatore
+	 * 
+	 * @param pecore
+	 * @param turno
+	 * @author Valerio De Maria
+	 */
 	public void iniziaTurno(List<Pecora> pecore, int turno) {
 
 		schermo.iniziaTurno(pecore, turno);
@@ -146,37 +214,101 @@ public class ControllorePartitaClient {
 		schermo.muoviPecoraNera(posizione);
 	}
 
+	/**
+	 * comunico che il lupo si è mosso
+	 * 
+	 * @param posizione
+	 * @author Valerio De Maria
+	 */
 	public void movimentoLupo(int posizione) {
 		schermo.muoviLupo(posizione);
 	}
 
+	/**
+	 * aggiorno la grafica riguardo al movimento di un pastore avversario
+	 * 
+	 * @param posizione
+	 * @param giocatore
+	 * @param pastore
+	 * @author Valerio De Maria
+	 */
 	public void movimentoPastore(int posizione, String giocatore, int pastore) {
 		schermo.movimentoPastore(posizione, giocatore, pastore);
 	}
 
+	/**
+	 * aggiorno la grafica riguardo all'acquisto di una tessera da parte di un
+	 * avversario
+	 * 
+	 * @param terreno
+	 * @param giocatore
+	 * @param pastore
+	 * @author Valerio De Maria
+	 */
 	public void acquistoTessera(TipoTerreno terreno, String giocatore,
 			int pastore) {
 		schermo.acquistoTessera(terreno, giocatore, pastore);
 	}
 
+	/**
+	 * aggiorno la grafica riguardo al movimento di una pecora da parte di un
+	 * avversario
+	 * 
+	 * @param pecora
+	 * @param strada
+	 * @param giocatore
+	 * @param pastore
+	 */
 	public void movimentoPecora(int pecora, int strada, String giocatore,
 			int pastore) {
 		schermo.movimentoPecora(pecora, strada, giocatore, pastore);
 	}
 
+	/**
+	 * aggiorno la grafica riguardo all'abbattimento fatto da un giocatore
+	 * avversario
+	 * 
+	 * @param regione
+	 * @param pecora
+	 * @param giocatore
+	 * @param pastore
+	 * @author Valerio De Maria
+	 */
 	public void abbattimento(int regione, int pecora, String giocatore,
 			int pastore) {
 		schermo.abbattimento(regione, pecora, giocatore, pastore);
 	}
 
+	/**
+	 * aggiorno la grafica riguardo all'accoppiamento fatto da un giocatore
+	 * avversario
+	 * 
+	 * @param regione
+	 * @param giocatore
+	 * @param pastore
+	 * @author Valerio De Maria
+	 */
 	public void accoppiamento(int regione, String giocatore, int pastore) {
 		schermo.accoppiamento(regione, giocatore, pastore);
 	}
-	
-	public void spostamentoPecoraNera(int strada,String giocatore,int pastore){
-		schermo.spostamentoPecoraNera(strada,giocatore,pastore);
+
+	/**
+	 * aggiorno la grafica riguardo allo spostamento della pecora nera fatto da
+	 * un giocatore avversario
+	 * 
+	 * @param strada
+	 * @param giocatore
+	 * @param pastore
+	 */
+	public void spostamentoPecoraNera(int strada, String giocatore, int pastore) {
+		schermo.spostamentoPecoraNera(strada, giocatore, pastore);
 	}
 
+	/**
+	 * do alla grafica una serie di mosse disponibili e chiedo di effettuare una mossa
+	 * @param mosseDisponibili
+	 * @author Valerio De Maria
+	 */
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
 
 		// aggiorno la mia lista locale di mosse disponibili
@@ -189,10 +321,18 @@ public class ControllorePartitaClient {
 		schermo.richiestaMossa(mosseDisponibili);
 	}
 
+	/**
+	 * comunico che la mossa fatta era sbagliata
+	 * @author Valerio De Maria
+	 */
 	public void mossaSbagliata() {
 		schermo.mossaSbagliata();
 	}
 
+	/**
+	 * comunico che la mossa fatta era corretta
+	 * @author Valerio De Maria
+	 */
 	public void mossaCorretta() {
 		schermo.mossaCorretta();
 	}
@@ -263,8 +403,8 @@ public class ControllorePartitaClient {
 	public void muoviPecora(int strada, int pecoraScelta, int pastoreTurno) {
 		client.inviaMossa(new MuoviPecora(strada, pecoraScelta), pastoreTurno);
 	}
-	
-	public void spostaPecoraNera(int strada,int pastoreTurno){
+
+	public void spostaPecoraNera(int strada, int pastoreTurno) {
 		client.inviaMossa(new MuoviPecoraNera(strada), pastoreTurno);
 	}
 
@@ -304,55 +444,6 @@ public class ControllorePartitaClient {
 		client.inviaMossa(new Accoppia(regione), pastoreTurno);
 	}
 
-	/*
-	 * public void mossaFatta(int mossaScelta) {
-	 * 
-	 * switch (this.mosseDisponibili.get(mossaScelta)) {
-	 * 
-	 * case MUOVI_PASTORE: int posizione;
-	 * 
-	 * // SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO posizione =
-	 * schermo.scegliStrada(); client.inviaMossa(new MuoviPastore(posizione));
-	 * break;
-	 * 
-	 * case MUOVI_PECORA: int pecoraScelta; int strada;
-	 * 
-	 * // SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO pecoraScelta =
-	 * schermo.scegliPecora(); strada = schermo.scegliStrada();
-	 * client.inviaMossa(new MuoviPecora(strada, pecoraScelta)); break;
-	 * 
-	 * case COMPRA_TESSERA: int tipoTerreno;
-	 * 
-	 * // SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO tipoTerreno =
-	 * schermo.scegliTipoTerreno();
-	 * 
-	 * switch (tipoTerreno) { case 1: client.inviaMossa(new
-	 * CompraTessera(TipoTerreno.ACQUA)); case 2: client.inviaMossa(new
-	 * CompraTessera(TipoTerreno.FORESTA)); case 3: client.inviaMossa(new
-	 * CompraTessera(TipoTerreno.GRANO)); case 4: client.inviaMossa(new
-	 * CompraTessera(TipoTerreno.PRATERIA)); case 5: client.inviaMossa(new
-	 * CompraTessera(TipoTerreno.ROCCIA)); case 6: client.inviaMossa(new
-	 * CompraTessera(TipoTerreno.SABBIA));
-	 * 
-	 * default: break; }
-	 * 
-	 * break;
-	 * 
-	 * case ABBATTI: int regione; int pScelta;
-	 * 
-	 * // SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO pScelta =
-	 * schermo.scegliPecora(); regione = schermo.scegliRegione();
-	 * client.inviaMossa(new Abbatti(regione, pScelta)); break;
-	 * 
-	 * case ACCOPPIA: int reg;
-	 * 
-	 * // SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO reg =
-	 * schermo.scegliRegione(); client.inviaMossa(new Accoppia(reg)); break;
-	 * 
-	 * default: break; }
-	 * 
-	 * }
-	 */
 	public void riceviAggiornamenti() {
 		try {
 			client.riceviAggiornamenti();

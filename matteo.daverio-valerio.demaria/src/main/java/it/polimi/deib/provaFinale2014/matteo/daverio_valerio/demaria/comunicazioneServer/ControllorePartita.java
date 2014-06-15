@@ -405,8 +405,10 @@ public class ControllorePartita implements Runnable {
 	}
 
 	private void impostaTesseraIniziale() {
+		
 		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
 
+		int scelta;
 		// creo la lista di tessere iniziali
 		tessereIniziali.add(new Tessera(TipoTerreno.ACQUA, 0));
 		tessereIniziali.add(new Tessera(TipoTerreno.FORESTA, 0));
@@ -423,16 +425,15 @@ public class ControllorePartita implements Runnable {
 			top = 1;
 			step = 1;
 		}
-
+        System.out.println(top+" e "+step);
 		for (int i = 0; i <= top; i++) {
 
 			// scelgo un numero casuale tra 0 ed il numero di tessere iniziali
 			// rimasto -1
-			int scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
-			if (scelta == tessereIniziali.size()) {
-				scelta = scelta - 1;
-			}
-
+			do{
+			scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
+			}while (scelta >=tessereIniziali.size());
+            System.out.println("scelta vale: "+scelta);
 			// aggiungo la tessera iniziale scelta alle tessere del pastore
 			partita.getPastori().get(i + step * i)
 					.aggiungiTessera(tessereIniziali.get(scelta));
@@ -485,15 +486,22 @@ public class ControllorePartita implements Runnable {
 
 		inviaPosizioneInizialePecore();
 		
+		System.out.println("ho inviato le pecore");
 		inviaStrade();
 
+		System.out.println("ho inviato le strade");
 		aggiungiPastori();
 
+		System.out.println("ho aggiunto i pastori");
 		impostaDenaro();
 
+		System.out.println("ho impostato il denaro");
 		impostaTesseraIniziale();
 
+		System.out.println("ho impostato la tessera iniziale");
 		inviaDatiGiocatori();
+		
+		System.out.println("ho inviato i dati giocatori");
 	}
 
 	private void aggiornaPosizionamentoPastori(int turno, int pastore,
@@ -744,139 +752,3 @@ public class ControllorePartita implements Runnable {
 	}
 
 }
-// //////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*
- * VECCHIO CICLO PRINCIPALE posizionaPastori();
- * 
- * finePartita = false; faseFinale = false; int f = 0; while (!finePartita) {
- * 
- * giocaTurno(); partita.incrementaTurno();
- * 
- * if (partita.getTurno() > connessioni.size()) { partita.muoviLupo();
- * partita.incrementaTurno; }
- * 
- * f++; if (f == 4) { finePartita = true; }
- * 
- * if (partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) {
- * comunicaFaseFinale(); faseFinale = true; } if (faseFinale &&
- * partita.getTurno() == connessioni.size()) { finePartita = true; }
- * 
- * }// fine del while
- * 
- * System.out.println("la partita è finita, conto i punti"); conteggioPunti();
- * 
- * comunicaPunteggiFinali(punteggiFinali);
- * 
- * System.out.println("comunico ai client che la partita è finita");
- * comunicaFinePartita();
- */
-
-// ///////////VECCHI METODI////////////////////
-
-/*
- * public void posizionaPastori() {
- * 
- * int posizioneScelta;
- * 
- * // creo la lista di strade disponibili for (Strada x : partita.getStrade()) {
- * stradeDisponibili.add(x.getPosizione()); }
- * 
- * if (giocatori.size() > 2) { for (int i = 0; i <= giocatori.size() - 1; i++) {
- * 
- * posizioneScelta = giocatori.get(i).chiediPosizionamentoPastore(
- * stradeDisponibili);
- * 
- * if (posizioneScelta != -1) {
- * partita.getPastori().get(i).setPosizione(posizioneScelta);
- * stradeDisponibili.remove(stradeDisponibili .indexOf(posizioneScelta));
- * aggiornaPosizionamentoPastori(i + 1, i, posizioneScelta); } else System.out
- * .println("errore in comunicazione richiesta posizionamento pastore"); } } //
- * due giocatori else { posizioneScelta =
- * giocatori.get(0).chiediPosizionamentoPastore( stradeDisponibili);
- * partita.getPastori().get(0).setPosizione(posizioneScelta); stradeDisponibili
- * .remove(stradeDisponibili.indexOf(posizioneScelta));
- * aggiornaPosizionamentoPastori(1, 0, posizioneScelta);
- * 
- * posizioneScelta = giocatori.get(0).chiediPosizionamentoPastore(
- * stradeDisponibili);
- * partita.getPastori().get(1).setPosizione(posizioneScelta); stradeDisponibili
- * .remove(stradeDisponibili.indexOf(posizioneScelta));
- * aggiornaPosizionamentoPastori(1, 1, posizioneScelta);
- * 
- * posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
- * stradeDisponibili);
- * partita.getPastori().get(2).setPosizione(posizioneScelta); stradeDisponibili
- * .remove(stradeDisponibili.indexOf(posizioneScelta));
- * aggiornaPosizionamentoPastori(2, 2, posizioneScelta);
- * 
- * posizioneScelta = giocatori.get(1).chiediPosizionamentoPastore(
- * stradeDisponibili);
- * partita.getPastori().get(3).setPosizione(posizioneScelta); stradeDisponibili
- * .remove(stradeDisponibili.indexOf(posizioneScelta));
- * aggiornaPosizionamentoPastori(2, 3, posizioneScelta);
- * 
- * }
- * 
- * }
- */
-
-/*
- * private void giocaTurno() {
- * 
- * int pastoreInGioco;
- * 
- * inviaTurno();
- * 
- * // la pecora nera muove all'inizio di ogni nuovo turno
- * partita.muoviPecoraNera();
- * 
- * // dico ai client che la pecora nera si è mossa
- * comunicaMovimentoPecoraNera(partita.getPecoraNera().getPosizione());
- * 
- * pastoreInGioco = selezionaPastore();
- * 
- * mosseFatte.clear(); int numMosse = 0; // il giocatore compie le mosse che può
- * fare nel turno while (numMosse < Costanti.NUMERO_MOSSE_GIOCATORE) {
- * 
- * mosseDisponibili.clear();
- * 
- * controllaConnessioneClients(mosseDisponibili);
- * 
- * mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
- * 
- * Mossa mossa = riceviMossa(mosseDisponibili);
- * 
- * try { System.out.println("vado ad eseguire la mossa");
- * mossa.eseguiMossa(partita, giocatori .get(partita.getTurno() - 1).getNome(),
- * pastoreInGioco);
- * 
- * // faccio eseguire su tutti i client la mossa fatta
- * System.out.println("vado ad aggiornare clients");
- * mossa.aggiornaClients(giocatori, partita.getTurno());
- * 
- * System.out.println("vado ad aggiornare mosse fatte"); mosseFatte =
- * mossa.aggiornaMosseFatte(mosseFatte);
- * 
- * comunicaDenaro();
- * 
- * comunicaNumRecinti();
- * 
- * numMosse++;
- * 
- * } catch (Exception e) {
- * 
- * giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata(); }
- * 
- * }// fine ciclo while
- * 
- * }
- */
-
-/*
- * public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
- * 
- * return giocatori.get(partita.getTurno() - 1).riceviMossa( mosseDisponibili);
- * }
- */
-
