@@ -144,9 +144,10 @@ public interface InterfacciaGrafica {
 	
 	/**
 	 * comunico che è il turno dell'utente
+	 * invio stato attuale delle pecore e turno di gioco
 	 * @author Valerio De Maria
 	 */
-	public void iniziaTurno (List<Pecora> pecore);
+	public void iniziaTurno (List<Pecora> pecore,int turno);
 	
 	/**
 	 * dico alla grafica di chi è il turno attuale

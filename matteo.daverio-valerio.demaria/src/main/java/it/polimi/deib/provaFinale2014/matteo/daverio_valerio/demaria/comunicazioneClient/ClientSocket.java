@@ -134,7 +134,8 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					
 				case INIZIO_TURNO:
 					List<Pecora> pecorelle=(List<Pecora>)in.readObject();
-					controllore.iniziaTurno(pecorelle);
+					int t=in.readInt();
+					controllore.iniziaTurno(pecorelle,t);
 					
 					break;
 					
@@ -314,7 +315,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 		
 	}
 
-	public void inviaMossa(Mossa mossa) {
+	public void inviaMossa(Mossa mossa,int pastoreTurno) {
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.INVIO_MOSSA);
@@ -322,6 +323,10 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 			
 			out.reset();
 			out.writeObject(mossa);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastoreTurno);
 			out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

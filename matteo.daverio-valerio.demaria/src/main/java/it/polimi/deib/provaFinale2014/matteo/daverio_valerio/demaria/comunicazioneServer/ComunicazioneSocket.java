@@ -138,7 +138,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		
 	}
 
-	public void comunicaTurno(List<Pecora> pecore) {
+	public void comunicaTurno(List<Pecora> pecore,int turno) {
 
 		try {
 			out.reset();
@@ -147,6 +147,10 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			
 			out.reset();
 			out.writeObject(pecore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(turno);
 			out.flush();
 			
 		} catch (IOException e) {

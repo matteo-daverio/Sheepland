@@ -149,8 +149,8 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		
 	}
 
-	public void inizioTurno(List<Pecora> pecore) {
-		controllore.iniziaTurno(pecore);
+	public void inizioTurno(List<Pecora> pecore,int turno) {
+		controllore.iniziaTurno(pecore,turno);
 	}
 	
 	public void cambioTurno(String giocatore,List<Pecora> pecore) throws RemoteException {
@@ -245,9 +245,9 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 		
 	}
 
-	public void inviaMossa(Mossa mossa) {
+	public void inviaMossa(Mossa mossa,int pastoreTurno) {
 		try {
-			this.serverRMI.riceviMossa(mossa);
+			this.serverRMI.riceviMossa(mossa,pastoreTurno);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

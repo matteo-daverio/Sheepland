@@ -5,7 +5,7 @@ public class Costanti {
 	// costanti per il server
 	public static final int PORTA_SOCKET = 3000;
 	public static final int PORTA_RMI = 12189;
-	public static final long PERIODO_AVVIO_PARTITE = 900*1000;
+	public static final long PERIODO_AVVIO_PARTITE = 40*1000;
 	public final static String SERVER_NAME = "compute";
 
 	// costanti per le pecore

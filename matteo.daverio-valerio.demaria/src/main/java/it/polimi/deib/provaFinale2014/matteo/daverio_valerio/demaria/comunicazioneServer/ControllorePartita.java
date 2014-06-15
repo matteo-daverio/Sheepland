@@ -35,7 +35,7 @@ public class ControllorePartita implements Runnable {
 	private List<Integer> punteggiFinali = new ArrayList<Integer>();
 	private List<String> nomi = new ArrayList<String>();
 	List<Integer> stradeDisponibili = new ArrayList<Integer>();
-	private int pastoreInGioco, numeroMosse;
+	private int numeroMosse;
 	private InterfacciaServerRMI stubServerRMI;
 	private boolean primoPastore = true;
 	private List<Integer> denaroPastori =new ArrayList<Integer>();
@@ -233,7 +233,7 @@ public class ControllorePartita implements Runnable {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 
 			if (i == (partita.getTurno() - 1)) {
-				giocatori.get(i).comunicaTurno(partita.getPecore());
+				giocatori.get(i).comunicaTurno(partita.getPecore(),partita.getTurno());
 			} else {
 				giocatori.get(i).aggiornaTurno(
 						giocatori.get(partita.getTurno() - 1).getNome(),partita.getPecore());
@@ -512,11 +512,7 @@ public class ControllorePartita implements Runnable {
 	private void chiediMosse() {
 		if (numeroMosse == 3) {
 			// cambio il turno
-			if (partita.getTurno() == giocatori.size()) {
-				partita.incrementaTurno();
-			} else {
-				partita.incrementaTurno();;
-			}
+            partita.incrementaTurno();
 
 			// il lupo muove a fine turno
 			partita.muoviLupo();
@@ -538,8 +534,10 @@ public class ControllorePartita implements Runnable {
 			
 			System.out.println("dimensione mosse disponibili=>"+mosseDisponibili.size());
 
+			
 			// dico al client che deve inviarmi una mossa
-			giocatori.get(partita.getTurno()-1).inviaRichiestaMossa(mosseDisponibili);
+			 giocatori.get(partita.getTurno()-1).inviaRichiestaMossa(mosseDisponibili);
+
 		}
 
 	}
@@ -592,14 +590,14 @@ public class ControllorePartita implements Runnable {
 	}
 
 //////////METODO CHE VENGONO CHIAMATI DALLE CLASSI CHE RICEVONO INFO DAL CLIENT/////////
-	public void riceviMossa(Mossa mossa) {
+	public void riceviMossa(Mossa mossa,int pastoreTurno) {
 
 		try {
 
 			// eseguo la mossa
 			System.out.println("vado ad eseguire la mossa");
 			mossa.eseguiMossa(partita, giocatori.get(partita.getTurno() - 1)
-					.getNome(), pastoreInGioco);
+					.getNome(), pastoreTurno);
 
 			// dico a tutti i client la mossa fatta
 			System.out.println("vado ad aggiornare clients");
@@ -618,6 +616,9 @@ public class ControllorePartita implements Runnable {
 
 			numeroMosse++;
 			
+			//dico al client che ha eseguito la mossa che essa era corretta
+			giocatori.get(partita.getTurno()-1).mossaCorretta();
+			
 
 		} catch (Exception e) {
 
@@ -626,8 +627,7 @@ public class ControllorePartita implements Runnable {
 			giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata();
 		}
 
-		//dico al client che ha eseguito la mossa che essa era corretta
-		giocatori.get(partita.getTurno()-1).mossaCorretta();
+
 		
 		chiediMosse();
 
@@ -686,7 +686,7 @@ public class ControllorePartita implements Runnable {
 			}
 		}
 		// se tutti hanno posizionato i propri pastori
-		if (partita.getTurno() == giocatori.size()) {
+		if (partita.getTurno() == giocatori.size()&&!primoPastore) {
 			partita.incrementaTurno();;
 			giocaTurno();
 		}
@@ -695,7 +695,8 @@ public class ControllorePartita implements Runnable {
 
 			// incremento turno
 			if(giocatori.size()>2||!primoPastore){
-			partita.incrementaTurno();;
+			partita.incrementaTurno();
+			primoPastore=true;
 			}
 			else{
                 primoPastore=false;

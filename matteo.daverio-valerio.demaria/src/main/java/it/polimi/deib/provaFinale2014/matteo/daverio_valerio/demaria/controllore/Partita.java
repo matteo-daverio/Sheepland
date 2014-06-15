@@ -550,7 +550,7 @@ public class Partita implements Serializable {
 	 */
 	// TODO da testare
 	public void compraTessera(TipoTerreno terreno,int pastoreInGioco) throws GameException {
-		if (tipoRegioneAdiacenteCorrispondente(terreno)) {
+		if (tipoRegioneAdiacenteCorrispondente(terreno,pastoreInGioco)) {
 			if (costoTessere[terreno.ordinal()] <= 4) {
 				if (pastori.get(pastoreInGioco).getDenaro() >= costoTessere[terreno
 						.ordinal()]) {
@@ -615,11 +615,11 @@ public class Partita implements Serializable {
 	 * @return boolean
 	 * @author Valerio De Maria
 	 */
-	private boolean tipoRegioneAdiacenteCorrispondente(TipoTerreno terreno) {
-		if ((mappaRegioni.get(strade.get(pastori.get(turno - 1).getPosizione())
+	private boolean tipoRegioneAdiacenteCorrispondente(TipoTerreno terreno,int pastore) {
+		if ((mappaRegioni.get(strade.get(pastori.get(pastore).getPosizione())
 				.getRegioneDestra()) == terreno)
 				|| (mappaRegioni.get(strade.get(
-						pastori.get(turno - 1).getPosizione())
+						pastori.get(pastore).getPosizione())
 						.getRegioneSinistra()) == terreno)) {
 			return true;
 

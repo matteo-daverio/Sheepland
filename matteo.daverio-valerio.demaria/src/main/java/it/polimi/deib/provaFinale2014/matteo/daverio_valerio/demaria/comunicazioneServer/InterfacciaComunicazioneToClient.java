@@ -49,7 +49,7 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi);
 	
-	public void comunicaTurno(List<Pecora> pecore);
+	public void comunicaTurno(List<Pecora> pecore,int turno);
 	
 	public void aggiornaTurno(String giocatore,List<Pecora> pecore);
 	

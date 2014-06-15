@@ -17,6 +17,6 @@ public interface InterfacciaComunicazioneToServer {
 	
 	public void inviaPosizionePastore(int posizione);
 	
-	public void inviaMossa(Mossa mossa);
+	public void inviaMossa(Mossa mossa,int pastoreTurno);
 	
 }

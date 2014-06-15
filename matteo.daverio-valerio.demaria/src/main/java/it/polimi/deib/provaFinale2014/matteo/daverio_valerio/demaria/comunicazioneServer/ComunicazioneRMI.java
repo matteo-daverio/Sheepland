@@ -192,9 +192,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 
 	}
 
-	public void comunicaTurno(List<Pecora> pecore) {
+	public void comunicaTurno(List<Pecora> pecore,int turno) {
 		try {
-			client.inizioTurno(pecore);
+			client.inizioTurno(pecore,turno);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

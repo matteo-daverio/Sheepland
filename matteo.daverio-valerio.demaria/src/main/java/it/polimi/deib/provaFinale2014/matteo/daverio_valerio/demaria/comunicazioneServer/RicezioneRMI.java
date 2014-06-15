@@ -18,10 +18,11 @@ public class RicezioneRMI implements InterfacciaServerRMI{
 		
 	}
 
-	public void riceviMossa(Mossa mossa) throws RemoteException {
-		gameManager.riceviMossa(mossa);
+	public void riceviMossa(Mossa mossa,int pastoreTurno) throws RemoteException {
+		gameManager.riceviMossa(mossa,pastoreTurno);
 		
 	}
+
 
 	
 	

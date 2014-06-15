@@ -113,9 +113,9 @@ public class ControllorePartitaClient {
 		schermo.cambioTurno(giocatore,pecore);
 	}
 
-	public void iniziaTurno(List<Pecora> pecore) {
+	public void iniziaTurno(List<Pecora> pecore,int turno) {
 
-		schermo.iniziaTurno(pecore);
+		schermo.iniziaTurno(pecore,turno);
 	}
 
 	/**
@@ -241,29 +241,29 @@ public class ControllorePartitaClient {
 
 	}
 
-	public void muoviPastore(int posizione){
-		client.inviaMossa(new MuoviPastore(posizione));
+	public void muoviPastore(int posizione,int pastoreTurno){
+		client.inviaMossa(new MuoviPastore(posizione),pastoreTurno);
 	}
 
-	public void muoviPecora(int strada,int pecoraScelta){
-		client.inviaMossa(new MuoviPecora(strada,pecoraScelta));
+	public void muoviPecora(int strada,int pecoraScelta,int pastoreTurno){
+		client.inviaMossa(new MuoviPecora(strada,pecoraScelta),pastoreTurno);
 	}
 	
-	public void compraTessera(int tipoTerreno){
+	public void compraTessera(int tipoTerreno,int pastoreTurno){
 		
 		switch (tipoTerreno) {
 		case 1:
-			client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA));
+			client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA),pastoreTurno);
 		case 2:
-			client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA));
+			client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA),pastoreTurno);
 		case 3:
-			client.inviaMossa(new CompraTessera(TipoTerreno.GRANO));
+			client.inviaMossa(new CompraTessera(TipoTerreno.GRANO),pastoreTurno);
 		case 4:
-			client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA));
+			client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA),pastoreTurno);
 		case 5:
-			client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA));
+			client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA),pastoreTurno);
 		case 6:
-			client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA));
+			client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA),pastoreTurno);
 
 		default:
 			break;
@@ -271,12 +271,12 @@ public class ControllorePartitaClient {
 		
 	}
 	
-	public void abbatti(int regione, int pScelta){
-		client.inviaMossa(new Abbatti(regione,pScelta));
+	public void abbatti(int regione, int pScelta,int pastoreTurno){
+		client.inviaMossa(new Abbatti(regione,pScelta),pastoreTurno);
 	}
 	
-	public void accoppia(int regione){
-		client.inviaMossa(new Accoppia(regione));
+	public void accoppia(int regione,int pastoreTurno){
+		client.inviaMossa(new Accoppia(regione),pastoreTurno);
 	}
 	/*
 	public void mossaFatta(int mossaScelta) {

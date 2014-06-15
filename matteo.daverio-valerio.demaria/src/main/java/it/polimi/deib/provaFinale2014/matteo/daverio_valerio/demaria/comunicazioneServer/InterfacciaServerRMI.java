@@ -9,6 +9,6 @@ public interface InterfacciaServerRMI extends Remote {
 
 	public void riceviPosizionePastore(int posizione) throws RemoteException;
 	
-	public void riceviMossa(Mossa mossa) throws RemoteException;
+	public void riceviMossa(Mossa mossa,int pastoreTurno) throws RemoteException;
 	
 }

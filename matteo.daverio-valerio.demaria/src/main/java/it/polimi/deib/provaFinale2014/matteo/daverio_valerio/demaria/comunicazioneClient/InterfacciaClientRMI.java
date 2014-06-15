@@ -39,7 +39,7 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void faseFinale() throws RemoteException;
 	
-	public void inizioTurno(List<Pecora> pecore)throws RemoteException;
+	public void inizioTurno(List<Pecora> pecore,int turno)throws RemoteException;
 	
 	public void cambioTurno(String giocatore,List<Pecora> pecore)throws RemoteException;
 	

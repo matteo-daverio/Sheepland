@@ -34,7 +34,9 @@ public class ThreadRicezioneSocket implements Runnable {
 					break;
 					
 				case INVIO_MOSSA:
-					gameManager.riceviMossa((Mossa)in.readObject());
+					Mossa mossa=(Mossa)in.readObject();
+					int pastoreTurno=in.readInt();
+					gameManager.riceviMossa(mossa,pastoreTurno);
 					break;
 					
 				default:
