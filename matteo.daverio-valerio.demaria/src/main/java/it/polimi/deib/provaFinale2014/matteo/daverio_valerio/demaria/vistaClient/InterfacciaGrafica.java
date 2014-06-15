@@ -169,6 +169,17 @@ public interface InterfacciaGrafica {
 	public void accoppiamento(int regione, String giocatore, int pastore);
 
 	/**
+	 * dico alla grafica che il giocatore del turno attuale ha mosso la pecora
+	 * nera
+	 * 
+	 * @param strada
+	 * @param giocatore
+	 * @param pastore
+	 * @author Valerio De Maria
+	 */
+	public void spostamentoPecoraNera(int strada, String giocatore, int pastore);
+
+	/**
 	 * comunico che è il turno dell'utente invio stato attuale delle pecore e
 	 * turno di gioco
 	 * 

@@ -87,6 +87,17 @@ public class ClientRMI implements InterfacciaClientRMI,
 	}
 
 	/**
+	 * ricevo che il giocatore del turno attuale ha mosso la pecora nera
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void spostamentoPecoraNera(int strada, String giocatore, int pastore)
+			throws RemoteException {
+		controllore.spostamentoPecoraNera(strada, giocatore, pastore);
+
+	}
+
+	/**
 	 * ricevo che il giocatore del turno attuale ha mosso il pastore
 	 * 
 	 * @throws GameException
@@ -211,14 +222,15 @@ public class ClientRMI implements InterfacciaClientRMI,
 		controllore.settaPecore(pecore);
 
 	}
-	
+
 	/**
 	 * invia la lista delle strade
+	 * 
 	 * @author Valerio De Maria
 	 */
 	public void riceviStrade(List<Strada> strade) throws RemoteException {
 		controllore.riceviStrade(strade);
-		
+
 	}
 
 	/**
@@ -338,12 +350,12 @@ public class ClientRMI implements InterfacciaClientRMI,
 		controllore.richiestaPosizionamentoPastore(stradeDisponibili);
 
 	}
-	
+
 	// usato solo per socket
 	public void riceviAggiornamenti() throws IOException, GameException {
 
 	}
-	
+
 	public boolean pong() {
 		return true;
 	}
@@ -380,7 +392,5 @@ public class ClientRMI implements InterfacciaClientRMI,
 		}
 
 	}
-
-
 
 }

@@ -20,6 +20,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Accop
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.CompraTessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPecoraNera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.CommandLine;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.GuiImpl;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient.InterfacciaGrafica;
@@ -171,6 +172,10 @@ public class ControllorePartitaClient {
 	public void accoppiamento(int regione, String giocatore, int pastore) {
 		schermo.accoppiamento(regione, giocatore, pastore);
 	}
+	
+	public void spostamentoPecoraNera(int strada,String giocatore,int pastore){
+		schermo.spostamentoPecoraNera(strada,giocatore,pastore);
+	}
 
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
 
@@ -207,12 +212,6 @@ public class ControllorePartitaClient {
 	public void comunicaNumeroRecinti(int recinti) {
 		schermo.comunicaNumeroRecinti(recinti);
 	}
-
-	/*
-	 * METODO VECCHIO public int selezionaPastore(int primo, int secondo){
-	 * 
-	 * return schermo.selezionaPastore(primo,secondo); }
-	 */
 
 	// METODI ESEGUITI DALLA GRAFICA
 
@@ -263,6 +262,10 @@ public class ControllorePartitaClient {
 
 	public void muoviPecora(int strada, int pecoraScelta, int pastoreTurno) {
 		client.inviaMossa(new MuoviPecora(strada, pecoraScelta), pastoreTurno);
+	}
+	
+	public void spostaPecoraNera(int strada,int pastoreTurno){
+		client.inviaMossa(new MuoviPecoraNera(strada), pastoreTurno);
 	}
 
 	public void compraTessera(int tipoTerreno, int pastoreTurno) {

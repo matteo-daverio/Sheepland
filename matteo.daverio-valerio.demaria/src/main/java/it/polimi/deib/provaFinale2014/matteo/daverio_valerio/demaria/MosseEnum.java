@@ -8,6 +8,6 @@ import java.io.Serializable;
  */
 public enum MosseEnum implements Serializable {
 
-	MUOVI_PASTORE, MUOVI_PECORA, ABBATTI, ACCOPPIA, COMPRA_TESSERA;
+	MUOVI_PASTORE, MUOVI_PECORA, ABBATTI, ACCOPPIA, COMPRA_TESSERA,MUOVI_PECORA_NERA;
 
 }

@@ -554,4 +554,29 @@ try {
 		
 	}
 
+	public void comunicaSpostamentoPecoraNera(int strada, String giocatore,
+			int pastore) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.SPOSTAMENTO_PECORA_NERA);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(strada);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(giocatore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }

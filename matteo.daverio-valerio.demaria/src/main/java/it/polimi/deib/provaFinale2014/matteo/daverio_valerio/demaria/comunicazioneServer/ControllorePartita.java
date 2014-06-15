@@ -174,50 +174,61 @@ public class ControllorePartita implements Runnable {
 				&& (mosseFatte.get(0) != MosseEnum.MUOVI_PASTORE)
 				&& (mosseFatte.get(1) != MosseEnum.MUOVI_PASTORE)) {
 			mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
-			System.out.println("il client può muovere solo il pastore");
+			
 			return mosseDisponibili;
 		} else {
 			// se ho fatto almeno una mossa
 			if (mosseFatte.size() > 0) {
-				System.out.println("il client ha fatto almeno una mossa");
+				
 				// in base all'ultima mossa fatta
 				switch (mosseFatte.get(mosseFatte.size() - 1)) {
 
 				case ABBATTI:
-					System.out.println("non può abbattere");
+					
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case ACCOPPIA:
-					System.out.println("non può accoppiare");
+					
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case COMPRA_TESSERA:
-					System.out.println("non può comprare");
+					
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case MUOVI_PASTORE:
-					System.out.println("non può muovere il pastore");
+					
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case MUOVI_PECORA:
-					System.out.println("non può muovere la pecora");
+					
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					break;
+				case MUOVI_PECORA_NERA:
+					
+					mosseDisponibili.add(MosseEnum.ACCOPPIA);
+					mosseDisponibili.add(MosseEnum.ABBATTI);
+					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
+					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
+					break;	
 				default:
 					break;
 				}// fine switch
@@ -229,7 +240,8 @@ public class ControllorePartita implements Runnable {
 				mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 				mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 				mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
-				System.out.println("prima mossa->può fare quello che vuole");
+				mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
+				
 			}
 			return mosseDisponibili;
 		}

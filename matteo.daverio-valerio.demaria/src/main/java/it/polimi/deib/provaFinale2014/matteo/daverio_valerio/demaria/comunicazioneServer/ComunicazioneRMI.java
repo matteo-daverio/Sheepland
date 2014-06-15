@@ -13,6 +13,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 
 
 
+
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -317,6 +318,17 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 	public void comunicaStrade(List<Strada> strade) {
 		try {
 			client.riceviStrade(strade);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaSpostamentoPecoraNera(int strada, String giocatore,
+			int pastore) {
+		try {
+			client.spostamentoPecoraNera(strada,giocatore,pastore);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

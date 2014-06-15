@@ -31,6 +31,8 @@ public interface InterfacciaComunicazioneToClient {
 
 	public void comunicaMovimentoPecora(int pecora, int strada,String giocatore, int pastore);
 	
+	public void comunicaSpostamentoPecoraNera(int strada, String giocatore, int pastore);
+	
 	
 	
 	

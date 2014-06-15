@@ -365,6 +365,11 @@ public class CommandLine implements InterfacciaGrafica {
 					.println("Inc che regione vuoi fare accoppiare loe pecore?");
 			controllore.accoppia(in.nextInt(), pastoreTurno);
 			break;
+			
+		case MUOVI_PECORA_NERA:
+			System.out.println("Su quale strada vuoi muovere la pecora nera?");
+			controllore.spostaPecoraNera(in.nextInt(),pastoreTurno);
+			break;
 
 		default:
 			break;
@@ -413,7 +418,15 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void riceviStrade(List<Strada> strade) {
-		
+
+	}
+
+	public void spostamentoPecoraNera(int strada, String giocatore, int pastore) {
+		System.out.println(giocatore
+				+ " ha mosso la pecora nera lungo la strada " + strada
+				+ " mediante il pastore " + pastore);
+		;
+
 	}
 
 }
