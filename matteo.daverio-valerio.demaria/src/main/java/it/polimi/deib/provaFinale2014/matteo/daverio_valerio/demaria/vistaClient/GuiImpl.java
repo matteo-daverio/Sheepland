@@ -16,8 +16,9 @@ public class GuiImpl implements InterfacciaGrafica {
 	ControllorePartitaClient controllorePartita;
 	Map mappa;
 	LoginScreen loginScreen;
-	List<Pecora> pecore=new ArrayList<Pecora>();
-	List<Strada> strade=new ArrayList<Strada>();
+	List<Pecora> pecore = new ArrayList<Pecora>();
+	List<Strada> strade = new ArrayList<Strada>();
+	int posizionePecoraNera=0;
 
 	public GuiImpl(ControllorePartitaClient controllorePartita) {
 		this.controllorePartita = controllorePartita;
@@ -46,7 +47,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void settaPecore(List<Pecora> pecore) {
-		this.pecore=pecore;
+		this.pecore = pecore;
 		mappa.inizializzaPecore(pecore);
 	}
 
@@ -55,6 +56,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void muoviPecoraNera(int posizione) {
+		posizionePecoraNera=posizione;
 		mappa.muoviPecoraNera(posizione);
 	}
 
@@ -93,7 +95,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void movimentoPastore(int posizione, String giocatore, int pastore) {
-		mappa.muoviPastoreAvversario(pastore, posizione,giocatore);
+		mappa.muoviPastoreAvversario(pastore, posizione, giocatore);
 	}
 
 	public void acquistoTessera(TipoTerreno terreno, String giocatore,
@@ -103,24 +105,24 @@ public class GuiImpl implements InterfacciaGrafica {
 
 	public void movimentoPecora(int pecora, int strada, String giocatore,
 			int pastore) {
-		// TODO pecora è l'indice dell'array di pecore
-		Pecora ovino=pecore.get(pecora);
-		int tipoPecora=ovino.getTipoPecora();
-		int regionePartenza=ovino.getPosizione();
-		Strada posizionePastore=strade.get(strada);
+		Pecora ovino = pecore.get(pecora);
+		int tipoPecora = ovino.getTipoPecora();
+		int regionePartenza = ovino.getPosizione();
+		Strada posizionePastore = strade.get(strada);
 		int regioneArrivo;
-		if(posizionePastore.getRegioneDestra()==regionePartenza){
-			regioneArrivo=posizionePastore.getRegioneSinistra();
+		if (posizionePastore.getRegioneDestra() == regionePartenza) {
+			regioneArrivo = posizionePastore.getRegioneSinistra();
 		} else {
-			regioneArrivo=posizionePastore.getRegioneDestra();
+			regioneArrivo = posizionePastore.getRegioneDestra();
 		}
-		
+
 		mappa.muoviPecora(tipoPecora, regionePartenza, regioneArrivo);
 	}
 
 	public void abbattimento(int regione, int pecora, String giocatore,
 			int pastore) {
-		mappa.abbattiPecora(regione,giocatore,pecore.get(pecora).getTipoPecora());
+		mappa.abbattiPecora(regione, giocatore, pecore.get(pecora)
+				.getTipoPecora());
 	}
 
 	public void accoppiamento(int regione, String giocatore, int pastore) {
@@ -146,20 +148,19 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void iniziaTurno(List<Pecora> pecore, int turno) {
-		this.pecore=pecore;
+		this.pecore = pecore;
 		mappa.inizializzaPecore(pecore);
 		mappa.iniziaTurno(turno);
 	}
 
 	public void cambioTurno(String giocatore, List<Pecora> pecore) {
-		this.pecore=pecore;
+		this.pecore = pecore;
 		mappa.inizializzaPecore(pecore);
 		mappa.cambioTurno(giocatore);
 	}
-	
 
 	public void riceviStrade(List<Strada> strade) {
-		this.strade=strade;
+		this.strade = strade;
 	}
 
 	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
@@ -167,7 +168,7 @@ public class GuiImpl implements InterfacciaGrafica {
 		mappa.inizializzaPecore(pecore);
 		mappa.muoviPecoraNera(posPecoraNera);
 		mappa.muoviLupo(posLupo);
-		for(int i=0;i<pastori.size();i++){
+		for (int i = 0; i < pastori.size(); i++) {
 			mappa.collocaPastoreAvversario(pastori.get(i).getPosizione(), i);
 		}
 	}
@@ -176,22 +177,54 @@ public class GuiImpl implements InterfacciaGrafica {
 		mappa.segnalaDisconnessione();
 	}
 
-	public void muoviPecora(int turno,int posizionePartenza, int posizioneArrivo, int tipoPecora) {
-		int indicePecora=-1;
-		int indiceStrada=-1;
-		for(int i=0;i<pecore.size();i++) {
-			if(pecore.get(i).getPosizione()==posizionePartenza && pecore.get(i).getTipoPecora()==tipoPecora){
-				indicePecora=i;
+	public void muoviPecora(int turno, int posizionePartenza,
+			int posizioneArrivo, int tipoPecora) {
+		int indicePecora = -1;
+		int indiceStrada = -1;
+		for (int i = 0; i < pecore.size(); i++) {
+			if (pecore.get(i).getPosizione() == posizionePartenza
+					&& pecore.get(i).getTipoPecora() == tipoPecora) {
+				indicePecora = i;
 				break;
 			}
 		}
-		for(int i=0;i<strade.size();i++) {
-			if((strade.get(i).getRegioneDestra()==posizionePartenza && strade.get(i).getRegioneSinistra()==posizioneArrivo) || (strade.get(i).getRegioneDestra()==posizioneArrivo && strade.get(i).getRegioneSinistra()==posizionePartenza)){
-				indiceStrada=i;
+		for (int i = 0; i < strade.size(); i++) {
+			if ((strade.get(i).getRegioneDestra() == posizionePartenza && strade
+					.get(i).getRegioneSinistra() == posizioneArrivo)
+					|| (strade.get(i).getRegioneDestra() == posizioneArrivo && strade
+							.get(i).getRegioneSinistra() == posizionePartenza)) {
+				indiceStrada = i;
 				break;
 			}
 		}
 		controllorePartita.muoviPecora(indiceStrada, indicePecora, turno);
 	}
-	
+
+	public void spostamentoPecoraNera(int strada, String giocatore, int pastore) {
+		Strada posizionePastore = strade.get(strada);
+		int posizione;
+		if(posizionePastore.getRegioneDestra()==posizionePecoraNera){
+			posizione=posizionePastore.getRegioneSinistra();
+		} else {
+			posizione=posizionePastore.getRegioneDestra();
+		}
+		posizionePecoraNera=posizione;
+		mappa.spostamentoPecoraNera(giocatore, posizione);
+	}
+
+	public void mandaMossaPecoraNera(int turno, int posizionePartenza,
+			int posizioneArrivo) {
+		int indiceStrada=-1;
+		for (int i = 0; i < strade.size(); i++) {
+			if ((strade.get(i).getRegioneDestra() == posizionePartenza && strade
+					.get(i).getRegioneSinistra() == posizioneArrivo)
+					|| (strade.get(i).getRegioneDestra() == posizioneArrivo && strade
+							.get(i).getRegioneSinistra() == posizionePartenza)) {
+				indiceStrada = i;
+				break;
+			}
+		}
+		posizionePecoraNera=posizioneArrivo;
+		controllorePartita.spostaPecoraNera(indiceStrada, turno);
+	}
 }

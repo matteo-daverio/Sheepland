@@ -25,6 +25,7 @@ public class Pedina extends JLabel {
 		image=Toolkit.getDefaultToolkit().createImage(path);
 		loadImage(image);
 		this.setSize(xSize, ySize);
+		setOpaque(false);
 		setVisible(true);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 	}
