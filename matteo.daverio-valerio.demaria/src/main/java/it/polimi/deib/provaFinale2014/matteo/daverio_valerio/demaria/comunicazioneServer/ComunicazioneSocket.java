@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSock
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
@@ -62,12 +63,20 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	}
 
 	/**
-	 * setta la socket
+	 * setta la socket e riaggiorna il buffer di uscita
 	 * 
 	 * @author Valerio De Maria
 	 */
 	public void setSocket(Socket socket) {
 		this.socket = socket;
+		try {
+			out = new ObjectOutputStream(socket.getOutputStream());
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	
@@ -495,6 +504,36 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	public void aggiornamento(List<Pecora> pecore, int posPecoraNera,
+			int posLupo, List<Pastore> pastori) {
+
+try {
+	out.reset();
+	out.writeObject(ComandiSocket.AGGIORNAMENTO);
+	out.flush();
+	
+	out.reset();
+	out.writeObject(pecore);
+	out.flush();
+	
+	out.reset();
+	out.writeInt(posPecoraNera);
+	out.flush();
+	
+	out.reset();
+	out.writeInt(posLupo);
+	out.flush();
+	
+	out.reset();
+	out.writeObject(pastori);
+	out.flush();
+} catch (IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
 		
 	}
 

@@ -5,6 +5,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.Socket;
 
 public class ThreadRicezioneSocket implements Runnable {
 
@@ -17,6 +18,17 @@ public class ThreadRicezioneSocket implements Runnable {
 		this.in = in;
 		this.gameManager=gameManager;
 
+	}
+	
+	public void aggiornaSocket(Socket socket){
+		
+		try {
+			in = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void run() {

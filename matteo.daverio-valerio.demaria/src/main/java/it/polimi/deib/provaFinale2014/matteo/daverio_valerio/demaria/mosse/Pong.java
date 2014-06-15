@@ -3,41 +3,46 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneToClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Pong implements Mossa,Serializable{
+/**
+ * mossa che serve per capire al server che il client è ancora connesso
+ * 
+ * @author Valerio De Maria
+ * 
+ */
+public class Pong implements Mossa, Serializable {
 
-	public void eseguiMossa(Partita partita,String giocatore, int pastore) throws NoMovementException,
-			NoMoneyException, InvalidMovementException, NoMoreCardsException,
-			IllegalShireTypeException, NoSheepInShireException,
-			IllegalShireException, CannotProcreateException,
-			IllegalStreetException {
-		// TODO Auto-generated method stub
-		System.out.println("eseguo il pong");
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7670762943182933867L;
+
+	/**
+	 * 
+	 */
+	public void eseguiMossa(Partita partita, String giocatore, int pastore)
+			throws GameException {
 
 	}
 
-	public void aggiornaClients(List<InterfacciaComunicazioneToClient> giocatori,
-			int turno) {
-		// TODO Auto-generated method stub
-		
+	/**
+     * 
+     */
+	public void aggiornaClients(
+			List<InterfacciaComunicazioneToClient> giocatori, int turno) {
+
 	}
 
+	/**
+     * 
+     */
 	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
-		// TODO Auto-generated method stub
 		return null;
-		
+
 	}
 
 }

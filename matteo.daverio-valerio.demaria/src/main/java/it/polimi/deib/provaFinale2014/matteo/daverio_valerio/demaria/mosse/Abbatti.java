@@ -4,9 +4,6 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneToClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,43 +14,67 @@ import java.util.List;
  * @author Valeri De Maria
  * 
  */
-public class Abbatti implements Mossa,Serializable {
+public class Abbatti implements Mossa, Serializable {
 
-	private int regione,pecora,pastore;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8429587033170371570L;
+	private int regione, pecora, pastore;
 	private String giocatore;
 
-	// costruttore
-	public Abbatti(int regione,int pecora) {
+	/**
+	 * COSTRUTTORE
+	 * 
+	 * @param regione
+	 * @param pecora
+	 * @author Valerio De Maria
+	 */
+	public Abbatti(int regione, int pecora) {
 
 		this.regione = regione;
-		this.pecora=pecora;
+		this.pecora = pecora;
 
 	}
 
-	public void eseguiMossa(Partita partita, String giocatore, int pastore) throws GameException {
+	/**
+	 * eseguo la mossa su partita
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void eseguiMossa(Partita partita, String giocatore, int pastore)
+			throws GameException {
 
-		partita.abbatti(regione,pecora);
-		this.giocatore=giocatore;
-		this.pastore=pastore;
+		partita.abbatti(regione, pecora);
+		this.giocatore = giocatore;
+		this.pastore = pastore;
 
 	}
 
+	/**
+	 * comunico lo svolgimento della mossa ai vari giocatori
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void aggiornaClients(
+			List<InterfacciaComunicazioneToClient> giocatori, int turno) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			if (i != (turno - 1)) {
+				giocatori.get(i).comunicaAbbattimento(regione, pecora,
+						giocatore, pastore);
+			} else {
+				giocatori.get(i).mossaCorretta();
+			}
+		}
+	}
+
+	/**
+	 * @author Valerio De Maria
+	 */
 	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		mosseFatte.add(MosseEnum.ABBATTI);
 		return mosseFatte;
 
-	}
-
-	public void aggiornaClients(
-			List<InterfacciaComunicazioneToClient> giocatori, int turno) {
-		for (int i=0;i<=giocatori.size()-1;i++) {
-	           if(i!=(turno-1)){
-				giocatori.get(i).comunicaAbbattimento(regione,pecora,giocatore,pastore);
-	           }
-	           else{
-	        	   giocatori.get(i).mossaCorretta();
-	           }
-			}		
 	}
 
 }

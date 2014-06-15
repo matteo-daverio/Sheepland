@@ -4,9 +4,8 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaServerRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 import java.rmi.Remote;
@@ -62,6 +61,8 @@ public interface InterfacciaClientRMI extends Remote {
 	public void comunicaDenaro(List<Integer> denaroPastori)throws RemoteException;
 	
 	public void comunicaNumeroRecinti(int recinti)throws RemoteException;
+	
+	public void aggiornamento(List<Pecora> pecore,int posPecoraNera,int PosLupo, List<Pastore>pastori)throws RemoteException;
 	
 	///// NUOVI METODI  //////
 	

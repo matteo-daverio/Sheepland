@@ -7,6 +7,7 @@ public class Costanti {
 	public static final int PORTA_RMI = 12189;
 	public static final long PERIODO_AVVIO_PARTITE = 40*1000;
 	public final static String SERVER_NAME = "compute";
+	public final static String IP ="localhost";
 
 	// costanti per le pecore
 

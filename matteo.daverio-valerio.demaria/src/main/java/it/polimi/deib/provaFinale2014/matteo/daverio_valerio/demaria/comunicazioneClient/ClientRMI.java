@@ -1,7 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
-
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaServerRMI;
@@ -11,9 +10,11 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.G
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
+
 
 
 import java.io.IOException;
@@ -257,6 +258,12 @@ public class ClientRMI implements InterfacciaClientRMI, InterfacciaComunicazione
 
 	public void movimentoLupo(int posizione) throws RemoteException {
 		controllore.movimentoLupo(posizione);
+		
+	}
+
+	public void aggiornamento(List<Pecora> pecore, int posPecoraNera,
+			int PosLupo, List<Pastore> pastori) throws RemoteException {
+		controllore.aggiornamentoPostDisconnessione(pecore,posPecoraNera,PosLupo,pastori);
 		
 	}
 

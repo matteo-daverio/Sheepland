@@ -4,10 +4,6 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaComunicazioneToClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +24,23 @@ public class MuoviPastore implements Mossa, Serializable {
 	private int pastore;
 	private String giocatore;
 
-	// costruttore
+	/**
+	 * COSTRUTTORE
+	 * 
+	 * @param posizione
+	 * @author Valerio De Maria
+	 */
 	public MuoviPastore(int posizione) {
 
 		this.posizione = posizione;
 
 	}
 
+	/**
+	 * eseguo la mossa su partita
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void eseguiMossa(Partita partita, String giocatore, int pastore)
 			throws GameException {
 
@@ -45,21 +51,28 @@ public class MuoviPastore implements Mossa, Serializable {
 
 	}
 
-	public void aggiornaClients(List<InterfacciaComunicazioneToClient> giocatori,
-			int turno) {
+	/**
+	 * comunico ai giocatori lo svolgimento della mossa
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void aggiornaClients(
+			List<InterfacciaComunicazioneToClient> giocatori, int turno) {
 		System.out.println("aggiorno i clients");
-		for (int i = 0; i <= giocatori.size()-1; i++) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (i != (turno - 1)) {
-				giocatori.get(i).comunicaMovimentoPastore(posizione,
-						giocatore, pastore);
-			}
-			else{
+				giocatori.get(i).comunicaMovimentoPastore(posizione, giocatore,
+						pastore);
+			} else {
 				giocatori.get(i).mossaCorretta();
 			}
 		}
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public List<MosseEnum> aggiornaMosseFatte(List<MosseEnum> mosseFatte) {
 		List<MosseEnum> m = new ArrayList<MosseEnum>();
 		for (MosseEnum x : mosseFatte) {

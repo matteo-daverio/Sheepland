@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
@@ -386,6 +387,34 @@ public class CommandLine implements InterfacciaGrafica {
 
 	public void muoviLupo(int posizione) {
 		System.out.println("Il lupo si è mosso nella regione: " + posizione);
+
+	}
+
+	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
+			int posPecoraNera, int posLupo, List<Pastore> pastori) {
+		System.out.println("Bentornato!");
+		
+		System.out
+		.println("Le pecore sono posizionate nel modo seguente: ");
+for (Pecora x : pecore) {
+	if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
+		System.out.println("C'è una pecora nella regione: "
+				+ x.getPosizione());
+	} else if (x.getTipoPecora() == (Costanti.TIPO_PECORA_MONTONE)) {
+		System.out.println("C'è un montone nella regione: "
+				+ x.getPosizione());
+	} else
+		System.out.println("C'è un agnello nella regione: "
+				+ x.getPosizione());
+}
+
+System.out.println("La pecora nera è in: "+posPecoraNera);
+System.out.println("Il lupo è in: "+posLupo);
+
+for(int i=0;i<=pastori.size()-1;i++){
+	System.out.println("Il pastore "+i+" sta sulla strada: "+pastori.get(i).getPosizione());
+}
+
 
 	}
 

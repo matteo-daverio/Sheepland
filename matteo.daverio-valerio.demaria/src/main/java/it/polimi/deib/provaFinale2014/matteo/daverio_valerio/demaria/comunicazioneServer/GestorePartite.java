@@ -76,6 +76,15 @@ public class GestorePartite implements Runnable {
 			}
 		}
 	}
+	
+	/**
+	 * elimina il controllore della partita che ha finito il gioco 
+	 * @param partitaFinita
+	 * @author Valerio De Maria
+	 */
+	public synchronized void rimuoviPartitaInCorso(ControllorePartita partitaFinita){
+		partiteInCorso.remove(partitaFinita);
+	}
 
 	/**
 	 * aggiungo una nuova connessione a quelle in attesa di iniziare se il
@@ -112,16 +121,21 @@ public class GestorePartite implements Runnable {
 	 */
 	class CreatorePartite extends TimerTask {
 
+		private GestorePartite g;
+		
+		public CreatorePartite(GestorePartite g){
+			this.g=g;
+		}
 		@Override
 		public void run() {
-			// TODO codice talebano
+
 			System.out.println("controllo se ci sono partite da far partitre");
 			System.out.println("ho "+connessioni.size()+" giocatori in attesa di iniziare");
 			
 			if (connessioni.size() > 1) {
 				Partita p = new Partita();
 				ControllorePartita controllore = new ControllorePartita(
-					connessioni, p);
+					connessioni, p,g);
 				partiteInCorso.add(controllore);
 				executor.submit(controllore);
 				connessioni.clear();
@@ -141,7 +155,7 @@ public class GestorePartite implements Runnable {
 
 		// inizializzo il timer che fa partire partite anche con 2 giocatori
 		Timer timer = new Timer();
-		CreatorePartite task = new CreatorePartite();
+		CreatorePartite task = new CreatorePartite(this);
 		timer.schedule(task, 0, Costanti.PERIODO_AVVIO_PARTITE);
 
 		// se i giocatori in attesa raggiungono il numero massimo di giocatori
@@ -152,7 +166,7 @@ public class GestorePartite implements Runnable {
 				System.out.println("ho raggiunto 4 giocatori!");
 				Partita partita = new Partita();
 				ControllorePartita controllore = new ControllorePartita(
-						connessioni, partita);
+						connessioni, partita,this);
 				partiteInCorso.add(controllore);
 				executor.submit(controllore);
 				connessioni.clear();

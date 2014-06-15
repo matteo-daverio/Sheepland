@@ -17,6 +17,9 @@ public enum ComandiSocket implements Serializable{
 	
 	FASE_FINALE, PUNTEGGI,
 	
+	//in caso di disconnessione
+	AGGIORNAMENTO,
+	
 	//aggiornamento clients
 	MOVIMENTO_PASTORE, ABBATTIMENTO,ACCOPPIAMENTO, MOVIMENTO_PECORA, ACQUISTO_TESSERA,
 	

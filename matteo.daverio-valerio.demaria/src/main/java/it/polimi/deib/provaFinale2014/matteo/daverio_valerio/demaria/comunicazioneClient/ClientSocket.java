@@ -6,6 +6,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
@@ -226,6 +227,16 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					posizione=in.readInt();
 					
 					controllore.movimentoLupo(posizione);
+					break;
+					
+				case AGGIORNAMENTO:
+					
+					List<Pecora> sheep=(List<Pecora>)in.readObject();
+					int posBlackSheep =in.readInt();
+					int posWolf=in.read();
+					List<Pastore> shepperds=(List<Pastore>)in.readObject();
+					
+					controllore.aggiornamentoPostDisconnessione(sheep, posBlackSheep, posWolf, shepperds);
 					break;
 					
 				default:

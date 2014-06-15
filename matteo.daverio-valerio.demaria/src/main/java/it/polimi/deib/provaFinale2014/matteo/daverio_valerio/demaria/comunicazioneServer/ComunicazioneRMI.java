@@ -5,8 +5,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
+
 
 
 import java.net.Socket;
@@ -292,6 +294,17 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 	public void comunicaMovimentoLupo(int nuovaPosizione) {
 		try {
 			client.movimentoLupo(nuovaPosizione);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void aggiornamento(List<Pecora> pecore, int posPecoraNera,
+			int posLupo, List<Pastore> pastori) {
+		try {
+			client.aggiornamento(pecore,posPecoraNera,posLupo,pastori);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

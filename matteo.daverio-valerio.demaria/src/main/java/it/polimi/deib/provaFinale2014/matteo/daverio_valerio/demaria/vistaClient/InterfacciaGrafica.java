@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
@@ -213,6 +214,16 @@ public interface InterfacciaGrafica {
 	 * @author Valerio De Maria
 	 */
 	public void comunicaNumeroRecinti(int recinti);
+	
+	/**
+	 * aggiorna l'utente in seguito ad una riconnessione
+	 * @param pecore
+	 * @param posPecoraNera
+	 * @param posLupo
+	 * @param pastori
+	 * @author Valerio De Maria
+	 */
+	public void aggiornamentoPostDisconnessione(List<Pecora> pecore, int posPecoraNera,int posLupo,List<Pastore>pastori);
 	
 	/*
 	//PER ESECUZIONE MOSSA

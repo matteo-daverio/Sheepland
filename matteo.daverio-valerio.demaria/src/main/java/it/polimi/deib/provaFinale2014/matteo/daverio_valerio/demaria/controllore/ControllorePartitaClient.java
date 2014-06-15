@@ -11,6 +11,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaComunicazioneToServer;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Abbatti;
@@ -77,6 +78,9 @@ public class ControllorePartitaClient {
 
 	// / METODI CHE ESEGUONO I METODI DELL'INTERFACCIA GRAFICA //////
 
+	public void aggiornamentoPostDisconnessione(List<Pecora> pecore, int posPecoraNera,int posLupo,List<Pastore>pastori){
+		schermo.aggiornamentoPostDisconnessione(pecore,posPecoraNera,posLupo,pastori);
+	}
 	public void riceviNomiGiocatori(List<String> nomi) {
 		schermo.nomiGiocatori(nomi);
 	}

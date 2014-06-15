@@ -5,6 +5,7 @@ import java.util.List;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
@@ -54,9 +55,7 @@ public interface InterfacciaComunicazioneToClient {
 	public void aggiornaTurno(String giocatore,List<Pecora> pecore);
 	
 	public void inviaTesseraIniziale(Tessera tesseraIniziale);
-	
-	//public int selezionaPastore(int primo, int secondo);
-	
+		
 	public void comunicaMossaSbagliata();
 	
 	public void mossaCorretta();
@@ -66,6 +65,8 @@ public interface InterfacciaComunicazioneToClient {
 	public void comunicaDenaro(List<Integer> denaroPastori);
 	
 	public void comunicaNumeroRecinti(int recinti);
+	
+	public void aggiornamento(List<Pecora> pecore, int posPecoraNera,int posLupo, List<Pastore> pastori);
 	
 	/////METODI NUOVI
 	
