@@ -7,7 +7,9 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
+
 
 
 
@@ -305,6 +307,16 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 			int posLupo, List<Pastore> pastori) {
 		try {
 			client.aggiornamento(pecore,posPecoraNera,posLupo,pastori);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaStrade(List<Strada> strade) {
+		try {
+			client.riceviStrade(strade);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

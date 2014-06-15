@@ -7,6 +7,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 
@@ -36,7 +37,9 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void comunicaPecore(List<Pecora> pecore);
 	
-	//public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili);
+	public void comunicaStrade(List<Strada> strade);
+	
+
 	
 	public void comunicaPosizionamentoPastore(int turno, int pastore, int posizione);
 	

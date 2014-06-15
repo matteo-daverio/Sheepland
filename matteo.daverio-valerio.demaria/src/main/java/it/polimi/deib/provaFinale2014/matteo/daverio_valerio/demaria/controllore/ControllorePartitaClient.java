@@ -13,6 +13,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Abbatti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Accoppia;
@@ -78,9 +79,16 @@ public class ControllorePartitaClient {
 
 	// / METODI CHE ESEGUONO I METODI DELL'INTERFACCIA GRAFICA //////
 
-	public void aggiornamentoPostDisconnessione(List<Pecora> pecore, int posPecoraNera,int posLupo,List<Pastore>pastori){
-		schermo.aggiornamentoPostDisconnessione(pecore,posPecoraNera,posLupo,pastori);
+	public void segnalaDisconnessione() {
+		schermo.segnalaDisconnessione();
 	}
+
+	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
+			int posPecoraNera, int posLupo, List<Pastore> pastori) {
+		schermo.aggiornamentoPostDisconnessione(pecore, posPecoraNera, posLupo,
+				pastori);
+	}
+
 	public void riceviNomiGiocatori(List<String> nomi) {
 		schermo.nomiGiocatori(nomi);
 	}
@@ -97,6 +105,10 @@ public class ControllorePartitaClient {
 		schermo.settaPecore(pecore);
 	}
 
+	public void riceviStrade(List<Strada> strade){
+		schermo.riceviStrade(strade);
+	}
+	
 	public void aggiornamentoPosizionePastore(int turno, int pastore,
 			int posizione) {
 		schermo.aggiornamentoPosizionePastore(turno, pastore, posizione);
@@ -113,13 +125,13 @@ public class ControllorePartitaClient {
 		schermo.richiestaPosizionamentoPastore();
 	}
 
-	public void cambioTurno(String giocatore,List<Pecora> pecore) {
-		schermo.cambioTurno(giocatore,pecore);
+	public void cambioTurno(String giocatore, List<Pecora> pecore) {
+		schermo.cambioTurno(giocatore, pecore);
 	}
 
-	public void iniziaTurno(List<Pecora> pecore,int turno) {
+	public void iniziaTurno(List<Pecora> pecore, int turno) {
 
-		schermo.iniziaTurno(pecore,turno);
+		schermo.iniziaTurno(pecore, turno);
 	}
 
 	/**
@@ -132,8 +144,8 @@ public class ControllorePartitaClient {
 
 		schermo.muoviPecoraNera(posizione);
 	}
-	
-	public void movimentoLupo(int posizione){
+
+	public void movimentoLupo(int posizione) {
 		schermo.muoviLupo(posizione);
 	}
 
@@ -245,116 +257,99 @@ public class ControllorePartitaClient {
 
 	}
 
-	public void muoviPastore(int posizione,int pastoreTurno){
-		client.inviaMossa(new MuoviPastore(posizione),pastoreTurno);
+	public void muoviPastore(int posizione, int pastoreTurno) {
+		client.inviaMossa(new MuoviPastore(posizione), pastoreTurno);
 	}
 
-	public void muoviPecora(int strada,int pecoraScelta,int pastoreTurno){
-		client.inviaMossa(new MuoviPecora(strada,pecoraScelta),pastoreTurno);
+	public void muoviPecora(int strada, int pecoraScelta, int pastoreTurno) {
+		client.inviaMossa(new MuoviPecora(strada, pecoraScelta), pastoreTurno);
 	}
-	
-	public void compraTessera(int tipoTerreno,int pastoreTurno){
-		
+
+	public void compraTessera(int tipoTerreno, int pastoreTurno) {
+
 		switch (tipoTerreno) {
 		case 1:
-			client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA),pastoreTurno);
+			client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA),
+					pastoreTurno);
 		case 2:
-			client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA),pastoreTurno);
+			client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA),
+					pastoreTurno);
 		case 3:
-			client.inviaMossa(new CompraTessera(TipoTerreno.GRANO),pastoreTurno);
+			client.inviaMossa(new CompraTessera(TipoTerreno.GRANO),
+					pastoreTurno);
 		case 4:
-			client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA),pastoreTurno);
+			client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA),
+					pastoreTurno);
 		case 5:
-			client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA),pastoreTurno);
+			client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA),
+					pastoreTurno);
 		case 6:
-			client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA),pastoreTurno);
+			client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA),
+					pastoreTurno);
 
 		default:
 			break;
 		}
-		
+
 	}
-	
-	public void abbatti(int regione, int pScelta,int pastoreTurno){
-		client.inviaMossa(new Abbatti(regione,pScelta),pastoreTurno);
+
+	public void abbatti(int regione, int pScelta, int pastoreTurno) {
+		client.inviaMossa(new Abbatti(regione, pScelta), pastoreTurno);
 	}
-	
-	public void accoppia(int regione,int pastoreTurno){
-		client.inviaMossa(new Accoppia(regione),pastoreTurno);
+
+	public void accoppia(int regione, int pastoreTurno) {
+		client.inviaMossa(new Accoppia(regione), pastoreTurno);
 	}
+
 	/*
-	public void mossaFatta(int mossaScelta) {
-
-		switch (this.mosseDisponibili.get(mossaScelta)) {
-
-		case MUOVI_PASTORE:
-			int posizione;
-
-			// SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO
-			posizione = schermo.scegliStrada();
-			client.inviaMossa(new MuoviPastore(posizione));
-			break;
-
-		case MUOVI_PECORA:
-			int pecoraScelta;
-			int strada;
-
-			// SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO
-			pecoraScelta = schermo.scegliPecora();
-			strada = schermo.scegliStrada();
-			client.inviaMossa(new MuoviPecora(strada, pecoraScelta));
-			break;
-
-		case COMPRA_TESSERA:
-			int tipoTerreno;
-
-			// SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO
-			tipoTerreno = schermo.scegliTipoTerreno();
-
-			switch (tipoTerreno) {
-			case 1:
-				client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA));
-			case 2:
-				client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA));
-			case 3:
-				client.inviaMossa(new CompraTessera(TipoTerreno.GRANO));
-			case 4:
-				client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA));
-			case 5:
-				client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA));
-			case 6:
-				client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA));
-
-			default:
-				break;
-			}
-
-			break;
-
-		case ABBATTI:
-			int regione;
-			int pScelta;
-
-			// SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO
-			pScelta = schermo.scegliPecora();
-			regione = schermo.scegliRegione();
-			client.inviaMossa(new Abbatti(regione, pScelta));
-			break;
-
-		case ACCOPPIA:
-			int reg;
-
-			// SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO
-			reg = schermo.scegliRegione();
-			client.inviaMossa(new Accoppia(reg));
-			break;
-
-		default:
-			break;
-		}
-
-	}
-*/
+	 * public void mossaFatta(int mossaScelta) {
+	 * 
+	 * switch (this.mosseDisponibili.get(mossaScelta)) {
+	 * 
+	 * case MUOVI_PASTORE: int posizione;
+	 * 
+	 * // SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO posizione =
+	 * schermo.scegliStrada(); client.inviaMossa(new MuoviPastore(posizione));
+	 * break;
+	 * 
+	 * case MUOVI_PECORA: int pecoraScelta; int strada;
+	 * 
+	 * // SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO pecoraScelta =
+	 * schermo.scegliPecora(); strada = schermo.scegliStrada();
+	 * client.inviaMossa(new MuoviPecora(strada, pecoraScelta)); break;
+	 * 
+	 * case COMPRA_TESSERA: int tipoTerreno;
+	 * 
+	 * // SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO tipoTerreno =
+	 * schermo.scegliTipoTerreno();
+	 * 
+	 * switch (tipoTerreno) { case 1: client.inviaMossa(new
+	 * CompraTessera(TipoTerreno.ACQUA)); case 2: client.inviaMossa(new
+	 * CompraTessera(TipoTerreno.FORESTA)); case 3: client.inviaMossa(new
+	 * CompraTessera(TipoTerreno.GRANO)); case 4: client.inviaMossa(new
+	 * CompraTessera(TipoTerreno.PRATERIA)); case 5: client.inviaMossa(new
+	 * CompraTessera(TipoTerreno.ROCCIA)); case 6: client.inviaMossa(new
+	 * CompraTessera(TipoTerreno.SABBIA));
+	 * 
+	 * default: break; }
+	 * 
+	 * break;
+	 * 
+	 * case ABBATTI: int regione; int pScelta;
+	 * 
+	 * // SE NON SI RIESCE AD IMPLEMENTARLI LI CAMBIO pScelta =
+	 * schermo.scegliPecora(); regione = schermo.scegliRegione();
+	 * client.inviaMossa(new Abbatti(regione, pScelta)); break;
+	 * 
+	 * case ACCOPPIA: int reg;
+	 * 
+	 * // SE NON SI RIESCE AD IMPLEMENTARLO LO CAMBIO reg =
+	 * schermo.scegliRegione(); client.inviaMossa(new Accoppia(reg)); break;
+	 * 
+	 * default: break; }
+	 * 
+	 * }
+	 */
 	public void riceviAggiornamenti() {
 		try {
 			client.riceviAggiornamenti();

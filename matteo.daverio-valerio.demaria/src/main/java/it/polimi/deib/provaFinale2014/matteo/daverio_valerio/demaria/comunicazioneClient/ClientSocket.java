@@ -8,6 +8,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
@@ -237,6 +238,13 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					List<Pastore> shepperds=(List<Pastore>)in.readObject();
 					
 					controllore.aggiornamentoPostDisconnessione(sheep, posBlackSheep, posWolf, shepperds);
+					break;
+					
+				case INVIO_STRADE:
+					
+					List<Strada> street=(List<Strada>)in.readObject();
+					controllore.riceviStrade(street);
+					
 					break;
 					
 				default:

@@ -435,6 +435,12 @@ public class ControllorePartita implements Runnable {
 			x.comunicaPecore(partita.getPecore());
 		}
 	}
+	
+	private void inviaStrade(){
+		for (InterfacciaComunicazioneToClient x : giocatori) {
+			x.comunicaStrade(partita.getStrade());
+		}
+	}
 
 	private void aggiungiPastori() {
 
@@ -466,6 +472,8 @@ public class ControllorePartita implements Runnable {
 		partita.setNumeroGiocatori(giocatori.size());
 
 		inviaPosizioneInizialePecore();
+		
+		inviaStrade();
 
 		aggiungiPastori();
 

@@ -6,6 +6,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazio
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 import java.rmi.Remote;
@@ -45,6 +46,8 @@ public interface InterfacciaClientRMI extends Remote {
 	public void riceviDatiGiocatori(List<String> nomi, List<Integer> soldi) throws RemoteException;
 	
 	public void riceviPecore(List<Pecora> pecore) throws RemoteException;
+	
+	public void riceviStrade(List<Strada> strade)throws RemoteException;
 	
 	public void riceviAggiornamentoPosizionamentoPastore(int turno,int pastore, int posizione) throws RemoteException;
 	

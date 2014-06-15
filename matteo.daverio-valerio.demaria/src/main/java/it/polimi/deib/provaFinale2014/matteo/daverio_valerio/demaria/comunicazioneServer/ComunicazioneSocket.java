@@ -6,6 +6,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 import java.io.IOException;
@@ -534,6 +535,22 @@ try {
 	// TODO Auto-generated catch block
 	e.printStackTrace();
 }
+		
+	}
+
+	public void comunicaStrade(List<Strada> strade) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.INVIO_STRADE);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(strade);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

@@ -6,6 +6,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class CommandLine implements InterfacciaGrafica {
 	private Scanner in = new Scanner(System.in);
 	private String nome, password;
 	private boolean autenticato = false;
-	private int numGiocatori,turno,pastoreScelto,p1,p2,pastoreTurno;
+	private int numGiocatori, turno, pastoreScelto, p1, p2, pastoreTurno;
 	ControllorePartitaClient controllore;
 
 	public CommandLine(ControllorePartitaClient controllore) {
@@ -63,30 +64,28 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
-	public void iniziaTurno(List<Pecora> pecore,int turno) {
+	public void iniziaTurno(List<Pecora> pecore, int turno) {
 		System.out.println("Ora è il tuo turno!");
-		this.turno=turno;
-		
-		
-		if(numGiocatori==2){
-			if(turno==1){
-				p1=0;
-				p2=1;
+		this.turno = turno;
+
+		if (numGiocatori == 2) {
+			if (turno == 1) {
+				p1 = 0;
+				p2 = 1;
+			} else {
+				p1 = 2;
+				p2 = 3;
 			}
-			else{
-				p1=2;
-				p2=3;
-			}
-			System.out.println("Scegli il pastore che vuoi usare per giocare il turno: "+p1+" o "+p2);
-			do{
-				pastoreTurno=in.nextInt();
-			}while(pastoreTurno!=p1 &&pastoreTurno!=p2);
+			System.out
+					.println("Scegli il pastore che vuoi usare per giocare il turno: "
+							+ p1 + " o " + p2);
+			do {
+				pastoreTurno = in.nextInt();
+			} while (pastoreTurno != p1 && pastoreTurno != p2);
+		} else {
+			pastoreTurno = turno - 1;
 		}
-		else{
-			pastoreTurno=turno-1;
-		}
-		
-		
+
 		for (Pecora x : pecore) {
 			if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
 				System.out.println("C'è una pecora nella regione: "
@@ -101,9 +100,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
-	public void cambioTurno(String giocatore,List<Pecora> pecore) {
+	public void cambioTurno(String giocatore, List<Pecora> pecore) {
 		System.out.println("Ora è il turno di " + giocatore);
-		
+
 		for (Pecora x : pecore) {
 			if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
 				System.out.println("C'è una pecora nella regione: "
@@ -157,8 +156,8 @@ public class CommandLine implements InterfacciaGrafica {
 			System.out.println("Il giocatore del turno " + i + " è "
 					+ nomi.get(i));
 		}
-		
-		numGiocatori=nomi.size();
+
+		numGiocatori = nomi.size();
 
 	}
 
@@ -263,7 +262,7 @@ public class CommandLine implements InterfacciaGrafica {
 
 		return scelta;
 	}
-	
+
 	public void mossaSbagliata() {
 		System.out.println("La mossa che hai fatto è sbagliata");
 
@@ -309,23 +308,14 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
-		
 
-		
-		
 		System.out.println("Le mose che puoi fare sono le seguenti:");
 		for (int i = 0; i <= mosseDisponibili.size() - 1; i++) {
-			
+
 			System.out.println(i + ") " + mosseDisponibili.get(i));
 
 		}
-		
 
-		
-		
-		
-		
-		
 		System.out.println("Inserisci il numero della mossa che vuoi fare:");
 		int mossaScelta;
 		do {
@@ -338,7 +328,7 @@ public class CommandLine implements InterfacciaGrafica {
 		case MUOVI_PASTORE:
 
 			System.out.println("Su che strada vuoi muovere il pastore?");
-			controllore.muoviPastore(in.nextInt(),pastoreTurno);
+			controllore.muoviPastore(in.nextInt(), pastoreTurno);
 			break;
 
 		case MUOVI_PECORA:
@@ -346,7 +336,7 @@ public class CommandLine implements InterfacciaGrafica {
 			System.out.println("Che pecora vuoi muovere?");
 			int pecoraScelta = in.nextInt();
 			System.out.println("Su quale strada la vuoi muovere?");
-			controllore.muoviPecora(in.nextInt(), pecoraScelta,pastoreTurno);
+			controllore.muoviPecora(in.nextInt(), pecoraScelta, pastoreTurno);
 			break;
 
 		case COMPRA_TESSERA:
@@ -360,20 +350,20 @@ public class CommandLine implements InterfacciaGrafica {
 				scelta = in.nextInt();
 			} while (scelta < 0 || scelta > 6);
 
-			controllore.compraTessera(scelta,pastoreTurno);
+			controllore.compraTessera(scelta, pastoreTurno);
 			break;
 
 		case ABBATTI:
 			System.out.println("In che regione vuoi abbattere la pecora?");
 			int regione = in.nextInt();
 			System.out.println("Che pecora vuoi abbattere?");
-			controllore.abbatti(regione, in.nextInt(),pastoreTurno);
+			controllore.abbatti(regione, in.nextInt(), pastoreTurno);
 			break;
 
 		case ACCOPPIA:
 			System.out
 					.println("Inc che regione vuoi fare accoppiare loe pecore?");
-			controllore.accoppia(in.nextInt(),pastoreTurno);
+			controllore.accoppia(in.nextInt(), pastoreTurno);
 			break;
 
 		default:
@@ -393,29 +383,37 @@ public class CommandLine implements InterfacciaGrafica {
 	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
 			int posPecoraNera, int posLupo, List<Pastore> pastori) {
 		System.out.println("Bentornato!");
+
+		System.out.println("Le pecore sono posizionate nel modo seguente: ");
+		for (Pecora x : pecore) {
+			if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
+				System.out.println("C'è una pecora nella regione: "
+						+ x.getPosizione());
+			} else if (x.getTipoPecora() == (Costanti.TIPO_PECORA_MONTONE)) {
+				System.out.println("C'è un montone nella regione: "
+						+ x.getPosizione());
+			} else
+				System.out.println("C'è un agnello nella regione: "
+						+ x.getPosizione());
+		}
+
+		System.out.println("La pecora nera è in: " + posPecoraNera);
+		System.out.println("Il lupo è in: " + posLupo);
+
+		for (int i = 0; i <= pastori.size() - 1; i++) {
+			System.out.println("Il pastore " + i + " sta sulla strada: "
+					+ pastori.get(i).getPosizione());
+		}
+
+	}
+
+	public void segnalaDisconnessione() {
+		System.out.println("!!CONNESSIONE CON IL SERVER CADUTA!!");
+
+	}
+
+	public void riceviStrade(List<Strada> strade) {
 		
-		System.out
-		.println("Le pecore sono posizionate nel modo seguente: ");
-for (Pecora x : pecore) {
-	if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
-		System.out.println("C'è una pecora nella regione: "
-				+ x.getPosizione());
-	} else if (x.getTipoPecora() == (Costanti.TIPO_PECORA_MONTONE)) {
-		System.out.println("C'è un montone nella regione: "
-				+ x.getPosizione());
-	} else
-		System.out.println("C'è un agnello nella regione: "
-				+ x.getPosizione());
-}
-
-System.out.println("La pecora nera è in: "+posPecoraNera);
-System.out.println("Il lupo è in: "+posLupo);
-
-for(int i=0;i<=pastori.size()-1;i++){
-	System.out.println("Il pastore "+i+" sta sulla strada: "+pastori.get(i).getPosizione());
-}
-
-
 	}
 
 }
