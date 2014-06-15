@@ -3,9 +3,12 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClien
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiImpl implements InterfacciaGrafica {
@@ -13,6 +16,8 @@ public class GuiImpl implements InterfacciaGrafica {
 	ControllorePartitaClient controllorePartita;
 	Map mappa;
 	LoginScreen loginScreen;
+	List<Pecora> pecore=new ArrayList<Pecora>();
+	List<Strada> strade=new ArrayList<Strada>();
 
 	public GuiImpl(ControllorePartitaClient controllorePartita) {
 		this.controllorePartita = controllorePartita;
@@ -33,7 +38,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	public void soldiPastori(List<Integer> soldi) {
 		for (int i = 0; i < soldi.size(); i++) {
 			mappa.impostaDenaro(soldi.get(i), i);
-	}
+		}
 	}
 
 	public void tesseraIniziale(Tessera tesseraIniziale) {
@@ -41,6 +46,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	public void settaPecore(List<Pecora> pecore) {
+		this.pecore=pecore;
 		mappa.inizializzaPecore(pecore);
 	}
 
@@ -48,82 +54,8 @@ public class GuiImpl implements InterfacciaGrafica {
 		mappa.richiestaPosizionamentoPastore();
 	}
 
-	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void posizionamentoPastoreCorretto() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void posizionamentoPastoreErrato() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void aggiornamentoPosizionePastore(int turno, int pastore,
-			int posizione) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void visualizzaMosseDisponibili(List<MosseEnum> mosseDisponibili) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void movimentoPastore(int posizione, String giocatore, int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void acquistoTessera(TipoTerreno terreno, String giocatore,
-			int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void movimentoPecora(int pecora, int strada, String giocatore,
-			int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void abbattimento(int regione, int pecora, String giocatore,
-			int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void accoppiamento(int regione, String giocatore, int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void iniziaTurno() {
-		mappa.iniziaTurno();
-	}
-
-	public void cambioTurno(String giocatore) {
-		mappa.cambioTurno(giocatore);
-	}
-
 	public void muoviPecoraNera(int posizione) {
 		mappa.muoviPecoraNera(posizione);
-	}
-
-	
-
-	public void mossaSbagliata() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mossaCorretta() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void faseFinale() {
@@ -134,49 +66,132 @@ public class GuiImpl implements InterfacciaGrafica {
 		mappa.punteggiFinali(punteggiFinali, nomi);
 	}
 
-	public void comunicaDenaro(int denaro) {
-		// TODO per farlo ho bisogno di conoscere il turno del giocatore
-	}
-
 	public void comunicaNumeroRecinti(int recinti) {
 		mappa.aggiornaRecinti(recinti);
 	}
 
-	
-
-	
-
 	public void creaMappa(Map mappa) {
 		this.mappa = mappa;
+		mappa.impostaGuiImpl(this);
 	}
 
-	public int scegliRegione() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
+		mappa.richiestaMossa();
 	}
 
-	public int scegliStrada() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void posizionamentoPastoreCorretto() {
+		mappa.posizionamentoCorretto();
 	}
 
-	public int scegliPecora() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void posizionamentoPastoreErrato() {
+		mappa.posizionamentoSbagliato();
 	}
 
-	public int scegliTipoTerreno() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void aggiornamentoPosizionePastore(int turno, int pastore,
+			int posizione) {
+		mappa.muoviPastoreAvversario(pastore, posizione);
 	}
 
+	public void movimentoPastore(int posizione, String giocatore, int pastore) {
+		mappa.muoviPastoreAvversario(pastore, posizione,giocatore);
+	}
+
+	public void acquistoTessera(TipoTerreno terreno, String giocatore,
+			int pastore) {
+		mappa.notificaAcquistoTessera(giocatore, terreno);
+	}
+
+	public void movimentoPecora(int pecora, int strada, String giocatore,
+			int pastore) {
+		// TODO pecora è l'indice dell'array di pecore
+		Pecora ovino=pecore.get(pecora);
+		int tipoPecora=ovino.getTipoPecora();
+		int regionePartenza=ovino.getPosizione();
+		Strada posizionePastore=strade.get(strada);
+		int regioneArrivo;
+		if(posizionePastore.getRegioneDestra()==regionePartenza){
+			regioneArrivo=posizionePastore.getRegioneSinistra();
+		} else {
+			regioneArrivo=posizionePastore.getRegioneDestra();
+		}
+		
+		mappa.muoviPecora(tipoPecora, regionePartenza, regioneArrivo);
+	}
+
+	public void abbattimento(int regione, int pecora, String giocatore,
+			int pastore) {
+		mappa.abbattiPecora(regione,giocatore,pecore.get(pecora).getTipoPecora());
+	}
+
+	public void accoppiamento(int regione, String giocatore, int pastore) {
+		mappa.aggiungiPecora(regione);
+	}
+
+	public void muoviLupo(int posizione) {
+		mappa.muoviLupo(posizione);
+	}
+
+	public void mossaSbagliata() {
+		mappa.mossaSbagliata();
+	}
+
+	public void mossaCorretta() {
+		mappa.mossaCorretta();
+	}
+
+	public void comunicaDenaro(List<Integer> denaroPastori) {
+		for (int i = 0; i < denaroPastori.size(); i++) {
+			mappa.impostaDenaro(denaroPastori.get(i), i);
+		}
+	}
+
+	public void iniziaTurno(List<Pecora> pecore, int turno) {
+		this.pecore=pecore;
+		mappa.inizializzaPecore(pecore);
+		mappa.iniziaTurno(turno);
+	}
+
+	public void cambioTurno(String giocatore, List<Pecora> pecore) {
+		this.pecore=pecore;
+		mappa.inizializzaPecore(pecore);
+		mappa.cambioTurno(giocatore);
+	}
 	
 
+	public void riceviStrade(List<Strada> strade) {
+		this.strade=strade;
+	}
 
+	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
+			int posPecoraNera, int posLupo, List<Pastore> pastori) {
+		mappa.inizializzaPecore(pecore);
+		mappa.muoviPecoraNera(posPecoraNera);
+		mappa.muoviLupo(posLupo);
+		for(int i=0;i<pastori.size();i++){
+			mappa.collocaPastoreAvversario(pastori.get(i).getPosizione(), i);
+		}
+	}
 
+	public void segnalaDisconnessione() {
+		mappa.segnalaDisconnessione();
+	}
 
+	public void muoviPecora(int turno,int posizionePartenza, int posizioneArrivo, int tipoPecora) {
+		int indicePecora=-1;
+		int indiceStrada=-1;
+		for(int i=0;i<pecore.size();i++) {
+			if(pecore.get(i).getPosizione()==posizionePartenza && pecore.get(i).getTipoPecora()==tipoPecora){
+				indicePecora=i;
+				break;
+			}
+		}
+		for(int i=0;i<strade.size();i++) {
+			if((strade.get(i).getRegioneDestra()==posizionePartenza && strade.get(i).getRegioneSinistra()==posizioneArrivo) || (strade.get(i).getRegioneDestra()==posizioneArrivo && strade.get(i).getRegioneSinistra()==posizionePartenza)){
+				indiceStrada=i;
+				break;
+			}
+		}
+		controllorePartita.muoviPecora(indiceStrada, indicePecora, turno);
+	}
 	
-
-	
-
 }

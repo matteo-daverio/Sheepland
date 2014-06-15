@@ -56,7 +56,6 @@ public class Partita implements Serializable {
 		this.pecoraNera = new PecoraNera();
 		this.lupo = new Lupo();
 
-
 	}
 
 	// getter e setter
@@ -76,8 +75,8 @@ public class Partita implements Serializable {
 	public PecoraNera getPecoraNera() {
 		return pecoraNera;
 	}
-	
-	public Map<Integer, TipoTerreno> getMappaRegioni(){
+
+	public Map<Integer, TipoTerreno> getMappaRegioni() {
 		return mappaRegioni;
 	}
 
@@ -400,7 +399,7 @@ public class Partita implements Serializable {
 		} else {
 			turno++;
 		}
-		
+
 		trasformaAgnelli();
 	}
 
@@ -424,7 +423,8 @@ public class Partita implements Serializable {
 	 * @throws NoMoneyException
 	 * @throws InvalidMovementException
 	 */
-	public void muoviPastore(int posizione, int pastoreInGioco) throws GameException {
+	public void muoviPastore(int posizione, int pastoreInGioco)
+			throws GameException {
 		Pastore pastore = pastori.get(pastoreInGioco);
 		if (pastore.getPosizione() == posizione) {
 			// posizione arrivo uguale a posizione di partenza
@@ -463,6 +463,25 @@ public class Partita implements Serializable {
 		pecoraNera.fugaPecoraNera(lancioDado(), pastori, strade);
 	}
 
+	public void spostaPecoraNera(int strada, int pastoreInGioco)
+			throws GameException {
+		// il pastore deve trovarsi sulla strada passata
+		if (pastori.get(pastoreInGioco).getPosizione() == strada) {
+			// la pecora deve trovarsi in un terreno adiacente alla strada su
+			// cui è il pastore
+			if (pecoraNera.getPosizione() == strade.get(strada)
+					.getRegioneDestra()
+					|| pecoraNera.getPosizione() == strade.get(strada)
+							.getRegioneSinistra()) {
+				pecoraNera.muoviPecora(strade.get(strada));
+			} else {
+				throw new GameException(EccezioniDiGioco.REGIONE_ILLEGALE);
+			}
+		} else {
+			throw new GameException(EccezioniDiGioco.STRADA_ILLEGALE);
+		}
+	}
+
 	/**
 	 * muovo il lupo
 	 * 
@@ -496,12 +515,13 @@ public class Partita implements Serializable {
 	 *             NoMoneyException IllegalShireException
 	 * @return void
 	 * @author Valerio De Maria
-	 * @throws GameException 
+	 * @throws GameException
 	 */
-	public void abbatti(int regione,int pecora) throws GameException {
+	public void abbatti(int regione, int pecora) throws GameException {
 		Pecora pecoraDaAbbattere = pecore.get(pecora);
 		if (regioneAdiacente(regione)) {
-			if (pecoraDaAbbattere != null && pecoraDaAbbattere.getPosizione()==regione) {
+			if (pecoraDaAbbattere != null
+					&& pecoraDaAbbattere.getPosizione() == regione) {
 				if (denaroPerSilenzioSufficente()) {
 					pecore.remove(pecoraDaAbbattere);
 					pagaSilenzio();
@@ -549,8 +569,9 @@ public class Partita implements Serializable {
 	 * @author Valerio De Maria
 	 */
 	// TODO da testare
-	public void compraTessera(TipoTerreno terreno,int pastoreInGioco) throws GameException {
-		if (tipoRegioneAdiacenteCorrispondente(terreno,pastoreInGioco)) {
+	public void compraTessera(TipoTerreno terreno, int pastoreInGioco)
+			throws GameException {
+		if (tipoRegioneAdiacenteCorrispondente(terreno, pastoreInGioco)) {
 			if (costoTessere[terreno.ordinal()] <= 4) {
 				if (pastori.get(pastoreInGioco).getDenaro() >= costoTessere[terreno
 						.ordinal()]) {
@@ -583,13 +604,14 @@ public class Partita implements Serializable {
 	 * @throws IllegalShireException
 	 * @author Matteo Daverio
 	 */
-	public void muoviPecora(int pecora, int strada,int pastoreInGioco)
+	public void muoviPecora(int pecora, int strada, int pastoreInGioco)
 			throws GameException {
 		// il pastore deve trovarsi sulla strada passata
 		if (pastori.get(pastoreInGioco).getPosizione() == strada) {
 			// la pecora deve trovarsi in un terreno adiacente alla strada su
 			// cui è il pastore
-			if (pecore.get(pecora).getPosizione() == strade.get(strada).getRegioneDestra()
+			if (pecore.get(pecora).getPosizione() == strade.get(strada)
+					.getRegioneDestra()
 					|| pecore.get(pecora).getPosizione() == strade.get(strada)
 							.getRegioneSinistra()) {
 				pecore.get(pecora).muoviPecora(strade.get(strada));
@@ -615,7 +637,8 @@ public class Partita implements Serializable {
 	 * @return boolean
 	 * @author Valerio De Maria
 	 */
-	private boolean tipoRegioneAdiacenteCorrispondente(TipoTerreno terreno,int pastore) {
+	private boolean tipoRegioneAdiacenteCorrispondente(TipoTerreno terreno,
+			int pastore) {
 		if ((mappaRegioni.get(strade.get(pastori.get(pastore).getPosizione())
 				.getRegioneDestra()) == terreno)
 				|| (mappaRegioni.get(strade.get(
