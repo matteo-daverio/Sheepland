@@ -18,11 +18,11 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.PecoraNera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.TesseraInVendita;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -36,12 +36,11 @@ public class Partita implements Serializable {
 	private int turno;
 	private int contatoreRecinti;
 	private int[] costoTessere = new int[6];
-	private ArrayList<Pastore> pastori;
-	private ArrayList<Strada> strade;
-	private ArrayList<Pecora> pecore;
+	private List<Pastore> pastori;
+	private List<Strada> strade;
+	private List<Pecora> pecore;
 	private Lupo lupo;
 	private PecoraNera pecoraNera;
-	private ArrayList<TesseraInVendita> terreniInVendita; // per il market
 	private static final Map<Integer, TipoTerreno> mappaRegioni = new HashMap<Integer, TipoTerreno>();
 	private Random random = new Random();
 
@@ -56,16 +55,11 @@ public class Partita implements Serializable {
 		this.pecore = new ArrayList<Pecora>();
 		this.pecoraNera = new PecoraNera();
 		this.lupo = new Lupo();
-		this.terreniInVendita = new ArrayList<TesseraInVendita>(); // per il
-																	// market
+
 
 	}
 
 	// getter e setter
-
-	public ArrayList<TesseraInVendita> getTerreniInVendita() { // per il market
-		return terreniInVendita;
-	}
 
 	public int getTurno() {
 		return turno;
@@ -99,15 +93,15 @@ public class Partita implements Serializable {
 		return numeroGiocatori;
 	}
 
-	public ArrayList<Strada> getStrade() {
+	public List<Strada> getStrade() {
 		return strade;
 	}
 
-	public ArrayList<Pecora> getPecore() {
+	public List<Pecora> getPecore() {
 		return pecore;
 	}
 
-	public ArrayList<Pastore> getPastori() {
+	public List<Pastore> getPastori() {
 		return pastori;
 	}
 
@@ -406,6 +400,8 @@ public class Partita implements Serializable {
 		} else {
 			turno++;
 		}
+		
+		trasformaAgnelli();
 	}
 
 	/**
@@ -639,7 +635,7 @@ public class Partita implements Serializable {
 	 * @author Valerio De Maria
 	 */
 	private boolean denaroPerSilenzioSufficente() {
-		ArrayList<Direzione> stradeLimitrofe = strade.get(
+		List<Direzione> stradeLimitrofe = strade.get(
 				pastori.get(turno - 1).getPosizione()).getStrade();
 		int pastoriVicini = 0;
 		for (Direzione direzione : stradeLimitrofe) {
@@ -661,7 +657,7 @@ public class Partita implements Serializable {
 	 * @author Valerio De Maria
 	 */
 	private void pagaSilenzio() {
-		ArrayList<Direzione> stradeLimitrofe = strade.get(
+		List<Direzione> stradeLimitrofe = strade.get(
 				pastori.get(turno - 1).getPosizione()).getStrade();
 		for (Direzione direzione : stradeLimitrofe) {
 			for (Pastore pastore : pastori) {

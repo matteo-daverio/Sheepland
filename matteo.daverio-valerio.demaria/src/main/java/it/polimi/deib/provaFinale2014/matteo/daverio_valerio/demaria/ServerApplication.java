@@ -1,15 +1,12 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.Gestione;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.ImplementazioneGestioneRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
@@ -41,9 +38,6 @@ public class ServerApplication {
 		t1 = new Thread(gestoreThread);
 		t1.start();
 
-		// TODO codice talebano
-		System.out.println("gestore di partite creato");
-
 		// GESTIONE RMI
 		InterfacciaGestioneRMI server;
 		try {
@@ -58,7 +52,7 @@ public class ServerApplication {
 			// associo all'oggetto remoto esportato un nome
 			registry.rebind("serverInAttesa", stub);
 
-			// TODO codice talebano
+
 			System.out.println("Il server RMI è pronto a ricevere connessioni");
 
 		} catch (RemoteException e) {
@@ -77,7 +71,6 @@ public class ServerApplication {
 			return;
 		}
 
-		// TODO codice talebano
 		System.out
 				.println("Il server socket si mette in attesa di connessioni");
 

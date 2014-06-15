@@ -4,21 +4,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
+
 
 import java.net.Socket;
 import java.rmi.RemoteException;
@@ -67,17 +56,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		}
 
 	}
-/*
-	public Mossa riceviMossa(List<MosseEnum> mosseDisponibili) {
-		try {
-			return client.inviaMossa(mosseDisponibili);
-		} catch (RemoteException e) {
-			// TODO devo gestire il fatto che il giocatore si è disconnesso
-			e.printStackTrace();
-		}
-		return null;
-	}
-*/
+
 	public void chiudiConnessione() {
 		// TODO
 	}
@@ -200,18 +179,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		}
 
 	}
-/*
-	public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili) {
 
-		try {
-			return client.posizionaPastore(stradeDisponibili);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
-	}
-*/
 	public void comunicaPosizionamentoPastore(int turno, int pastore,
 			int posizione) {
 		try {
@@ -224,9 +192,9 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 
 	}
 
-	public void comunicaTurno() {
+	public void comunicaTurno(List<Pecora> pecore) {
 		try {
-			client.inizioTurno();
+			client.inizioTurno(pecore);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -234,27 +202,16 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 
 	}
 
-	public void aggiornaTurno(String giocatore) {
+	public void aggiornaTurno(String giocatore,List<Pecora> pecore) {
 		try {
-			client.cambioTurno(giocatore);
+			client.cambioTurno(giocatore,pecore);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-/*
-	public int selezionaPastore(int primo, int secondo) {
-
-		try {
-			return client.selezionaPastore(primo, secondo);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
-	}
-*/
+	
 	public void comunicaMossaSbagliata() {
 		try {
 			client.mossaSbagliata();

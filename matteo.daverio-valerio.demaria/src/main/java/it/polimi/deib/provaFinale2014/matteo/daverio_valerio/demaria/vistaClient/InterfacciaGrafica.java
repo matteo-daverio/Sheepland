@@ -146,14 +146,14 @@ public interface InterfacciaGrafica {
 	 * comunico che è il turno dell'utente
 	 * @author Valerio De Maria
 	 */
-	public void iniziaTurno ();
+	public void iniziaTurno (List<Pecora> pecore);
 	
 	/**
 	 * dico alla grafica di chi è il turno attuale
 	 * @param giocatore
 	 * @author Valerio De Maria
 	 */
-	public void cambioTurno(String giocatore);
+	public void cambioTurno(String giocatore,List<Pecora> pecore);
 
 	/**
 	 * comunico alla grafica il movimento della pecora nera

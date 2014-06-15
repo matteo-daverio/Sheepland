@@ -28,12 +28,12 @@ public class ThreadRicezioneSocket implements Runnable {
 
 				switch (line) {
 
-				case POSIZIONE_PASTORE:
+				case INVIO_POSIZIONE_PASTORE:
 					gameManager.riceviPosizionamentoPastore(in.readInt());
 					
 					break;
 					
-				case MOSSA:
+				case INVIO_MOSSA:
 					gameManager.riceviMossa((Mossa)in.readObject());
 					break;
 					

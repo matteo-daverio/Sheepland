@@ -5,11 +5,9 @@ import java.util.List;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
+
 
 public interface InterfacciaComunicazioneToClient {
 
@@ -51,9 +49,9 @@ public interface InterfacciaComunicazioneToClient {
 	
 	public void inviaDatiGiocatori(List<String> nomi,List<Integer> soldi);
 	
-	public void comunicaTurno();
+	public void comunicaTurno(List<Pecora> pecore);
 	
-	public void aggiornaTurno(String giocatore);
+	public void aggiornaTurno(String giocatore,List<Pecora> pecore);
 	
 	public void inviaTesseraIniziale(Tessera tesseraIniziale);
 	

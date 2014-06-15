@@ -4,14 +4,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSock
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
@@ -44,6 +40,39 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		this.out = out;
 		this.nome = nome;
 	}
+	
+//GETTERS AND SETTERS	
+	
+	/**
+	 * ritorna il nome
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public String getNome() {
+		return nome;
+	}
+
+	/**
+	 * ritorna il tipo di connessione
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public String getTipoConnessione() {
+		return "socket";
+	}
+
+	/**
+	 * setta la socket
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	
+	// METODI /////////////////////////////
+	
 
 	/**
 	 * chiudo la connessione
@@ -97,139 +126,6 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	}
 
-	/**
-	 * comunica il movimento di un pastore
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void comunicaMovimentoPastore(int posizione) {
-
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.MOVIMENTO_PASTORE);
-			out.flush();
-			out.reset();
-			out.writeInt(posizione);
-			out.flush();
-		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione movimento pastore", e);
-		}
-	}
-
-	/**
-	 * comunico l'acquisto di una tessera
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void comunicaAcquistaTessera(TipoTerreno terreno) {
-
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.ACQUISTO_TESSERA);
-			out.flush();
-			out.reset();
-			out.writeObject(terreno);
-			out.flush();
-		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione acquisto tessera", e);
-		}
-
-	}
-
-	/**
-	 * comunico un abbattimento
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void comunicaAbbattimento(int regione, int pecora) {
-
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.ABBATTIMENTO);
-			out.flush();
-			out.reset();
-			out.writeInt(regione);
-			out.flush();
-			out.reset();
-			out.writeInt(pecora);
-			out.flush();
-
-		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione abbattimento", e);
-		}
-
-	}
-
-	/**
-	 * comunico un accoppiamento
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void comunicaAccoppiamento(int regione) {
-
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.ACCOPPIAMENTO);
-			out.flush();
-			out.reset();
-			out.writeInt(regione);
-			out.flush();
-		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione accoppiamento", e);
-		}
-
-	}
-
-	/**
-	 * comunico il movimento di una pecora
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void comunicaMovimentoPecora(int pecora, Strada strada) {
-
-		try {
-			out.reset();
-			out.writeObject(ComandiSocket.MOVIMENTO_PECORA);
-			out.flush();
-			out.reset();
-			out.writeInt(pecora);
-			out.flush();
-			out.reset();
-			out.writeObject(strada);
-			out.flush();
-		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione movimento pecora", e);
-		}
-
-	}
-
-	/**
-	 * ritorna il nome
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public String getNome() {
-		return nome;
-	}
-
-	/**
-	 * ritorna il tipo di connessione
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public String getTipoConnessione() {
-		return "socket";
-	}
-
-	/**
-	 * setta la socket
-	 * 
-	 * @author Valerio De Maria
-	 */
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-
 	public void comunicaFaseFinale() {
 		try {
 			out.reset();
@@ -242,12 +138,17 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		
 	}
 
-	public void comunicaTurno() {
+	public void comunicaTurno(List<Pecora> pecore) {
 
 		try {
 			out.reset();
 			out.writeObject(ComandiSocket.INIZIO_TURNO);
 			out.flush();
+			
+			out.reset();
+			out.writeObject(pecore);
+			out.flush();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -270,12 +171,15 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	public void inviaDatiGiocatori(List<String> nomi,List<Integer>soldi) {
 		try {
+			
 			out.reset();
 			out.writeObject(ComandiSocket.DATI_GIOCATORI);
 			out.flush();
+			
 			out.reset();
 			out.writeObject(nomi);
 			out.flush();
+			
 			out.reset();
 			out.writeObject(soldi);
 			out.flush();
@@ -303,93 +207,290 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	public void comunicaMovimentoPastore(int posizione, String giocatore,
 			int pastore) {
-		// TODO Auto-generated method stub
+		
+		try {
+			
+			out.reset();
+			out.writeObject(ComandiSocket.MOVIMENTO_PASTORE);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(posizione);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(giocatore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.flush();
+		} catch (IOException e) {
+			LOGGER.log("errore in comunicazione movimento pastore", e);
+		}
 		
 	}
 
 	public void comunicaAcquistaTessera(TipoTerreno terreno, String giocatore,
 			int pastore) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.ACQUISTO_TESSERA);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(terreno);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(giocatore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.flush();
+		} catch (IOException e) {
+			LOGGER.log("errore in comunicazione acquisto tessera", e);
+		}
 		
 	}
 
 	public void comunicaAbbattimento(int regione, int pecora, String giocatore,
 			int pastore) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.ABBATTIMENTO);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(regione);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pecora);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(giocatore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.reset();
+
+		} catch (IOException e) {
+			LOGGER.log("errore in comunicazione abbattimento", e);
+		}
+
 		
 	}
 
 	public void comunicaAccoppiamento(int regione, String giocatore, int pastore) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.ACCOPPIAMENTO);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(regione);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(giocatore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.flush();
+		} catch (IOException e) {
+			LOGGER.log("errore in comunicazione accoppiamento", e);
+		}
+
 		
 	}
 
 	public void comunicaMovimentoPecora(int pecora, int strada,
 			String giocatore, int pastore) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.MOVIMENTO_PECORA);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pecora);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(strada);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(giocatore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.flush();
+		} catch (IOException e) {
+			LOGGER.log("errore in comunicazione movimento pecora", e);
+		}
 		
 	}
 
-	public int chiediPosizionamentoPastore(List<Integer> stradeDisponibili) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	public void comunicaPosizionamentoPastore(int turno, int pastore,
 			int posizione) {
-		// TODO Auto-generated method stub
+		try {
+			
+			out.reset();
+			out.writeObject(ComandiSocket.POSIZIONAMENTO_PASTORE);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(turno);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(pastore);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(posizione);
+			out.flush();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
-	public void aggiornaTurno(String giocatore) {
-		// TODO Auto-generated method stub
+	public void aggiornaTurno(String giocatore,List<Pecora> pecore) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.CAMBIO_TURNO);
+			out.flush();
+			
+		    out.reset();
+		    out.writeObject(giocatore);
+		    out.flush();
+		    
+		    out.reset();
+		    out.writeObject(pecore);
+		    out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-	}
-
-	public int selezionaPastore(int primo, int secondo) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	public void comunicaMossaSbagliata() {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.MOSSA_SBAGLIATA);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+	}
+	
+	public void mossaCorretta() {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.MOSSA_CORRETTA);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void inviaTesseraIniziale(Tessera tesseraIniziale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mossaCorretta() {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.TESSERA_INIZIALE);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(tesseraIniziale);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	public void inviaPunteggi(List<Integer> punteggiFinali, List<String> nomi) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.PUNTEGGI);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(punteggiFinali);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(nomi);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 
 	public void comunicaNumeroRecinti(int recinti) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.NUMERO_RECINTI);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(recinti);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
-
-	//NUOVI METODI
 	
-	public void posizionamentoPastoreCorretto() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void comunicaDenaro(List<Integer> denaroPastori) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.AGGIORNAMENTO_DENARO);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(denaroPastori);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 
 	public void comunicaMovimentoLupo(int nuovaPosizione) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.MOVIMENTO_LUPO);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(nuovaPosizione);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

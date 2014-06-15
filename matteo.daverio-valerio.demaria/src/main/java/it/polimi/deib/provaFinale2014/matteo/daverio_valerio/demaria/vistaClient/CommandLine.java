@@ -61,13 +61,37 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
-	public void iniziaTurno() {
+	public void iniziaTurno(List<Pecora> pecore) {
 		System.out.println("Ora è il tuo turno!");
+		
+		for (Pecora x : pecore) {
+			if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
+				System.out.println("C'è una pecora nella regione: "
+						+ x.getPosizione());
+			} else if (x.getTipoPecora() == (Costanti.TIPO_PECORA_MONTONE)) {
+				System.out.println("C'è un montone nella regione: "
+						+ x.getPosizione());
+			} else
+				System.out.println("C'è un agnello nella regione: "
+						+ x.getPosizione());
+		}
 
 	}
 
-	public void cambioTurno(String giocatore) {
+	public void cambioTurno(String giocatore,List<Pecora> pecore) {
 		System.out.println("Ora è il turno di " + giocatore);
+		
+		for (Pecora x : pecore) {
+			if (x.getTipoPecora() == (Costanti.TIPO_PECORA_PECORA)) {
+				System.out.println("C'è una pecora nella regione: "
+						+ x.getPosizione());
+			} else if (x.getTipoPecora() == (Costanti.TIPO_PECORA_MONTONE)) {
+				System.out.println("C'è un montone nella regione: "
+						+ x.getPosizione());
+			} else
+				System.out.println("C'è un agnello nella regione: "
+						+ x.getPosizione());
+		}
 
 	}
 
@@ -214,40 +238,12 @@ public class CommandLine implements InterfacciaGrafica {
 
 		return scelta;
 	}
-/*
-	public int scegliRegione() {
-		System.out.println("Seleziona la regione:");
-
-		return in.nextInt();
-	}
-
-	public int scegliStrada() {
-		System.out.println("Scegli la strada:");
-		return in.nextInt();
-	}
-
-	public int scegliPecora() {
-		System.out.println("Scegli la pecora:");
-		return in.nextInt();
-	}
-*/
+	
 	public void mossaSbagliata() {
 		System.out.println("La mossa che hai fatto è sbagliata");
 
 	}
-/*
-	public int scegliTipoTerreno() {
-		System.out
-				.println("Seleziona il numero corrispondete al tipo di terreno di cui vuoi comprare la tessera:");
-		System.out
-				.println("1-ACQUA,2-FORESTA,3-GRANO,4-PRATERIA,5-ROCCIA,6-SABBIA");
-		int scelta;
-		do {
-			scelta = in.nextInt();
-		} while (scelta < 0 || scelta > 6);
-		return scelta;
-	}
-*/
+
 	public void mossaCorretta() {
 		System.out.println("La mossa è stata eseguita correttamente");
 
@@ -288,8 +284,10 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
+		
+		System.out.println("Le mose che puoi fare sono le seguenti:");
 		for (int i = 0; i <= mosseDisponibili.size() - 1; i++) {
-			System.out.println("Le mose che puoi fare sono le seguenti:");
+			
 			System.out.println(i + ") " + mosseDisponibili.get(i));
 
 		}

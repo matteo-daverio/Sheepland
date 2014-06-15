@@ -37,6 +37,7 @@ public class ControllorePartita implements Runnable {
 	List<Integer> stradeDisponibili = new ArrayList<Integer>();
 	private int pastoreInGioco, numeroMosse;
 	private InterfacciaServerRMI stubServerRMI;
+	private boolean primoPastore = true;
 	private List<Integer> denaroPastori =new ArrayList<Integer>();
 	// pool di thread
 	ExecutorService ricezioniSocket = Executors.newCachedThreadPool();
@@ -232,10 +233,10 @@ public class ControllorePartita implements Runnable {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 
 			if (i == (partita.getTurno() - 1)) {
-				giocatori.get(i).comunicaTurno();
+				giocatori.get(i).comunicaTurno(partita.getPecore());
 			} else {
 				giocatori.get(i).aggiornaTurno(
-						giocatori.get(partita.getTurno() - 1).getNome());
+						giocatori.get(partita.getTurno() - 1).getNome(),partita.getPecore());
 			}
 		}
 	}
@@ -453,6 +454,8 @@ public class ControllorePartita implements Runnable {
 		trasferisciGestioneComunicazione();
 
 		partita.start();
+		
+		partita.setNumeroGiocatori(giocatori.size());
 
 		inviaPosizioneInizialePecore();
 
@@ -510,9 +513,9 @@ public class ControllorePartita implements Runnable {
 		if (numeroMosse == 3) {
 			// cambio il turno
 			if (partita.getTurno() == giocatori.size()) {
-				partita.setTurno(partita.getTurno() + 1);
+				partita.incrementaTurno();
 			} else {
-				partita.setTurno(1);
+				partita.incrementaTurno();;
 			}
 
 			// il lupo muove a fine turno
@@ -631,28 +634,72 @@ public class ControllorePartita implements Runnable {
 	}
 
 	public void riceviPosizionamentoPastore(int posizioneScelta) {
-
-		// setto posizione pastore
+        //// setto posizione pastore
+		if(giocatori.size()>2){
+		
 		partita.getPastori().get(partita.getTurno() - 1)
 				.setPosizione(posizioneScelta);
-
+        }
+        else{
+        	if(partita.getTurno()==1){
+        		if(primoPastore){
+        			partita.getPastori().get(0).setPosizione(posizioneScelta);
+        		}
+        		else{
+        			partita.getPastori().get(1).setPosizione(posizioneScelta);
+        		}
+        	}
+        	else{
+        		if(primoPastore){
+        			partita.getPastori().get(2).setPosizione(posizioneScelta);
+        		}
+        		else{
+        			partita.getPastori().get(3).setPosizione(posizioneScelta);
+        		}
+        	}
+        		
+        }
 		// aggiorno le strade disponibili per il posizionamento dei pastori
 		stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
 
 		// invio ai client l'aggiornamento sul posizionamento pastore
+		if(giocatori.size()>2){
 		aggiornaPosizionamentoPastori(partita.getTurno(),
 				partita.getTurno() - 1, posizioneScelta);
-
-		// se hanno posizionato tutti i pastori
+		}
+		else{
+			if(partita.getTurno()==1){
+			if(primoPastore){
+			aggiornaPosizionamentoPastori(partita.getTurno(),0,posizioneScelta);
+			}
+			else{
+				aggiornaPosizionamentoPastori(partita.getTurno(),1,posizioneScelta);
+			}
+			}
+			else{
+				if(primoPastore){
+					aggiornaPosizionamentoPastori(partita.getTurno(),2,posizioneScelta);
+				}
+				else{
+					aggiornaPosizionamentoPastori(partita.getTurno(),3,posizioneScelta);
+				}
+			}
+		}
+		// se tutti hanno posizionato i propri pastori
 		if (partita.getTurno() == giocatori.size()) {
-			partita.setTurno(1);
+			partita.incrementaTurno();;
 			giocaTurno();
 		}
 		// se manca qualche pastore da essere posizionato
 		else {
 
 			// incremento turno
-			partita.setTurno(partita.getTurno() + 1);
+			if(giocatori.size()>2||!primoPastore){
+			partita.incrementaTurno();;
+			}
+			else{
+                primoPastore=false;
+			}
 			// chiedo al client del turno di posizionare il pastore
 			inviaRichiestaPosizionamentoPastore();
 		}
@@ -688,7 +735,7 @@ public class ControllorePartita implements Runnable {
  * giocaTurno(); partita.incrementaTurno();
  * 
  * if (partita.getTurno() > connessioni.size()) { partita.muoviLupo();
- * partita.setTurno(1); }
+ * partita.incrementaTurno; }
  * 
  * f++; if (f == 4) { finePartita = true; }
  * 

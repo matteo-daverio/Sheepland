@@ -3,21 +3,11 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaServerRMI;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.InvalidMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMovementException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
+
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
+
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -49,15 +39,13 @@ public interface InterfacciaClientRMI extends Remote {
 	
 	public void faseFinale() throws RemoteException;
 	
-	public void inizioTurno()throws RemoteException;
+	public void inizioTurno(List<Pecora> pecore)throws RemoteException;
 	
-	public void cambioTurno(String giocatore)throws RemoteException;
+	public void cambioTurno(String giocatore,List<Pecora> pecore)throws RemoteException;
 	
 	public void riceviDatiGiocatori(List<String> nomi, List<Integer> soldi) throws RemoteException;
 	
 	public void riceviPecore(List<Pecora> pecore) throws RemoteException;
-	
-	//public int posizionaPastore(List<Integer> stradeDisponibili)throws RemoteException;
 	
 	public void riceviAggiornamentoPosizionamentoPastore(int turno,int pastore, int posizione) throws RemoteException;
 	

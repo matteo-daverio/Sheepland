@@ -109,13 +109,13 @@ public class ControllorePartitaClient {
 		schermo.richiestaPosizionamentoPastore();
 	}
 
-	public void cambioTurno(String giocatore) {
-		schermo.cambioTurno(giocatore);
+	public void cambioTurno(String giocatore,List<Pecora> pecore) {
+		schermo.cambioTurno(giocatore,pecore);
 	}
 
-	public void iniziaTurno() {
+	public void iniziaTurno(List<Pecora> pecore) {
 
-		schermo.iniziaTurno();
+		schermo.iniziaTurno(pecore);
 	}
 
 	/**

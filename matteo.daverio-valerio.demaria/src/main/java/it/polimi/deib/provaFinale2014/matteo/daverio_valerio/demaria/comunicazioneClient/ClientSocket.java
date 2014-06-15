@@ -5,20 +5,10 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.CannotProcreateException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalShireTypeException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.IllegalStreetException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoneyException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoMoreCardsException;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.NoSheepInShireException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.MuoviPastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
 
 import java.io.IOException;
@@ -28,7 +18,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ClientSocket implements InterfacciaComunicazioneToServer {
 
@@ -40,7 +29,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 	private ComandiSocket line;
 
 	/**
-	 * costruttore
+	 * COSTRUTTORE
 	 * 
 	 * @param ip
 	 * @param port
@@ -65,6 +54,9 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 		boolean finePartita = false;
 		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
 		
+		int pastore,posizione;
+		String giocatore;
+		
 
 		while (!finePartita) {
 			try {
@@ -73,6 +65,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 				line = (ComandiSocket) in.readObject();
 
 				switch (line) {
+				
 				case MOVIMENTO_PECORA_NERA:
 					controllore.movimentoPecoraNera(in.readInt());
 					break;
@@ -85,10 +78,8 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 						out.flush();
 						System.out.println("ho mandato un pong");
 					} else {
-						// TODO chiedo all'utente la mossa che vuole fare
-						out.reset();
-						out.writeObject(new MuoviPastore(4));
-						out.flush();
+
+						controllore.richiestaMossa(mosseDisponibili);
 					}
 
 					break;
@@ -97,12 +88,18 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					
 					int pos=in.readInt();
 					String gio=(String)in.readObject();
-					int pas=in.readInt();
+					pastore=in.readInt();
 					
-					controllore.movimentoPastore(pos, gio, pas);
+					controllore.movimentoPastore(pos, gio, pastore);
 					break;
 
 				case ACQUISTO_TESSERA:
+					
+					TipoTerreno terr=(TipoTerreno)in.readObject();
+					String gioc=(String)in.readObject();
+					pastore=in.readInt();
+					
+					controllore.acquistoTessera(terr, gioc, pastore);
 					
 					break;
 
@@ -110,8 +107,8 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					
 					int regione = in.readInt();
 					int pecora = in.readInt();
-					String giocatore=(String)in.readObject();
-					int pastore=in.readInt();
+					giocatore=(String)in.readObject();
+					pastore=in.readInt();
 					
 					controllore.abbattimento(regione, pecora, giocatore, pastore);
 					break;
@@ -119,29 +116,33 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 				case ACCOPPIAMENTO:
 					
 					int r=in.readInt();
-					String g=(String)in.readObject();
-					int p=in.readInt();
+					giocatore=(String)in.readObject();
+					pastore=in.readInt();
 					
-					controllore.accoppiamento(r, g, p);
+					controllore.accoppiamento(r, giocatore, pastore);
 					break;
 
 				case MOVIMENTO_PECORA:
 					
 					int pecoraDaMuovere = in.readInt();
 					int stradaPassaggioPecora=in.readInt();
-					String giocatoreSpostaPecora=(String) in.readObject();
-					int pastoreSpostaPecora=in.readInt();
+					giocatore=(String) in.readObject();
+					pastore=in.readInt();
 	
-					controllore.movimentoPecora(pecoraDaMuovere,stradaPassaggioPecora,giocatoreSpostaPecora,pastoreSpostaPecora);
+					controllore.movimentoPecora(pecoraDaMuovere,stradaPassaggioPecora,giocatore,pastore);
 					break;
 					
 				case INIZIO_TURNO:
-					controllore.iniziaTurno();
+					List<Pecora> pecorelle=(List<Pecora>)in.readObject();
+					controllore.iniziaTurno(pecorelle);
+					
 					break;
 					
 				case DATI_GIOCATORI:
+					
 					List<String> nomi = (List<String>) in.readObject();
 					controllore.riceviNomiGiocatori(nomi);
+					
 					List<Integer> soldi = (List<Integer>) in.readObject();
 					controllore.riceviSoldiPastori(soldi);
 
@@ -150,6 +151,80 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 				case INVIO_PECORE:
 					List<Pecora> pecore =(List<Pecora>)in.readObject();
 					controllore.settaPecore(pecore);
+					break;
+					
+				case RICHIESTA_POSIZIONE_PASTORE:
+					
+					List<Integer> stradeDisponibili=(List<Integer>)in.readObject();
+					controllore.richiestaPosizionamentoPastore(stradeDisponibili);
+					break;
+				
+				case POSIZIONAMENTO_PASTORE:
+					int turno=in.readInt();
+					pastore=in.readInt();
+			        posizione=in.readInt();
+			        
+			        controllore.aggiornamentoPosizionePastore(turno, pastore, posizione);
+			        
+			        break;
+			        
+				case CAMBIO_TURNO:
+					
+					giocatore=(String)in.readObject();
+					
+					List<Pecora> gregge=(List<Pecora>)in.readObject();
+					
+					controllore.cambioTurno(giocatore,gregge);
+					
+					break;
+					
+				case MOSSA_SBAGLIATA:
+					
+					controllore.mossaSbagliata();
+					
+					break;
+					
+				case MOSSA_CORRETTA:
+					
+					controllore.mossaCorretta();
+					
+					break;
+				
+				case TESSERA_INIZIALE:
+					
+					Tessera tesseraIniziale =(Tessera)in.readObject();
+					
+					controllore.riceviTesseraIniziale(tesseraIniziale);
+					
+					break;
+				case PUNTEGGI:
+					
+					List<Integer> punteggi=(List<Integer>)in.readObject();
+					List<String> nomiGioc=(List<String>)in.readObject();
+					
+					controllore.punteggiFinali(punteggi, nomiGioc);
+					
+					break;
+				
+				case NUMERO_RECINTI:
+					
+					int numRecinti=in.readInt();
+					
+					controllore.comunicaNumeroRecinti(numRecinti);
+					
+					break;
+				
+				case AGGIORNAMENTO_DENARO:
+					
+					List<Integer> denaroPastori =(List<Integer>)in.readObject();
+					controllore.comunicaDenaro(denaroPastori);
+					break;
+					
+				case MOVIMENTO_LUPO:
+					
+					posizione=in.readInt();
+					
+					controllore.movimentoLupo(posizione);
 					break;
 					
 				default:
@@ -162,7 +237,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 		}
 	}
 
-	// NEW
+
 	public boolean effettuaLogin(String nome, String password)
 			throws IOException {
 
@@ -221,13 +296,37 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 
 	}
 
+	// DA CLIENT VERSO SERVER
+	
 	public void inviaPosizionePastore(int posizione) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.INVIO_POSIZIONE_PASTORE);
+			out.flush();
+			
+			out.reset();
+			out.writeInt(posizione);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
 	public void inviaMossa(Mossa mossa) {
-		// TODO Auto-generated method stub
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.INVIO_MOSSA);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(mossa);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
