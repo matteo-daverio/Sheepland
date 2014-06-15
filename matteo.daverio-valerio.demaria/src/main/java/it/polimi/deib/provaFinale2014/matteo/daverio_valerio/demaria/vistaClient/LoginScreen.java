@@ -2,7 +2,6 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClien
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -10,8 +9,6 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * classe che gestisce la schermata di login
@@ -51,16 +48,16 @@ public class LoginScreen extends JFrame {
 
 	// controllo di login valido
 	private boolean loginValido = false;
-	
 
 	/**
 	 * costruttore finestra login con inizializzazione frame
 	 * 
 	 * @author Matteo Daverio
 	 */
-	public LoginScreen(ControllorePartitaClient controllorePartita, GuiImpl guiImpl) {
+	public LoginScreen(ControllorePartitaClient controllorePartita,
+			GuiImpl guiImpl) {
 		this.controllorePartita = controllorePartita;
-		this.guiImpl=guiImpl;
+		this.guiImpl = guiImpl;
 		loginFrame.setResizable(false);
 		if (formHeight > screenHeight) {
 			formWidth = formHeight = (int) screenHeight * 90 / 100;
@@ -122,7 +119,6 @@ public class LoginScreen extends JFrame {
 
 		return richiesta;
 	}
-	
 
 	/**
 	 * 
@@ -167,30 +163,28 @@ public class LoginScreen extends JFrame {
 
 				// creazione finestra partita
 
-				do {
-					try {
-						loginValido = controllorePartita.logIn(nome, pass);
-						if (loginValido) {
-							Map mappa;
-							mappa = new Map(controllorePartita);
-							guiImpl.creaMappa(mappa);
-							mappa.creaMappa();
-						} else {				
-							username.setText("");
-							password.setText("");
-							JOptionPane.showMessageDialog(null,
-									"Password Errata", "Errore",
-									JOptionPane.ERROR_MESSAGE);
-						}
-					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(null,
-								"Errore di connessione", "Errore",
-								JOptionPane.ERROR_MESSAGE);
-						LOGGER.log("Errore di connessione", e1);
+				try {
+					loginValido = controllorePartita.logIn(nome, pass);
+					if (loginValido) {
+						Map mappa;
+						mappa = new Map(controllorePartita);
+						guiImpl.creaMappa(mappa);
+						mappa.creaMappa();
+						// chiusura finestra login
+						loginFrame.dispose();
+					} else {
+						username.setText("");
+						password.setText("");
+						JOptionPane.showMessageDialog(null, "Password Errata",
+								"Errore", JOptionPane.ERROR_MESSAGE);
 					}
-				} while (!loginValido);
-				// chiusura finestra login
-				loginFrame.dispose();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null,
+							"Errore di connessione", "Errore",
+							JOptionPane.ERROR_MESSAGE);
+					LOGGER.log("Errore di connessione", e1);
+				}
+
 			}
 		}
 
