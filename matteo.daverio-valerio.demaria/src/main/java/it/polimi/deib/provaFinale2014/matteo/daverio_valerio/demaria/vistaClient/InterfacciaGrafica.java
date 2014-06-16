@@ -279,5 +279,26 @@ public interface InterfacciaGrafica {
 	 * @author Valerio De Maria
 	 */
 	public void segnalaDisconnessione();
+	
+	/**
+	 * comunica che un avversario si è disconnesso
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
+	public void disconnessione(String nome);
+	
+	/**
+	 * comunica che un avversario si è riconnesso
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
+	public void riconnessione(String nome);
+	
+	/**
+	 * comunica che un avversario è stato escluso
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
+	public void esclusione(String nome);
 
 }

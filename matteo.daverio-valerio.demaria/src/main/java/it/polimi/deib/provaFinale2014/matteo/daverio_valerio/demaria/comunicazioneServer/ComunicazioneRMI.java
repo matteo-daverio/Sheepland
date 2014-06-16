@@ -16,6 +16,8 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 
 
 
+
+
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -35,15 +37,17 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 	private String nome;
 	private InterfacciaClientRMI client;
 	private ControllorePartita gameManager;
+	private int turno;
 	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	// costruttore
 	public ComunicazioneRMI(String nome, InterfacciaClientRMI client,
-			ControllorePartita gameManager) {
+			ControllorePartita gameManager,int turno) {
 
 		this.nome = nome;
 		this.client = client;
 		this.gameManager = gameManager;
+		this.turno=turno;
 
 		try {
 			// cerco il registry del server
@@ -333,6 +337,36 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 			int pastore) {
 		try {
 			client.spostamentoPecoraNera(strada,giocatore,pastore);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaDisconnessione(String nome) {
+		try {
+			client.disconnessione(nome);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaRiconnessione(String nome) {
+		try {
+			client.risconnessione(nome);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaEsclusione(String nome) {
+		try {
+			client.esclusione(nome);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

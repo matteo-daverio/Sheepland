@@ -267,5 +267,29 @@ public interface InterfacciaClientRMI extends Remote {
 	 */
 	public void accoppiamento(int regione, String giocatore, int pastore)
 			throws RemoteException, GameException;
+	
+	/**
+	 * comunico una disconnessione di un giocatore
+	 * @param nome
+	 * @throws RemoteException
+	 * @author Valerio De Maria
+	 */
+	public void disconnessione(String nome)throws RemoteException;
+	
+	/**
+	 * comunico una riconnessione di un giocatore
+	 * @param nome
+	 * @throws RemoteException
+	 * @author Valerio De Maria
+	 */
+	public void risconnessione(String nome)throws RemoteException;
+	
+	/**
+	 * comunico una esclusione di un giocatore
+	 * @param nome
+	 * @throws RemoteException
+	 * @author Valerio De Maria
+	 */
+	public void esclusione(String nome)throws RemoteException;
 
 }

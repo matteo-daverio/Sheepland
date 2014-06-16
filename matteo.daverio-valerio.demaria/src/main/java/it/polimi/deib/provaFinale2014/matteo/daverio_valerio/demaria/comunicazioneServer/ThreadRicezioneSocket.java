@@ -15,13 +15,16 @@ public class ThreadRicezioneSocket implements Runnable {
 	private ObjectInputStream in;
 	private ComandiSocket line;
 	private ControllorePartita gameManager;
+	private int turno;
+	private boolean connesso=true;
 	
 	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
-	public ThreadRicezioneSocket(ObjectInputStream in, ControllorePartita gameManager) {
+	public ThreadRicezioneSocket(ObjectInputStream in, ControllorePartita gameManager,int turno) {
 
 		this.in = in;
 		this.gameManager=gameManager;
+		this.turno=turno;
 
 	}
 	
@@ -29,6 +32,7 @@ public class ThreadRicezioneSocket implements Runnable {
 		
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
+			connesso=true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,7 +47,7 @@ public class ThreadRicezioneSocket implements Runnable {
 
 	public void run() {
 
-		while (true) {
+		while (connesso) {
 
 			try {
 				line = (ComandiSocket) in.readObject();
@@ -66,11 +70,19 @@ public class ThreadRicezioneSocket implements Runnable {
 				}
 
 			} catch (ClassNotFoundException e) {
-				gameManager.avvioTimerDisconnessione();
+				
+				connesso=false;
+				gameManager.avvioTimerDisconnessione(turno);
 				LOG.log(Level.SEVERE,"errore in ricezione socket", e);
+				
+
 			} catch (IOException e) {
-				gameManager.avvioTimerDisconnessione();
+				
+				connesso=false;
+				gameManager.avvioTimerDisconnessione(turno);
 				LOG.log(Level.SEVERE,"errore in ricezione socket", e);
+				
+
 			}
 
 		}

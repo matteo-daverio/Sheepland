@@ -36,7 +36,7 @@ public interface Mossa {
 	 * @author Valerio De Maria
 	 */
 	public void aggiornaClients(
-			List<InterfacciaComunicazioneToClient> giocatori, int turno);
+			List<InterfacciaComunicazioneToClient> giocatori, int turno,List<Boolean> giocatoriConnessi);
 
 	/**
 	 * aggiorna l'arrayList di mosse fatte, il quale server per calcolare le

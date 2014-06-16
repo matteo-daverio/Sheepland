@@ -28,6 +28,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	private String nome;
 	private ObjectOutputStream out;
 	private ControllorePartita gameManager;
+	private int turno;
 	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	/**
@@ -40,7 +41,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	 * @author Valerio De Maria
 	 */
 	public ComunicazioneSocket(Socket socket,
-			ObjectOutputStream out, String nome, ControllorePartita gamManager) {
+			ObjectOutputStream out, String nome, ControllorePartita gamManager,int turno) {
 
 		this.socket = socket;
 		this.out = out;
@@ -79,7 +80,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in settaggio socket", e);
 		}
 		
@@ -119,7 +120,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(nuovaPosizione);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in invio mossa pecora", e);
 		}
 
@@ -137,7 +138,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.flush();
 
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione richiesta mossa", e);
 		}
 
@@ -149,7 +150,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(ComandiSocket.FASE_FINALE);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione faseFinale", e);
 		}
 		
@@ -171,7 +172,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.flush();
 			
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione turno", e);
 		}
 	}
@@ -186,7 +187,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(stradeDisponibili);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in invio richiesta posizionamento", e);
 		}
 	}
@@ -206,7 +207,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(soldi);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in invio dati giocatore", e);
 		}
 		
@@ -221,7 +222,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(pecore);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione pecore", e);
 		}
 		
@@ -248,7 +249,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione movimento pastore", e);
 		}
 		
@@ -273,7 +274,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione acquisto tessera", e);
 		}
 		
@@ -303,7 +304,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.reset();
 
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione abbattimento", e);
 		}
 
@@ -328,7 +329,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione accoppiamento", e);
 		}
 
@@ -358,7 +359,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione movimento pecora", e);
 		}
 		
@@ -386,7 +387,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.flush();
 			
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione posizionamento pastore", e);
 		}
 		
@@ -406,7 +407,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 		    out.writeObject(pecore);
 		    out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in aggiornamento turno", e);
 		}
 		
@@ -418,7 +419,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(ComandiSocket.MOSSA_SBAGLIATA);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione mossa sbagliata", e);
 		}
 		
@@ -430,7 +431,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(ComandiSocket.MOSSA_CORRETTA);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione mossa corretta", e);
 		}
 	}
@@ -445,7 +446,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(tesseraIniziale);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in invio tessera iniziale", e);
 		}
 		
@@ -465,7 +466,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(nomi);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in invio punteggi", e);
 		}
 		
@@ -482,7 +483,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(recinti);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione numero recinti", e);
 		}
 		
@@ -498,7 +499,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeObject(denaroPastori);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione denaro", e);
 		}
 		
@@ -515,7 +516,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(nuovaPosizione);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione movimento lupo", e);
 		}
 		
@@ -545,7 +546,7 @@ try {
 	out.writeObject(pastori);
 	out.flush();
 } catch (IOException e) {
-	gameManager.avvioTimerDisconnessione();
+	gameManager.avvioTimerDisconnessione(turno);
 	LOG.log(Level.SEVERE,"errore in comunicazione aggiornamento", e);
 }
 		
@@ -561,7 +562,7 @@ try {
 			out.writeObject(strade);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione strade", e);
 		}
 		
@@ -586,8 +587,59 @@ try {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			gameManager.avvioTimerDisconnessione();
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE,"errore in comunicazione spostamento pecora nera", e);
+		}
+		
+	}
+
+	public void comunicaDisconnessione(String nome) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.DISCONNESSIONE);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(nome);
+			out.flush();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaRiconnessione(String nome) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.RICONNESSIONE);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(nome);
+			out.flush();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void comunicaEsclusione(String nome) {
+		try {
+			out.reset();
+			out.writeObject(ComandiSocket.ESCLUSIONE);
+			out.flush();
+			
+			out.reset();
+			out.writeObject(nome);
+			out.flush();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

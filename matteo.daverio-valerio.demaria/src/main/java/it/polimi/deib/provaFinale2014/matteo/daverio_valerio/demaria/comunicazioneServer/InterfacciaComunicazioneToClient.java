@@ -78,5 +78,10 @@ public interface InterfacciaComunicazioneToClient {
 	public void inviaRichiestaMossa(List<MosseEnum> mosseDisponibili);
 	
 	public void inviaRichiestaPosizionamento(List<Integer> stradeDisponibili);
+	
+	public void comunicaDisconnessione(String nome);
 
+	public void comunicaRiconnessione(String nome);
+	
+	public void comunicaEsclusione(String nome);
 }

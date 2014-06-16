@@ -429,4 +429,19 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	public void disconnessione(String nome) {
+		System.out.println(nome+" si è disconnesso");
+		
+	}
+
+	public void riconnessione(String nome) {
+		System.out.println(nome+" si è riconnesso");
+		
+	}
+
+	public void esclusione(String nome) {
+		System.out.println(nome+" è stato escluso dalla partita");
+		
+	}
+
 }

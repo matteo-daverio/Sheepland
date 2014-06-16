@@ -395,4 +395,28 @@ public class ClientRMI implements InterfacciaClientRMI,
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
+	public void disconnessione(String nome) throws RemoteException {
+		controllore.disconnessione(nome);
+		
+	}
+
+	/**
+	 * @author Valerio De Maria
+	 */
+	public void risconnessione(String nome) throws RemoteException {
+		controllore.riconnessione(nome);
+		
+	}
+
+	/**
+	 * @author Valerio De Maria
+	 */
+	public void esclusione(String nome) throws RemoteException {
+		controllore.esclusione(nome);
+		
+	}
+
 }

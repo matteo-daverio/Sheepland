@@ -5,6 +5,7 @@ import java.io.Serializable;
 public enum ComandiSocket implements Serializable{
 	
 	//DA SERVER A CLIENT
+	DISCONNESSIONE,RICONNESSIONE,ESCLUSIONE,
 	
 	MOVIMENTO_PECORA_NERA,MOVIMENTO_LUPO,
 	

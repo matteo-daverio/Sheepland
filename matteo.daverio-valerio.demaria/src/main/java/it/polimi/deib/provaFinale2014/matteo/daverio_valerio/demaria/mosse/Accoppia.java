@@ -55,11 +55,13 @@ public class Accoppia implements Mossa, Serializable {
 	 * @author Valerio De Maria
 	 */
 	public void aggiornaClients(
-			List<InterfacciaComunicazioneToClient> giocatori, int turno) {
+			List<InterfacciaComunicazioneToClient> giocatori, int turno,List<Boolean>giocatoriConnessi) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
-			if (i != (turno - 1)) {
+			if ((i != (turno - 1))) {
+				if(giocatoriConnessi.get(i).booleanValue()==true){
 				giocatori.get(i).comunicaAccoppiamento(regione, giocatore,
 						pastore);
+				}
 			} else {
 				giocatori.get(i).mossaCorretta();
 			}

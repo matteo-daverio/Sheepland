@@ -357,6 +357,17 @@ public class ControllorePartitaClient {
 		schermo.comunicaNumeroRecinti(recinti);
 	}
 
+	public void disconnessione(String nome){
+		schermo.disconnessione(nome);
+	}
+	
+	public void riconnessione(String nome){
+		schermo.riconnessione(nome);
+	}
+	
+	public void esclusione(String nome){
+		schermo.esclusione(nome);
+	}
 	// METODI ESEGUITI DALLA GRAFICA
 
 	/**

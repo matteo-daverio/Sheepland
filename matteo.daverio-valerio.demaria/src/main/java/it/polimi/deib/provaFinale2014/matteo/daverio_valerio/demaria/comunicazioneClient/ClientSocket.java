@@ -10,7 +10,6 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Pong;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -136,15 +135,8 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 
 				case RICHIESTA_DI_MOSSA:
 					mosseDisponibili = (List<MosseEnum>) in.readObject();
-					if (mosseDisponibili.size() == 0) {
-						out.reset();
-						out.writeObject(new Pong());
-						out.flush();
-						System.out.println("ho mandato un pong");
-					} else {
-
 						controllore.richiestaMossa(mosseDisponibili);
-					}
+					
 
 					break;
 
@@ -324,7 +316,22 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 				    controllore.spostamentoPecoraNera(estrada,giocatore,pastore);
 					
 					break;
+				
+				case DISCONNESSIONE:
+					String discN=(String)in.readObject();
+					controllore.disconnessione(discN);
+					break;
+					
+				case RICONNESSIONE:
+					String ricN=(String)in.readObject();
+					controllore.riconnessione(ricN);
+					break;
 
+				case ESCLUSIONE:
+					String escN=(String)in.readObject();
+					controllore.esclusione(escN);
+					break;
+					
 				default:
 					break;
 				}// fine switch
