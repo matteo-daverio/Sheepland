@@ -4,14 +4,29 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * hashmap per la posizione di pecore
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class PosizioniPecore {
 	private static final Map<Posizione, Point> mappaPunti = new HashMap<Posizione, Point>();
 
+	/**
+	 * costruttore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public PosizioniPecore() {
 		inizializzaMappaPunti();
 	}
 
+	/**
+	 * inizializza la mappa
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public static void inizializzaMappaPunti() {
 
 		// posizione regioni
@@ -83,6 +98,13 @@ public class PosizioniPecore {
 
 	}
 
+	/**
+	 * restituisce il punto su cui piazzare la pecora, associato alla sua posizione
+	 * 
+	 * @param posizione
+	 * @return punto della mappa su cui posizionare la pecora
+	 * @author Matteo Daverio
+	 */
 	public Point getLocalizzazione(Posizione posizione) {
 		return mappaPunti.get(posizione);
 	}

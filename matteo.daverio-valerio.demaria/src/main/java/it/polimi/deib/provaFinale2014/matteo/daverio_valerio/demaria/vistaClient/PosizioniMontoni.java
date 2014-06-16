@@ -4,14 +4,29 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * hashmap per posizioni montoni
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class PosizioniMontoni {
 	private static final Map<Posizione, Point> mappaPunti = new HashMap<Posizione, Point>();
 
+	/**
+	 * costruttore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public PosizioniMontoni() {
 		inizializzaMappaPunti();
 	}
 
+	/**
+	 * inizializza mappa dei punti dei montoni
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public static void inizializzaMappaPunti() {
 
 		// posizione regioni
@@ -83,6 +98,13 @@ public class PosizioniMontoni {
 
 	}
 
+	/**
+	 * localizza il punto su cui collocare il montone in relazione alla posizione
+	 * 
+	 * @param posizione
+	 * @return punto su cui posizionare il montone
+	 * @author Matteo Daverio
+	 */
 	public Point getLocalizzazione(Posizione posizione) {
 		return mappaPunti.get(posizione);
 	}

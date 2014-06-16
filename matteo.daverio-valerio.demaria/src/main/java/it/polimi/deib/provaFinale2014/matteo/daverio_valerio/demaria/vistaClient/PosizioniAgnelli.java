@@ -4,14 +4,29 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * classe per gestire la posizione degli agnelli
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class PosizioniAgnelli {
 	private static final Map<Posizione, Point> mappaPunti = new HashMap<Posizione, Point>();
 
+	/**
+	 * costruttore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public PosizioniAgnelli() {
 		inizializzaMappaPunti();
 	}
 
+	/**
+	 * inizializza mappa dei punti degli agnelli
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public static void inizializzaMappaPunti() {
 
 		// posizione regioni
@@ -83,6 +98,13 @@ public class PosizioniAgnelli {
 
 	}
 
+	/**
+	 * calcola il punto su cui collocare l'agnello in relazione alla sua posizione
+	 * 
+	 * @param posizione
+	 * @return punto su cui collocare l'agnello
+	 * @author Matteo Daverio
+	 */
 	public Point getLocalizzazione(Posizione posizione) {
 		return mappaPunti.get(posizione);
 	}

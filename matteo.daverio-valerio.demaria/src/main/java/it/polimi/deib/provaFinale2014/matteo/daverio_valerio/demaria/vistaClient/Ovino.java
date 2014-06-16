@@ -11,7 +11,12 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 
-
+/**
+ * classe per gestire le immagini degli ovini
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class Ovino extends JPanel {
 
 	/**
@@ -24,6 +29,12 @@ public class Ovino extends JPanel {
 	private Image image;
 	private static final Logger LOG=Logger.getLogger(Ovino.class.getName());
 	
+	/**
+	 * costruttore immagine ovino
+	 * 
+	 * @param path
+	 * @author Matteo Daverio
+	 */
 	public Ovino(String path) {
 		image=Toolkit.getDefaultToolkit().createImage(path);
 		loadImage(image);
@@ -33,6 +44,12 @@ public class Ovino extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 	}
 	
+	/**
+	 * carica l'immagine
+	 * 
+	 * @param image
+	 * @author Matteo Daverio
+	 */
 	private void loadImage(Image image) {
 		try{
 			MediaTracker tracker=new MediaTracker(this);
@@ -44,6 +61,11 @@ public class Ovino extends JPanel {
 	}
 	
 	@Override
+	/**
+	 * override del paintComponent
+	 * 
+	 * @author Matteo Daverio
+	 */
 	protected void paintComponent(Graphics g) {
 		setOpaque(false);
 		g.drawImage(image, 0, 0, null);

@@ -48,6 +48,7 @@ public class GuiImpl implements InterfacciaGrafica {
 
 	public void settaPecore(List<Pecora> pecore) {
 		this.pecore = pecore;
+		mappa.azzeraPecore();
 		mappa.inizializzaPecore(pecore);
 	}
 
@@ -149,12 +150,14 @@ public class GuiImpl implements InterfacciaGrafica {
 
 	public void iniziaTurno(List<Pecora> pecore, int turno) {
 		this.pecore = pecore;
+		mappa.azzeraPecore();
 		mappa.inizializzaPecore(pecore);
 		mappa.iniziaTurno(turno);
 	}
 
 	public void cambioTurno(String giocatore, List<Pecora> pecore) {
 		this.pecore = pecore;
+		mappa.azzeraPecore();
 		mappa.inizializzaPecore(pecore);
 		mappa.cambioTurno(giocatore);
 	}

@@ -34,6 +34,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Map extends JFrame {
 
@@ -42,6 +44,8 @@ public class Map extends JFrame {
 	 */
 	private static final long serialVersionUID = -3256210950304048274L;
 
+	private static final Logger LOG=Logger.getLogger(Map.class.getName());
+	
 	// per verificare se la mossa è corretta, e nel caso non lo sia, ritornare
 	// allo stato di partenza
 	// salvo lo stato di partenza in queste variabili
@@ -184,7 +188,7 @@ public class Map extends JFrame {
 			mappaNascosta = Disegno.getScaledImage(image, larghezzaIdeale,
 					altezzaIdeale);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE,"Caricamento mappa fallito", e);
 		}
 	}
 
@@ -1054,9 +1058,9 @@ public class Map extends JFrame {
 				posizione = significatoColori.getPosizione(calcoloColore(
 						e.getX(), e.getY()));
 			} catch (HeadlessException e1) {
-				e1.printStackTrace();
+				LOG.log(Level.SEVERE,"Calcolo posizione errato", e1);
 			} catch (Exception e1) {
-				e1.printStackTrace();
+				LOG.log(Level.SEVERE,"Calcolo posizione errato", e1);
 			}
 
 			if (richiestaPosizionamentoPastore) {
@@ -1110,28 +1114,53 @@ public class Map extends JFrame {
 			} else if (controlloArea(e, bottoneMovimentoPersonaggio)
 					&& mioTurno && !scegliPastore) {
 				aggiornaVariabili(1);
-				JOptionPane.showMessageDialog(null, "muovi pastore",
-						"Muovi pastore", JOptionPane.INFORMATION_MESSAGE);
+				messaggio = new Messaggio("Muovi personaggio");
+				messaggio.setLocation(new Point(formWidth / 10, 10));
+				c.add(messaggio, 0);
+				repaint();
+				messaggio.repaint();
+				timer = new Timer(2000, new TimerTask(messaggio, c));
+				timer.start();
 			} else if (controlloArea(e, bottoneMovimentoPecora) && mioTurno
 					&& !scegliPastore) {
 				aggiornaVariabili(2);
-				JOptionPane.showMessageDialog(null, "muovi pecora",
-						"Muovi pecora", JOptionPane.INFORMATION_MESSAGE);
+				messaggio = new Messaggio("Muovi pecora");
+				messaggio.setLocation(new Point(formWidth / 10, 10));
+				c.add(messaggio, 0);
+				repaint();
+				messaggio.repaint();
+				timer = new Timer(2000, new TimerTask(messaggio, c));
+				timer.start();
 			} else if (controlloArea(e, bottoneAcquistoTessere) && mioTurno
 					&& !scegliPastore) {
 				aggiornaVariabili(3);
-				JOptionPane.showMessageDialog(null, "acquista tessera",
-						"Acquista", JOptionPane.INFORMATION_MESSAGE);
+				messaggio = new Messaggio("Acquista tessera");
+				messaggio.setLocation(new Point(formWidth / 10, 10));
+				c.add(messaggio, 0);
+				repaint();
+				messaggio.repaint();
+				timer = new Timer(2000, new TimerTask(messaggio, c));
+				timer.start();
 			} else if (controlloArea(e, bottoneAbbattiPecora) && mioTurno
 					&& !scegliPastore) {
 				aggiornaVariabili(4);
-				JOptionPane.showMessageDialog(null, "abbatti pecore",
-						"Abbatti", JOptionPane.INFORMATION_MESSAGE);
+				messaggio = new Messaggio("Abbatti pecore");
+				messaggio.setLocation(new Point(formWidth / 10, 10));
+				c.add(messaggio, 0);
+				repaint();
+				messaggio.repaint();
+				timer = new Timer(2000, new TimerTask(messaggio, c));
+				timer.start();
 			} else if (controlloArea(e, bottoneAccoppiaPecore) && mioTurno
 					&& !scegliPastore) {
 				aggiornaVariabili(5);
-				JOptionPane.showMessageDialog(null, "accoppia pecore",
-						"Accoppia", JOptionPane.INFORMATION_MESSAGE);
+				messaggio = new Messaggio("Accoppia pecore");
+				messaggio.setLocation(new Point(formWidth / 10, 10));
+				c.add(messaggio, 0);
+				repaint();
+				messaggio.repaint();
+				timer = new Timer(2000, new TimerTask(messaggio, c));
+				timer.start();
 			} else if (accoppiaPecore && mioTurno) {
 				if (posizione.getTipo().equals("Regione")) {
 					oggettoMosso = "accoppia";
@@ -1144,8 +1173,6 @@ public class Map extends JFrame {
 			} else if (acquistaTessere && mioTurno) {
 				int terreno = calcolaBottone(e.getX(), e.getY());
 				if (terreno > 0 && terreno < 7) {
-					JOptionPane.showMessageDialog(null, terreno, "terreno",
-							JOptionPane.INFORMATION_MESSAGE);
 					acquistaTessera(terreno);
 					oggettoMosso = "acquistotessera";
 					posizioneDiPartenza = terreno;
@@ -1416,9 +1443,13 @@ public class Map extends JFrame {
 		// far capire all'utente che può giocare
 		mioTurno = true;
 		mioTurnoDiGioco = turno;
-		// JOptionPane.showMessageDialog(null, "Ora è il tuo turno",
-		// "Inizio turno",
-		// JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Ora è il tuo turno");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		/*
 		 * if (numeroGiocatori == 2) { JOptionPane.showMessageDialog(null,
 		 * "Clicca sul pastore che vuoi usare in questo turno", "Posizione",
@@ -1437,9 +1468,13 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	public void muoviPecoraNera(int posizione) {
-		// JOptionPane.showMessageDialog(null,
-		// "La pecora nera si sta muovendo!",
-		// "Pecora Nera", JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("La pecora nera si sta muovendo");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		pecoraNera.setLocation(
 				(int) mappaturaPosizione.getLocalizzazione(
 						new Posizione("Regione", posizione)).getX()
@@ -1464,9 +1499,13 @@ public class Map extends JFrame {
 	 */
 	public void muoviPastoreAvversario(int turnoGiocatore, int posizione,
 			String giocatore) {
-		// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-		// + " si sta muovendo in posizione " + posizione, "Movimento",
-		// JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Il giocatore si muove in posizione " + posizione);
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		muoviPastoreAvversario(turnoGiocatore, posizione);
 	}
 
@@ -1550,9 +1589,13 @@ public class Map extends JFrame {
 
 	// metodo che riceve la nuova posizione del lupo
 	public void muoviLupo(int posizione) {
-		// JOptionPane.showMessageDialog(null, "Il lupo si sta muovendo!",
-		// "Lupo",
-		// JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Il lupo si sta muovendo!");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		lupo.setLocation(
 				(int) posizioniLupo.getLocalizzazione(
 						new Posizione("Regione", posizione)).getX()
@@ -1784,8 +1827,13 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	public void tesseraIniziale(TipoTerreno terreno) {
-		// JOptionPane.showMessageDialog(null, "La tessera iniziale è di tipo "
-		// + terreno, "Tessera iniziale", JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("La tessera iniziale è di tipo " + terreno);
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		if (terreno.equals(TipoTerreno.GRANO)) {
 			incrementaContatore(contatoreTessereGrano);
 		} else if (terreno.equals(TipoTerreno.FORESTA)) {
@@ -1815,8 +1863,13 @@ public class Map extends JFrame {
 	public void fineTurno() {
 		// comunicazione di fine turno tramite una JOptionPane
 		mioTurno = false;
-		// JOptionPane.showMessageDialog(null, "fine turno", "Fine Turno",
-		// JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Fine turno");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		// resetta il valore delle variabili di stato dei pulsanti
 		aggiornaVariabili(0);
 	}
@@ -1861,6 +1914,11 @@ public class Map extends JFrame {
 
 	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
 		for (int i = 0; i < numeroGiocatori; i++) {
+			try {
+				this.wait(1500);
+			} catch (InterruptedException e) {
+				LOG.log(Level.SEVERE, "Attesa punteggi finali fallita" , e);
+			}
 			messaggio = new Messaggio("Il giocatore " + nomi.get(i)
 					+ " ha ottenuto " + punteggiFinali.get(i) + " punti!");
 			messaggio.setLocation(new Point(formWidth / 10, 10));
@@ -1895,8 +1953,8 @@ public class Map extends JFrame {
 	}
 
 	public void mossaSbagliata() {
-		// JOptionPane.showMessageDialog(null, "Mossa errata", "Errore",
-		// JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Mossa errata", "Errore",
+				JOptionPane.ERROR_MESSAGE);
 		if (oggettoMosso.equals("pecora")) {
 			muoviPecora(Costanti.TIPO_PECORA_PECORA, posizioneDiArrivo,
 					posizioneDiPartenza);
@@ -1987,9 +2045,8 @@ public class Map extends JFrame {
 	}
 
 	public void posizionamentoSbagliato() {
-		// JOptionPane.showMessageDialog(null, "Posizionamento errato",
-		// "Errore",
-		// JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Posizionamento errato", "Errore",
+				JOptionPane.ERROR_MESSAGE);
 		if (oggettoMosso.equals("posizionamento")) {
 			player[posizioneDiPartenza].setVisible(false);
 		}
@@ -1999,9 +2056,14 @@ public class Map extends JFrame {
 	}
 
 	public void notificaAcquistoTessera(String giocatore, TipoTerreno terreno) {
-		// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-		// + " ha acquistato una tessera " + terreno, "Acquisto",
-		// JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Il giocatore " + giocatore
+				+ " ha acquistato una tessera " + terreno);
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 		switch (terreno) {
 		case ACQUA:
 			incrementaContatore(costoAcqua);
@@ -2029,19 +2091,34 @@ public class Map extends JFrame {
 
 	public void abbattiPecora(int regione, String giocatore, int tipoPecora) {
 		if (tipoPecora == Costanti.TIPO_PECORA_AGNELLO) {
-			// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-			// + " ha abbattuto un agnello nella regione " + regione,
-			// "Abbattimento", JOptionPane.INFORMATION_MESSAGE);
+			messaggio = new Messaggio("Agnello abbattuto nella regione "
+					+ regione);
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			decrementaContatoreAgnello(regione);
 		} else if (tipoPecora == Costanti.TIPO_PECORA_PECORA) {
-			// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-			// + " ha abbattuto un agnello nella regione " + regione,
-			// "Abbattimento", JOptionPane.INFORMATION_MESSAGE);
+			messaggio = new Messaggio("Pecora abbattuta nella regione "
+					+ regione);
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			decrementaContatorePecora(regione);
 		} else if (tipoPecora == Costanti.TIPO_PECORA_MONTONE) {
-			// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-			// + " ha abbattuto un agnello nella regione " + regione,
-			// "Abbattimento", JOptionPane.INFORMATION_MESSAGE);
+			messaggio = new Messaggio("Montone abbattuto nella regione "
+					+ regione);
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			decrementaContatoreMontone(regione);
 		}
 	}
@@ -2080,7 +2157,6 @@ public class Map extends JFrame {
 	public void segnalaDisconnessione() {
 		JOptionPane.showMessageDialog(null, "Connessione con il server caduta",
 				"Disconnessione", JOptionPane.ERROR_MESSAGE);
-
 	}
 
 	public void impostaGuiImpl(GuiImpl guiImpl) {
@@ -2122,4 +2198,15 @@ public class Map extends JFrame {
 
 	}
 
+	public void azzeraPecore(){
+		for(int i=0;i<=18;i++){
+			c.remove(pecora[i]);
+			pecora[i]=null;
+			c.remove(agnello[i]);
+			agnello[i]=null;
+			c.remove(montone[i]);
+			montone[i]=null;
+		}
+		repaint();
+	}
 }

@@ -4,14 +4,29 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * classe mappatura posizione pecora nera
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class MappaturaPosizioni {
 	private static final Map<Posizione, Point> mappaPunti = new HashMap<Posizione, Point>();
 
+	/**
+	 * costruttore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public MappaturaPosizioni() {
 		inizializzaMappaPunti();
 	}
 
+	/**
+	 * inizializza mappa 
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public static void inizializzaMappaPunti() {
 
 		// posizione regioni
@@ -83,6 +98,13 @@ public class MappaturaPosizioni {
 
 	}
 
+	/** 
+	 * calcola il punto della pecora nera in relazione alla sua posizione
+	 * 
+	 * @param posizione
+	 * @return punto su cui collocare la pecora nera
+	 * @author Matteo Daverio
+	 */
 	public Point getLocalizzazione(Posizione posizione) {
 		return mappaPunti.get(posizione);
 	}

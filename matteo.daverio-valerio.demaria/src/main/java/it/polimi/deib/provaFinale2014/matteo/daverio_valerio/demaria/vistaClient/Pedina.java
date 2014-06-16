@@ -10,7 +10,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 
-
+/**
+ * classe per gestire l'immagine della pedina
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class Pedina extends JLabel {
 
 
@@ -24,6 +29,12 @@ public class Pedina extends JLabel {
 	private Image image;
 	private static final Logger LOG=Logger.getLogger(Pedina.class.getName());
 	
+	/**
+	 * costruttore
+	 * 
+	 * @param path
+	 * @author Matteo Daverio
+	 */
 	public Pedina(String path) {
 		image=Toolkit.getDefaultToolkit().createImage(path);
 		loadImage(image);
@@ -33,6 +44,12 @@ public class Pedina extends JLabel {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 	}
 	
+	/**
+	 * load image
+	 * 
+	 * @param image
+	 * @author Matteo Daverio
+	 */
 	private void loadImage(Image image) {
 		try{
 			MediaTracker tracker=new MediaTracker(this);
@@ -44,6 +61,11 @@ public class Pedina extends JLabel {
 	}
 	
 	@Override
+	/**
+	 * override paintComponent
+	 * 
+	 * @author Matteo Daverio
+	 */
 	protected void paintComponent(Graphics g) {
 		setOpaque(false);
 		g.drawImage(image, 0, 0, null);

@@ -4,15 +4,30 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * classe per gestire la mappa del lupo
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class PosizioniLupo {
 
 	private static final Map<Posizione, Point> mappaPunti = new HashMap<Posizione, Point>();
 
+	/**
+	 * costruttore
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public PosizioniLupo() {
 		inizializzaMappaPunti();
 	}
 
+	/**
+	 * inizializza la mappa dei punti
+	 * 
+	 * @author Matteo Daverio
+	 */
 	public static void inizializzaMappaPunti() {
 
 		// posizione regioni
@@ -84,6 +99,13 @@ public class PosizioniLupo {
 
 	}
 
+	/**
+	 * restituisce il punto su cui collocare il lupo in relazione alla posizione
+	 * 
+	 * @param posizione
+	 * @return punto su cui collocare il lupo
+	 * @author Matteo Daverio
+	 */
 	public Point getLocalizzazione(Posizione posizione) {
 		return mappaPunti.get(posizione);
 	}

@@ -5,6 +5,12 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
+/**
+ * classe per gestire la visualizzazione del messaggio
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class Messaggio extends JLabel {
 	/**
 	 * 
@@ -14,6 +20,12 @@ public class Messaggio extends JLabel {
 	private int xSize=1000;
 	private int ySize=30;
 	
+	/**
+	 * costruttore del messaggio
+	 * 
+	 * @param messaggio
+	 * @author Matteo Daverio
+	 */
 	public Messaggio(String messaggio) {
 		this.setSize(xSize, ySize);
 		this.setFont(new Font("mio font",Font.BOLD,25));
@@ -23,6 +35,11 @@ public class Messaggio extends JLabel {
 	}
 	
 	@Override
+	/**
+	 * override del paintComponent
+	 * 
+	 * @author Matteo Daverio
+	 */
 	protected void paintComponent(Graphics g) {
 		setOpaque(false);
 		super.paintComponent(g);
