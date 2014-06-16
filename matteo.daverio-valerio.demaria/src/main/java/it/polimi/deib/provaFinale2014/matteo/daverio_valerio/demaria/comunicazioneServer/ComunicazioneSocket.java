@@ -1,9 +1,9 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * classe che invia messaggi ai client socket
@@ -25,6 +27,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 	private Socket socket;
 	private String nome;
 	private ObjectOutputStream out;
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	/**
 	 * COSTRUTTORE
@@ -95,7 +98,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.close();
 			socket.close();
 		} catch (IOException e) {
-			LOGGER.log("errore in chiusura socket", e);
+			LOG.log(Level.SEVERE,"errore in chiusura socket", e);
 		}
 	}
 
@@ -114,7 +117,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(nuovaPosizione);
 			out.flush();
 		} catch (IOException e) {
-			LOGGER.log("errore in invio mossa pecora", e);
+			LOG.log(Level.SEVERE,"errore in invio mossa pecora", e);
 		}
 
 	}
@@ -131,7 +134,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.flush();
 
 		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione richiesta mossa", e);
+			LOG.log(Level.SEVERE,"errore in comunicazione richiesta mossa", e);
 		}
 
 	}
@@ -240,7 +243,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione movimento pastore", e);
+			LOG.log(Level.SEVERE,"errore in comunicazione movimento pastore", e);
 		}
 		
 	}
@@ -264,7 +267,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione acquisto tessera", e);
+			LOG.log(Level.SEVERE,"errore in comunicazione acquisto tessera", e);
 		}
 		
 	}
@@ -293,7 +296,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.reset();
 
 		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione abbattimento", e);
+			LOG.log(Level.SEVERE,"errore in comunicazione abbattimento", e);
 		}
 
 		
@@ -317,7 +320,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione accoppiamento", e);
+			LOG.log(Level.SEVERE,"errore in comunicazione accoppiamento", e);
 		}
 
 		
@@ -346,7 +349,7 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 			out.writeInt(pastore);
 			out.flush();
 		} catch (IOException e) {
-			LOGGER.log("errore in comunicazione movimento pecora", e);
+			LOG.log(Level.SEVERE,"errore in comunicazione movimento pecora", e);
 		}
 		
 	}

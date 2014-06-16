@@ -1,6 +1,5 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.InterfacciaGestioneRMI;
@@ -21,6 +20,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * classe che gestisce la comunicazione RMI lato client
@@ -38,6 +39,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 	private InterfacciaGestioneRMI server;
 	private ControllorePartitaClient controllore;
 	private InterfacciaServerRMI serverRMI;
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	/**
 	 * COSTRUTTORE
@@ -79,7 +81,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 
 		} catch (RemoteException e) {
 			System.err.println("Remote exception:");
-			LOGGER.log("Errore di connessione", e);
+			LOG.log(Level.SEVERE,"Errore di connessione", e);
 		} catch (NotBoundException e) {
 			System.err.println("Name " + "istanza" + " not bound.");
 		}
@@ -373,7 +375,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 		} catch (RemoteException e) {
 
 			controllore.segnalaDisconnessione();
-			LOGGER.log("Errore in connessione", e);
+			LOG.log(Level.SEVERE,"Errore in connessione", e);
 		}
 
 	}
@@ -388,7 +390,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 			this.serverRMI.riceviMossa(mossa, pastoreTurno);
 		} catch (RemoteException e) {
 			controllore.segnalaDisconnessione();
-			LOGGER.log("Errore in connessione", e);
+			LOG.log(Level.SEVERE,"Errore in connessione", e);
 		}
 
 	}

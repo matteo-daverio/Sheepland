@@ -1,7 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
@@ -20,6 +19,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientSocket implements InterfacciaComunicazioneToServer {
 
@@ -29,6 +30,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 	private ObjectOutputStream out;
 	private ControllorePartitaClient controllore;
 	private ComandiSocket line;
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	/**
 	 * COSTRUTTORE
@@ -64,9 +66,9 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 			in = new ObjectInputStream(socket.getInputStream());
 
 		} catch (UnknownHostException e) {
-			LOGGER.log("UnknowHostException", e);
+			LOG.log(Level.SEVERE,"UnknowHostException", e);
 		} catch (IOException e) {
-			LOGGER.log("Errore creazione buffer", e);
+			LOG.log(Level.SEVERE,"Errore creazione buffer", e);
 		}
 		while (true) {
 			try {
@@ -99,7 +101,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 				}
 
 			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore ricezione da server", e);
+				LOG.log(Level.SEVERE,"errore ricezione da server", e);
 			}
 		}
 
@@ -331,7 +333,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 
 				controllore.segnalaDisconnessione();
 
-				LOGGER.log("errore ricezione da server", e);
+				LOG.log(Level.SEVERE,"errore ricezione da server", e);
 			}
 		}
 	}
@@ -358,7 +360,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 
 			controllore.segnalaDisconnessione();
 
-			LOGGER.log("Errore in connessione", e);
+			LOG.log(Level.SEVERE,"Errore in connessione", e);
 		}
 
 	}
@@ -386,7 +388,7 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 
 			controllore.segnalaDisconnessione();
 
-			LOGGER.log("Errore in connessione", e);
+			LOG.log(Level.SEVERE,"Errore in connessione", e);
 		}
 
 	}

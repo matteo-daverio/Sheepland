@@ -1,7 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * classe che gestisce le conessioni socket
@@ -23,6 +25,7 @@ public class GestioneSocket implements Gestione {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Partita partita;
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	/**
 	 * costruttore
@@ -116,7 +119,7 @@ public class GestioneSocket implements Gestione {
 				out.writeObject(ComandiSocket.AUTENTICAZIONE_RIUSCITA);
 				out.flush();
 			} catch (IOException e) {
-				LOGGER.log("errore connessione Socket", e);
+				LOG.log(Level.SEVERE,"errore connessione Socket", e);
 			}
 
 		} else {
@@ -125,7 +128,7 @@ public class GestioneSocket implements Gestione {
 				out.writeObject(ComandiSocket.AUTENTICAZIONE_FALLITA);
 				out.flush();
 			} catch (IOException e) {
-				LOGGER.log("errore connessione Socket", e);
+				LOG.log(Level.SEVERE,"errore connessione Socket", e);
 			}
 
 		}
@@ -155,8 +158,7 @@ public class GestioneSocket implements Gestione {
 			// since the ObjectInputStream constructor will block until a header
 			// is written to the stream, and the header will not be written to
 			// the stream until the ObjectOutputStream constructor executes.
-			
-			// TODO =>SHOUT FUCK
+
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.flush();
 			in = new ObjectInputStream(socket.getInputStream());
@@ -172,7 +174,7 @@ public class GestioneSocket implements Gestione {
 					nome = (String) in.readObject();
 			
 			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore in lettura nome", e);
+				LOG.log(Level.SEVERE,"errore in lettura nome", e);
 			}
 			this.nome = nome;
 			System.out.println("il nome è " + nome);
@@ -189,14 +191,14 @@ public class GestioneSocket implements Gestione {
 					password = (String) in.readObject();
 				
 			} catch (ClassNotFoundException e) {
-				LOGGER.log("errore in lettura password", e);
+				LOG.log(Level.SEVERE,"errore in lettura password", e);
 			}
 
 			this.password = password;
 			System.out.println("la passw è " + password);
 
 		} catch (IOException e) {
-			LOGGER.log("non comunica il socket", e);
+			LOG.log(Level.SEVERE,"non comunica il socket", e);
 			System.err.println(e.getMessage());
 		}
 	}

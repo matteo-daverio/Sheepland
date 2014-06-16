@@ -45,7 +45,7 @@ public class ControllorePartita implements Runnable {
 	private List<ThreadRicezioneSocket> ascoltatoriSocket = new ArrayList<ThreadRicezioneSocket>();
 
 	private List<Boolean> giocatoriConnessi = new ArrayList<Boolean>();
-	
+
 	private GestorePartite gestore;
 
 	/**
@@ -55,7 +55,8 @@ public class ControllorePartita implements Runnable {
 	 * @param partita
 	 * @author Valerio De Maria
 	 */
-	public ControllorePartita(List<Gestione> connessioni, Partita partita, GestorePartite gestore) {
+	public ControllorePartita(List<Gestione> connessioni, Partita partita,
+			GestorePartite gestore) {
 
 		// a quanto pare se io faccio this.connessioni=connessioni l'array di
 		// ControllorePartita diventa lo stesso oggetto dell'array di
@@ -67,8 +68,8 @@ public class ControllorePartita implements Runnable {
 		}
 
 		this.partita = partita;
-		
-		this.gestore=gestore;
+
+		this.gestore = gestore;
 
 	}
 
@@ -135,7 +136,8 @@ public class ControllorePartita implements Runnable {
 
 	public void aggiornaGiocatoreDisconnesso(int i) {
 
-		System.out.println("Invio i dati di aggiornamento a: "+giocatori.get(i).getNome());
+		System.out.println("Invio i dati di aggiornamento a: "
+				+ giocatori.get(i).getNome());
 		giocatori.get(i).aggiornamento(partita.getPecore(),
 				partita.getPecoraNera().getPosizione(),
 				partita.getLupo().getPosizione(), partita.getPastori());
@@ -168,25 +170,25 @@ public class ControllorePartita implements Runnable {
 	 */
 
 	private List<MosseEnum> calcolaMosseDisponibili(List<MosseEnum> mosseFatte) {
-		
+
 		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
-		
+
 		// se è l'ultima mossa del turno e non ho ancora mosso il pastore
 		if ((mosseFatte.size() == Costanti.NUMERO_MOSSE_GIOCATORE - 1)
 				&& (mosseFatte.get(0) != MosseEnum.MUOVI_PASTORE)
 				&& (mosseFatte.get(1) != MosseEnum.MUOVI_PASTORE)) {
 			mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
-			
+
 			return mosseDisponibili;
 		} else {
 			// se ho fatto almeno una mossa
 			if (mosseFatte.size() > 0) {
-				
+
 				// in base all'ultima mossa fatta
 				switch (mosseFatte.get(mosseFatte.size() - 1)) {
 
 				case ABBATTI:
-					
+
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
@@ -194,7 +196,7 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case ACCOPPIA:
-					
+
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
@@ -202,7 +204,7 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case COMPRA_TESSERA:
-					
+
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
@@ -210,7 +212,7 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case MUOVI_PASTORE:
-					
+
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
@@ -218,23 +220,23 @@ public class ControllorePartita implements Runnable {
 					mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
 					break;
 				case MUOVI_PECORA:
-					
+
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 					break;
 				case MUOVI_PECORA_NERA:
-					
+
 					mosseDisponibili.add(MosseEnum.ACCOPPIA);
 					mosseDisponibili.add(MosseEnum.ABBATTI);
 					mosseDisponibili.add(MosseEnum.COMPRA_TESSERA);
 					mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
-					break;	
+					break;
 				default:
 					break;
 				}// fine switch
-				
+
 			}// fine if numero mosse fatte maggiore di zero
 			else {
 				// la mia prima mossa può essere una qualsiasi
@@ -244,7 +246,7 @@ public class ControllorePartita implements Runnable {
 				mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 				mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 				mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
-			   	
+
 			}
 			return mosseDisponibili;
 		}
@@ -408,7 +410,7 @@ public class ControllorePartita implements Runnable {
 	}
 
 	private void impostaTesseraIniziale() {
-		
+
 		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
 
 		int scelta;
@@ -428,15 +430,15 @@ public class ControllorePartita implements Runnable {
 			top = 1;
 			step = 1;
 		}
-        System.out.println(top+" e "+step);
+		System.out.println(top + " e " + step);
 		for (int i = 0; i <= top; i++) {
 
 			// scelgo un numero casuale tra 0 ed il numero di tessere iniziali
 			// rimasto -1
-			do{
-			scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
-			}while (scelta >=tessereIniziali.size());
-            System.out.println("scelta vale: "+scelta);
+			do {
+				scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
+			} while (scelta >= tessereIniziali.size());
+			System.out.println("scelta vale: " + scelta);
 			// aggiungo la tessera iniziale scelta alle tessere del pastore
 			partita.getPastori().get(i + step * i)
 					.aggiungiTessera(tessereIniziali.get(scelta));
@@ -451,8 +453,8 @@ public class ControllorePartita implements Runnable {
 			x.comunicaPecore(partita.getPecore());
 		}
 	}
-	
-	private void inviaStrade(){
+
+	private void inviaStrade() {
 		for (InterfacciaComunicazioneToClient x : giocatori) {
 			x.comunicaStrade(partita.getStrade());
 		}
@@ -488,23 +490,17 @@ public class ControllorePartita implements Runnable {
 		partita.setNumeroGiocatori(giocatori.size());
 
 		inviaPosizioneInizialePecore();
-		
-		System.out.println("ho inviato le pecore");
+
 		inviaStrade();
 
-		System.out.println("ho inviato le strade");
 		aggiungiPastori();
 
-		System.out.println("ho aggiunto i pastori");
 		impostaDenaro();
 
-		System.out.println("ho impostato il denaro");
 		impostaTesseraIniziale();
 
-		System.out.println("ho impostato la tessera iniziale");
 		inviaDatiGiocatori();
-		
-		System.out.println("ho inviato i dati giocatori");
+
 	}
 
 	private void aggiornaPosizionamentoPastori(int turno, int pastore,
@@ -571,7 +567,6 @@ public class ControllorePartita implements Runnable {
 			// controllaConnessioneClients(mosseDisponibili);
 
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
-
 
 			// dico al client che deve inviarmi una mossa
 			giocatori.get(partita.getTurno() - 1).inviaRichiestaMossa(
@@ -669,6 +664,7 @@ public class ControllorePartita implements Runnable {
 
 			partita.getPastori().get(partita.getTurno() - 1)
 					.setPosizione(posizioneScelta);
+
 		} else {
 			if (partita.getTurno() == 1) {
 				if (primoPastore) {
@@ -685,6 +681,7 @@ public class ControllorePartita implements Runnable {
 			}
 
 		}
+
 		// aggiorno le strade disponibili per il posizionamento dei pastori
 		stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
 
@@ -711,25 +708,42 @@ public class ControllorePartita implements Runnable {
 				}
 			}
 		}
-		// se tutti hanno posizionato i propri pastori
-		if (partita.getTurno() == giocatori.size() && !primoPastore) {
-			do{
-			 partita.incrementaTurno();
-			}while(!(giocatoriConnessi.get(partita.getTurno()-1)==true));
-			giocaTurno();
-		}
-		// se manca qualche pastore da essere posizionato
-		else {
 
-			// incremento turno
-			if (giocatori.size() > 2 || !primoPastore) {
-				partita.incrementaTurno();
-				primoPastore = true;
-			} else {
-				primoPastore = false;
+		if (partita.getNumeroGiocatori() > 2) {
+			// se tutti hanno posizionato i propri pastori
+			if (partita.getTurno() == giocatori.size()) {
+				do {
+					partita.incrementaTurno();
+				} while (!(giocatoriConnessi.get(partita.getTurno() - 1) == true));
+				giocaTurno();
 			}
-			// chiedo al client del turno di posizionare il pastore
-			inviaRichiestaPosizionamentoPastore();
+			// manca qualche posizionamento
+			else {
+				partita.incrementaTurno();
+				// chiedo al client del turno di posizionare il pastore
+				inviaRichiestaPosizionamentoPastore();
+			}
+		} else {
+			// se tutti hanno posizionato i propri pastori
+			if (partita.getTurno() == giocatori.size() && !primoPastore) {
+				do {
+					partita.incrementaTurno();
+				} while (!(giocatoriConnessi.get(partita.getTurno() - 1) == true));
+				giocaTurno();
+			}
+			// manca qualche posizionamento
+			else {
+				// incremento turno
+				if (!primoPastore) {
+					partita.incrementaTurno();
+					primoPastore = true;
+				} else {
+					primoPastore = false;
+				}
+				// chiedo al client del turno di posizionare il pastore
+				inviaRichiestaPosizionamentoPastore();
+
+			}
 		}
 
 	}
