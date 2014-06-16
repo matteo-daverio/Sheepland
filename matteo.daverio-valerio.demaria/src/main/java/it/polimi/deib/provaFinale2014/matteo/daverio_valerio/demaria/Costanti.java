@@ -8,6 +8,7 @@ public class Costanti {
 	public static final long PERIODO_AVVIO_PARTITE = 400*1000;
 	public final static String SERVER_NAME = "compute";
 	public final static String IP ="localhost";
+	public final static int TEMPO_RICONNESSIONE=15*1000;
 
 	// costanti per le pecore
 

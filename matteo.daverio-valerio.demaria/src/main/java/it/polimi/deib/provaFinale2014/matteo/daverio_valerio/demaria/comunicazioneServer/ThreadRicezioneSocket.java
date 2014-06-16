@@ -1,17 +1,22 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.ComandiSocket;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ThreadRicezioneSocket implements Runnable {
 
 	private ObjectInputStream in;
 	private ComandiSocket line;
 	private ControllorePartita gameManager;
+	
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	public ThreadRicezioneSocket(ObjectInputStream in, ControllorePartita gameManager) {
 
@@ -61,11 +66,11 @@ public class ThreadRicezioneSocket implements Runnable {
 				}
 
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				gameManager.avvioTimerDisconnessione();
+				LOG.log(Level.SEVERE,"errore in ricezione socket", e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				gameManager.avvioTimerDisconnessione();
+				LOG.log(Level.SEVERE,"errore in ricezione socket", e);
 			}
 
 		}

@@ -3,6 +3,7 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazi
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
@@ -14,12 +15,14 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 
 
 
+
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * classe che comunica con client RMI
@@ -32,6 +35,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 	private String nome;
 	private InterfacciaClientRMI client;
 	private ControllorePartita gameManager;
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	// costruttore
 	public ComunicazioneRMI(String nome, InterfacciaClientRMI client,

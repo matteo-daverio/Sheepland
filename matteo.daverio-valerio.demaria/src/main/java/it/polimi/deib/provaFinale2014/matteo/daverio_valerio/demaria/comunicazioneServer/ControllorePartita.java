@@ -48,9 +48,10 @@ public class ControllorePartita implements Runnable {
 	private List<ThreadRicezioneSocket> ascoltatoriSocket = new ArrayList<ThreadRicezioneSocket>();
 
 	private List<Boolean> giocatoriConnessi = new ArrayList<Boolean>();
+	private List<Boolean> giocatoriEsclusi = new ArrayList<Boolean>();
 
 	private GestorePartite gestore;
-	
+
 	private int numeroTurni;
 
 	/**
@@ -106,9 +107,10 @@ public class ControllorePartita implements Runnable {
 	 * @author Valerio De Maria
 	 */
 	public boolean contieneClient(String nome) {
-
+		
 		for (InterfacciaComunicazioneToClient x : giocatori) {
 			if (x.getNome().equals(nome)) {
+				System.out.println("Io controllore partita contengo quel client");
 				return true;
 			}
 		}
@@ -116,6 +118,9 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	public void comunicaEsclusioneDallaPartita(){
+		
+	}
 	/**
 	 * aggiorno i parametri di comunicazione client e reinvio la partita in
 	 * corso al client disconnesso
@@ -127,13 +132,22 @@ public class ControllorePartita implements Runnable {
 	public void aggiornaComunicazione(String nome, Socket socket) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatori.get(i).getNome().equals(nome)) {
+				
+				
+			if(giocatoriEsclusi.get(i).booleanValue()==false){
+				System.out.println("ora reintegro il client");
 				// se il client che si è disconesso è Socket aggiorno la socket
 				if (giocatori.get(i).getTipoConnessione().equals("socket")) {
 					giocatori.get(i).setSocket(socket);
 					ascoltatoriSocket.get(i).aggiornaSocket(socket);
-					giocatoriConnessi.set(i, true);
-					aggiornaGiocatoreDisconnesso(i);
+					giocatoriConnessi.set(i, true);	
 				}
+				aggiornaGiocatoreDisconnesso(i);
+			}
+			else{
+				System.out.println("Non reintegro il client perchè si è disconnesso per trippo tempo");
+				comunicaEsclusioneDallaPartita();
+			}
 
 			}
 		}
@@ -347,7 +361,7 @@ public class ControllorePartita implements Runnable {
 		for (Gestione x : connessioni) {
 			if (x.getTipoConnessione().equals("socket")) {
 				giocatori.add(new ComunicazioneSocket(x.getSocket(), x
-						.getBufferOut(), x.getNome()));
+						.getBufferOut(), x.getNome(),this));
 				ThreadRicezioneSocket t = new ThreadRicezioneSocket(
 						x.getBufferIn(), this);
 				ascoltatoriSocket.add(t);
@@ -363,6 +377,10 @@ public class ControllorePartita implements Runnable {
 		// setto tutti i giocatori come connessi
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			giocatoriConnessi.add(true);
+		}
+		// setto tutti i giocatori come inclusi
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			giocatoriEsclusi.add(false);
 		}
 	}
 
@@ -583,8 +601,8 @@ public class ControllorePartita implements Runnable {
 
 	private void controlloFinePartita() {
 
-		if (((partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI)
-				&& !faseFinale)||(numeroTurni==6)) {
+		if (((partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) && !faseFinale)
+				|| (numeroTurni == 6)) {
 			comunicaFaseFinale();
 			faseFinale = true;
 		}
@@ -597,7 +615,7 @@ public class ControllorePartita implements Runnable {
 	private void giocaTurno() {
 
 		controlloFinePartita();
-		
+
 		numeroTurni++;
 
 		// aggiorno i giocatori sul turno attuale
@@ -616,25 +634,25 @@ public class ControllorePartita implements Runnable {
 
 	}
 
-	private void chiudiConnessioni(){
-		
-	for(InterfacciaComunicazioneToClient x:giocatori){
-		x.chiudiConnessione();
+	private void chiudiConnessioni() {
+
+		for (InterfacciaComunicazioneToClient x : giocatori) {
+			x.chiudiConnessione();
+		}
+
+		for (ThreadRicezioneSocket y : ascoltatoriSocket) {
+			y.chiudiConnesione();
+		}
+
 	}
-	
-	for(ThreadRicezioneSocket y:ascoltatoriSocket){
-		y.chiudiConnesione();
-	}
-		
-	}
-	
+
 	private void finePartita() {
 
 		System.out.println("la partita è finita, conto i punti");
 		conteggioPunti();
 
 		comunicaPunteggiFinali(punteggiFinali);
-		
+
 		chiudiConnessioni();
 
 		gestore.rimuoviPartitaInCorso(this);
@@ -647,16 +665,16 @@ public class ControllorePartita implements Runnable {
 		try {
 
 			// eseguo la mossa
-			System.out.println("vado ad eseguire la mossa");
+			
 			mossa.eseguiMossa(partita, giocatori.get(partita.getTurno() - 1)
 					.getNome(), pastoreTurno);
 
 			// dico a tutti i client la mossa fatta
-			System.out.println("vado ad aggiornare clients");
+			
 			mossa.aggiornaClients(giocatori, partita.getTurno());
 
 			// aggiorno l'array di mosse fatte
-			System.out.println("vado ad aggiornare mosse fatte");
+			
 			mosseFatte = mossa.aggiornaMosseFatte(mosseFatte);
 
 			// al giocatore che ha giocato comunico il denaro del pastore che ha
@@ -735,7 +753,7 @@ public class ControllorePartita implements Runnable {
 			if (partita.getTurno() == giocatori.size()) {
 				do {
 					partita.incrementaTurno();
-				} while (!(giocatoriConnessi.get(partita.getTurno() - 1) == true));
+				} while (giocatoriEsclusi.get(partita.getTurno()-1).booleanValue()==true);
 				giocaTurno();
 			}
 			// manca qualche posizionamento
@@ -768,34 +786,43 @@ public class ControllorePartita implements Runnable {
 		}
 
 	}
-	
-	class ControlloDisconnessione extends TimerTask{
+
+	class SegnalaDisconnessione extends TimerTask {
+
+		private ControllorePartita p;
+
+		public SegnalaDisconnessione(ControllorePartita p) {
+			this.p = p;
+		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			if(p.giocatoriConnessi.get(partita.getTurno()-1).booleanValue()==false){
+			System.out
+					.println("Escludo il client di turno dalla partita perchè è disconnesso da troppo tempo");
+			p.giocatoriEsclusi.set(partita.getTurno() - 1, true);
+			}
+
 		}
-		
+
 	}
-	private void creazioneTimerDisconnessione(){
-		
+
+	public void avvioTimerDisconnessione() {
+
 		Timer timer = new Timer();
-		ControlloDisconnessione task = new ControlloDisconnessione();
-		timer.schedule(task, 0);
-		
+		SegnalaDisconnessione task = new SegnalaDisconnessione(this);
+        System.out.println("Parte il timer di segnalazione di disconnessione");
+		timer.schedule(task, Costanti.TEMPO_RICONNESSIONE);
+
 	}
-	
+
 	/**
 	 * ciclo principale della partita
 	 * 
 	 * @author Valerio De Maria
 	 */
 	public void run() {
-		
- 
-		creazioneTimerDisconnessione();
-		
+
 		inizializza();
 
 		// inizializzo l'array delle strade disponibili che serve per

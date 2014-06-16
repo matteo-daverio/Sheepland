@@ -334,7 +334,12 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 				controllore.segnalaDisconnessione();
 
 				LOG.log(Level.SEVERE,"errore ricezione da server", e);
+			}catch (IOException e){
+				controllore.segnalaDisconnessione();
+				
+				LOG.log(Level.SEVERE,"errore ricezione da server", e);
 			}
+			
 		}
 	}
 

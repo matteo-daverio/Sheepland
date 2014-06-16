@@ -15,6 +15,11 @@ import java.net.Socket;
  */
 public interface Gestione {
 
+	/**
+	 * getter partita
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public Partita getPartita();
 	
 	public String getNome();
