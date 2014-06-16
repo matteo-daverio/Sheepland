@@ -76,7 +76,6 @@ public class PecoraTest {
 	 */
 	public void setTipoPecoraTest() {
 		pecora.setTipoPecora(Costanti.TIPO_PECORA_AGNELLO);
-		;
 		assertEquals("setter sbagliato", Costanti.TIPO_PECORA_AGNELLO,
 				pecora.getTipoPecora());
 	}

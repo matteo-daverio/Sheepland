@@ -425,4 +425,31 @@ public class GuiImpl implements InterfacciaGrafica {
 		controllorePartita.abbatti(regione, indicePecora, mioTurno);
 
 	}
+
+	/**
+	 * informa della disconnessione di un altro client
+	 * 
+	 * @author Matteo Daverio
+	 */
+	public void disconnessione(String nome) {
+		mappa.disconnessione(nome);
+	}
+
+	/**
+	 * informa della riconnessione di un altro client
+	 * 
+	 * @author Matteo Daverio
+	 */
+	public void riconnessione(String nome) {
+		mappa.riconnessione(nome);
+	}
+
+	/**
+	 * informa dell'esclusione di un altro client
+	 * 
+	 * @author Matteo Daverio
+	 */
+	public void esclusione(String nome) {
+		mappa.esclusione(nome);
+	}
 }

@@ -2565,5 +2565,46 @@ public class Map extends JFrame {
 		}
 		repaint();
 	}
+	
+	/**
+	 * informa della disconnessione di un client
+	 * 
+	 * @param nome
+	 * @author Matteo Daverio
+	 */
+	public void disconnessione(String nome) {
+		messaggio = new Messaggio("Il giocatore " + nome + " si è disconnesso");
+		messaggio.setLocation(new Point(20, 0));
+		this.add(messaggio, 0);
+		timer = new Timer(3000, new TimerTask(messaggio, this));
+		timer.start();
+	}
+	
+	/**
+	 * informa della riconnessione di un client
+	 * 
+	 * @param nome
+	 * @author Matteo Daverio
+	 */
+	public void riconnessione(String nome){
+		messaggio = new Messaggio("Il giocatore " + nome + " si è riconnesso");
+		messaggio.setLocation(new Point(20, 0));
+		this.add(messaggio, 0);
+		timer = new Timer(3000, new TimerTask(messaggio, this));
+		timer.start();
+	}
 
+	/**
+	 * informa dell'esclusione di un client
+	 * 
+	 * @param nome
+	 * @author Matteo Daverio
+	 */
+	public void esclusione(String nome){
+		messaggio = new Messaggio("Il giocatore " + nome + " è stato escluso dalla partita");
+		messaggio.setLocation(new Point(20, 0));
+		this.add(messaggio, 0);
+		timer = new Timer(3000, new TimerTask(messaggio, this));
+		timer.start();
+	}
 }
