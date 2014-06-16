@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 
@@ -20,6 +22,7 @@ public class Pedina extends JLabel {
 	private int xSize=27;
 	private int ySize=27;
 	private Image image;
+	private static final Logger LOG=Logger.getLogger(Pedina.class.getName());
 	
 	public Pedina(String path) {
 		image=Toolkit.getDefaultToolkit().createImage(path);
@@ -36,7 +39,7 @@ public class Pedina extends JLabel {
 			tracker.addImage(image, 0);
 			tracker.waitForID(0);
 		} catch(InterruptedException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE,"Caricamento immagine errato", e);
 		}
 	}
 	

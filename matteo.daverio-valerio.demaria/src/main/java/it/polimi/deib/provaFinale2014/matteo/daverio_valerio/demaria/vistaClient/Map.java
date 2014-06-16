@@ -52,10 +52,9 @@ public class Map extends JFrame {
 	private int posizioneDiArrivo = -1;
 	private int mioTurnoDiGioco;
 	private boolean scegliPastore = false;
-	
+
 	private Timer timer;
 	private Messaggio messaggio;
-	
 
 	// Immagini presenti a schermo
 	private ImageIcon mappa = new ImageIcon("./img/Game_Board.jpg");
@@ -128,6 +127,8 @@ public class Map extends JFrame {
 	private double screenHeight = screenSize.getHeight();
 	private int formWidth = 1452;
 	private int formHeight = 1292;
+	private int tessereWidth;
+	private int tessereHeight;
 
 	// bottoni
 	private JLabel bottoneMovimentoPersonaggio = new JLabel();
@@ -207,9 +208,11 @@ public class Map extends JFrame {
 		mappaVisibile.setLocation(0, 0);
 
 		// disegna zona tessere terreno
+		tessereWidth = (formHeight * terrainCardImage.getIconWidth())
+				/ terrainCardImage.getIconHeight();
+		tessereHeight = formHeight;
 		tessereTerreno = Disegno.disegnaImmagine(terrainCardImage,
-				(formHeight * terrainCardImage.getIconWidth())
-						/ terrainCardImage.getIconHeight(), formHeight);
+				tessereWidth, tessereHeight);
 		tessereTerreno.setLocation(0, 0);
 
 		// disegna bottone movimento personaggio
@@ -870,13 +873,13 @@ public class Map extends JFrame {
 				posizioneAttuale = significatoColori
 						.getPosizione(calcoloColore(p.getX(), p.getY()));
 				oggettoMosso = "pedina";
-				for(i=0;i<player.length;i++){
-					if(player[i].getLocation().equals(puntoAttuale)){
+				for (i = 0; i < player.length; i++) {
+					if (player[i].getLocation().equals(puntoAttuale)) {
 						posizioneDiPartenza = i;
 						break;
 					}
 				}
-				
+
 			}
 
 			@Override
@@ -916,15 +919,13 @@ public class Map extends JFrame {
 				}
 				movimentoPastore = false;
 			}
-/*
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (scegliPastore) {
-					
-
-				}
-			}
-*/
+			/*
+			 * @Override public void mouseClicked(MouseEvent e) { if
+			 * (scegliPastore) {
+			 * 
+			 * 
+			 * } }
+			 */
 		});
 		// listener per il drag
 		pedina.addMouseMotionListener(new MouseMotionAdapter() {
@@ -1143,6 +1144,8 @@ public class Map extends JFrame {
 			} else if (acquistaTessere && mioTurno) {
 				int terreno = calcolaBottone(e.getX(), e.getY());
 				if (terreno > 0 && terreno < 7) {
+					JOptionPane.showMessageDialog(null, terreno, "terreno",
+							JOptionPane.INFORMATION_MESSAGE);
 					acquistaTessera(terreno);
 					oggettoMosso = "acquistotessera";
 					posizioneDiPartenza = terreno;
@@ -1300,7 +1303,6 @@ public class Map extends JFrame {
 		}
 	}
 
-	
 	private void posizionaPastore(Posizione posizione, int pedina, String path) {
 		player[pedina] = new Pedina(path);
 		player[pedina].setLocation(
@@ -1361,23 +1363,23 @@ public class Map extends JFrame {
 	private int calcolaBottone(int x, int y) {
 		int posizione;
 
-		if (x > 4 * formWidth / 1452 && x < 80 * formWidth / 1452) {
-			if (y > 5 * formHeight / 1292 && y < 83 * formHeight / 1292) {
+		if (x > 4 * tessereWidth / 97 && x < 80 * tessereWidth / 97) {
+			if (y > 5 * tessereHeight / 535 && y < 83 * tessereHeight / 535) {
 				posizione = 3;
-			} else if (y > 95 * formHeight / 1292
-					&& y < 170 * formHeight / 1292) {
+			} else if (y > 95 * tessereHeight / 535
+					&& y < 170 * tessereHeight / 535) {
 				posizione = 6;
-			} else if (y > 185 * formHeight / 1292
-					&& y < 260 * formHeight / 1292) {
+			} else if (y > 185 * tessereHeight / 535
+					&& y < 260 * tessereHeight / 535) {
 				posizione = 2;
-			} else if (y > 273 * formHeight / 1292
-					&& y < 350 * formHeight / 1292) {
+			} else if (y > 273 * tessereHeight / 535
+					&& y < 350 * tessereHeight / 535) {
 				posizione = 1;
-			} else if (y > 362 * formHeight / 1292
-					&& y < 440 * formHeight / 1292) {
+			} else if (y > 362 * tessereHeight / 535
+					&& y < 440 * tessereHeight / 535) {
 				posizione = 4;
-			} else if (y > 452 * formHeight / 1292
-					&& y < 528 * formHeight / 1292) {
+			} else if (y > 452 * tessereHeight / 535
+					&& y < 528 * tessereHeight / 535) {
 				posizione = 5;
 			} else {
 				// come tipo terreno sheepsburg rappresenta l'errore nel click
@@ -1414,15 +1416,15 @@ public class Map extends JFrame {
 		// far capire all'utente che può giocare
 		mioTurno = true;
 		mioTurnoDiGioco = turno;
-//		JOptionPane.showMessageDialog(null, "Ora è il tuo turno", "Inizio turno",
-//				JOptionPane.INFORMATION_MESSAGE);
-		/*if (numeroGiocatori == 2) {
-			JOptionPane.showMessageDialog(null,
-					"Clicca sul pastore che vuoi usare in questo turno",
-					"Posizione", JOptionPane.INFORMATION_MESSAGE);
-			pastoreScelto = 0;
-			scegliPastore = true;
-		}*/
+		// JOptionPane.showMessageDialog(null, "Ora è il tuo turno",
+		// "Inizio turno",
+		// JOptionPane.INFORMATION_MESSAGE);
+		/*
+		 * if (numeroGiocatori == 2) { JOptionPane.showMessageDialog(null,
+		 * "Clicca sul pastore che vuoi usare in questo turno", "Posizione",
+		 * JOptionPane.INFORMATION_MESSAGE); pastoreScelto = 0; scegliPastore =
+		 * true; }
+		 */
 	}
 
 	//
@@ -1435,8 +1437,9 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	public void muoviPecoraNera(int posizione) {
-//		JOptionPane.showMessageDialog(null, "La pecora nera si sta muovendo!",
-//				"Pecora Nera", JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null,
+		// "La pecora nera si sta muovendo!",
+		// "Pecora Nera", JOptionPane.INFORMATION_MESSAGE);
 		pecoraNera.setLocation(
 				(int) mappaturaPosizione.getLocalizzazione(
 						new Posizione("Regione", posizione)).getX()
@@ -1461,9 +1464,9 @@ public class Map extends JFrame {
 	 */
 	public void muoviPastoreAvversario(int turnoGiocatore, int posizione,
 			String giocatore) {
-//		JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-//				+ " si sta muovendo in posizione " + posizione, "Movimento",
-//				JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
+		// + " si sta muovendo in posizione " + posizione, "Movimento",
+		// JOptionPane.INFORMATION_MESSAGE);
 		muoviPastoreAvversario(turnoGiocatore, posizione);
 	}
 
@@ -1540,15 +1543,16 @@ public class Map extends JFrame {
 			} else if (capra.getTipoPecora() == Costanti.TIPO_PECORA_PECORA) {
 				aggiungiPecora(capra.getPosizione());
 			} else {
-				aggiungiMontone(capra.getPosizione());	
+				aggiungiMontone(capra.getPosizione());
 			}
 		}
 	}
 
 	// metodo che riceve la nuova posizione del lupo
 	public void muoviLupo(int posizione) {
-//		JOptionPane.showMessageDialog(null, "Il lupo si sta muovendo!", "Lupo",
-//				JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "Il lupo si sta muovendo!",
+		// "Lupo",
+		// JOptionPane.INFORMATION_MESSAGE);
 		lupo.setLocation(
 				(int) posizioniLupo.getLocalizzazione(
 						new Posizione("Regione", posizione)).getX()
@@ -1567,9 +1571,11 @@ public class Map extends JFrame {
 			aggiungiAgnello(regioneArrivo);
 			agnello[regionePartenza].setLocation(
 					(int) posizioniAgnelli.getLocalizzazione(
-							new Posizione("Regione", regionePartenza)).getX()* formWidth / 1452,
+							new Posizione("Regione", regionePartenza)).getX()
+							* formWidth / 1452,
 					(int) posizioniAgnelli.getLocalizzazione(
-							new Posizione("Regione", regionePartenza)).getY()* formHeight / 1292);
+							new Posizione("Regione", regionePartenza)).getY()
+							* formHeight / 1292);
 			agnello[regionePartenza].revalidate();
 			agnello[regionePartenza].repaint();
 			decrementaContatoreAgnello(regionePartenza);
@@ -1577,9 +1583,11 @@ public class Map extends JFrame {
 			aggiungiMontone(regioneArrivo);
 			montone[regionePartenza].setLocation(
 					(int) posizioniMontoni.getLocalizzazione(
-							new Posizione("Regione", regionePartenza)).getX()* formWidth / 1452,
+							new Posizione("Regione", regionePartenza)).getX()
+							* formWidth / 1452,
 					(int) posizioniMontoni.getLocalizzazione(
-							new Posizione("Regione", regionePartenza)).getY()* formHeight / 1292);
+							new Posizione("Regione", regionePartenza)).getY()
+							* formHeight / 1292);
 			montone[regionePartenza].revalidate();
 			montone[regionePartenza].repaint();
 			decrementaContatoreMontone(regionePartenza);
@@ -1587,9 +1595,11 @@ public class Map extends JFrame {
 			aggiungiPecora(regioneArrivo);
 			pecora[regionePartenza].setLocation(
 					(int) posizioniPecore.getLocalizzazione(
-							new Posizione("Regione", regionePartenza)).getX()* formWidth / 1452,
+							new Posizione("Regione", regionePartenza)).getX()
+							* formWidth / 1452,
 					(int) posizioniPecore.getLocalizzazione(
-							new Posizione("Regione", regionePartenza)).getY()* formHeight / 1292);
+							new Posizione("Regione", regionePartenza)).getY()
+							* formHeight / 1292);
 			pecora[regionePartenza].revalidate();
 			pecora[regionePartenza].repaint();
 			decrementaContatorePecora(regionePartenza);
@@ -1774,8 +1784,8 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	public void tesseraIniziale(TipoTerreno terreno) {
-//		JOptionPane.showMessageDialog(null, "La tessera iniziale è di tipo "
-//				+ terreno, "Tessera iniziale", JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "La tessera iniziale è di tipo "
+		// + terreno, "Tessera iniziale", JOptionPane.INFORMATION_MESSAGE);
 		if (terreno.equals(TipoTerreno.GRANO)) {
 			incrementaContatore(contatoreTessereGrano);
 		} else if (terreno.equals(TipoTerreno.FORESTA)) {
@@ -1805,8 +1815,8 @@ public class Map extends JFrame {
 	public void fineTurno() {
 		// comunicazione di fine turno tramite una JOptionPane
 		mioTurno = false;
-//		JOptionPane.showMessageDialog(null, "fine turno", "Fine Turno",
-//				JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "fine turno", "Fine Turno",
+		// JOptionPane.INFORMATION_MESSAGE);
 		// resetta il valore delle variabili di stato dei pulsanti
 		aggiornaVariabili(0);
 	}
@@ -1818,31 +1828,47 @@ public class Map extends JFrame {
 	 */
 	public void richiestaPosizionamentoPastore() {
 		richiestaPosizionamentoPastore = true;
-		messaggio=new Messaggio("Posiziona il tuo pastore");
-		messaggio.setLocation(new Point(20,0));
-		this.add(messaggio,0);
+		messaggio = new Messaggio("Posiziona il tuo pastore");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
 		repaint();
-		timer=new Timer(3000,new TimerTask(messaggio,this));
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
 		timer.start();
-				
+
 	}
 
 	public void cambioTurno(String giocatore) {
-//		JOptionPane.showMessageDialog(null, "Ora è il turno del giocatore "
-//				+ giocatore, "Cambio Turno", JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Ora è il turno del giocatore " + giocatore);
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 	}
 
 	public void faseFinale() {
-//		JOptionPane.showMessageDialog(null,
-//				"Il gioco entra in fase finale! Ultimo turno di gioco",
-//				"Fase finale", JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio(
+				"Il gioco entra in fase finale! Ultimo turno di gioco");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 	}
 
 	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
 		for (int i = 0; i < numeroGiocatori; i++) {
-//			JOptionPane.showMessageDialog(null, "Il giocatore " + nomi.get(i)
-//					+ " ha ottenuto " + punteggiFinali.get(i) + " punti!",
-//					"Punteggi finali", JOptionPane.INFORMATION_MESSAGE);
+			messaggio = new Messaggio("Il giocatore " + nomi.get(i)
+					+ " ha ottenuto " + punteggiFinali.get(i) + " punti!");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 		}
 	}
 
@@ -1853,8 +1879,13 @@ public class Map extends JFrame {
 	}
 
 	public void richiestaMossa() {
-//		JOptionPane.showMessageDialog(null, "Esegui la tua mossa",
-//				"Esegui mossa", JOptionPane.INFORMATION_MESSAGE);
+		messaggio = new Messaggio("Esegui la tua mossa");
+		messaggio.setLocation(new Point(formWidth / 10, 10));
+		c.add(messaggio, 0);
+		repaint();
+		messaggio.repaint();
+		timer = new Timer(2000, new TimerTask(messaggio, c));
+		timer.start();
 	}
 
 	public void mossaCorretta() {
@@ -1864,8 +1895,8 @@ public class Map extends JFrame {
 	}
 
 	public void mossaSbagliata() {
-//		JOptionPane.showMessageDialog(null, "Mossa errata", "Errore",
-//				JOptionPane.ERROR_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "Mossa errata", "Errore",
+		// JOptionPane.ERROR_MESSAGE);
 		if (oggettoMosso.equals("pecora")) {
 			muoviPecora(Costanti.TIPO_PECORA_PECORA, posizioneDiArrivo,
 					posizioneDiPartenza);
@@ -1956,8 +1987,9 @@ public class Map extends JFrame {
 	}
 
 	public void posizionamentoSbagliato() {
-//		JOptionPane.showMessageDialog(null, "Posizionamento errato", "Errore",
-//				JOptionPane.ERROR_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "Posizionamento errato",
+		// "Errore",
+		// JOptionPane.ERROR_MESSAGE);
 		if (oggettoMosso.equals("posizionamento")) {
 			player[posizioneDiPartenza].setVisible(false);
 		}
@@ -1967,9 +1999,9 @@ public class Map extends JFrame {
 	}
 
 	public void notificaAcquistoTessera(String giocatore, TipoTerreno terreno) {
-//		JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-//				+ " ha acquistato una tessera " + terreno, "Acquisto",
-//				JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
+		// + " ha acquistato una tessera " + terreno, "Acquisto",
+		// JOptionPane.INFORMATION_MESSAGE);
 		switch (terreno) {
 		case ACQUA:
 			incrementaContatore(costoAcqua);
@@ -1997,19 +2029,19 @@ public class Map extends JFrame {
 
 	public void abbattiPecora(int regione, String giocatore, int tipoPecora) {
 		if (tipoPecora == Costanti.TIPO_PECORA_AGNELLO) {
-//			JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-//					+ " ha abbattuto un agnello nella regione " + regione,
-//					"Abbattimento", JOptionPane.INFORMATION_MESSAGE);
+			// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
+			// + " ha abbattuto un agnello nella regione " + regione,
+			// "Abbattimento", JOptionPane.INFORMATION_MESSAGE);
 			decrementaContatoreAgnello(regione);
 		} else if (tipoPecora == Costanti.TIPO_PECORA_PECORA) {
-//			JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-//					+ " ha abbattuto un agnello nella regione " + regione,
-//					"Abbattimento", JOptionPane.INFORMATION_MESSAGE);
+			// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
+			// + " ha abbattuto un agnello nella regione " + regione,
+			// "Abbattimento", JOptionPane.INFORMATION_MESSAGE);
 			decrementaContatorePecora(regione);
 		} else if (tipoPecora == Costanti.TIPO_PECORA_MONTONE) {
-//			JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-//					+ " ha abbattuto un agnello nella regione " + regione,
-//					"Abbattimento", JOptionPane.INFORMATION_MESSAGE);
+			// JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
+			// + " ha abbattuto un agnello nella regione " + regione,
+			// "Abbattimento", JOptionPane.INFORMATION_MESSAGE);
 			decrementaContatoreMontone(regione);
 		}
 	}
@@ -2048,7 +2080,7 @@ public class Map extends JFrame {
 	public void segnalaDisconnessione() {
 		JOptionPane.showMessageDialog(null, "Connessione con il server caduta",
 				"Disconnessione", JOptionPane.ERROR_MESSAGE);
-		
+
 	}
 
 	public void impostaGuiImpl(GuiImpl guiImpl) {
@@ -2056,11 +2088,11 @@ public class Map extends JFrame {
 	}
 
 	public void spostamentoPecoraNera(String giocatore, int posizione) {
-		messaggio=new Messaggio("Il giocatore " + giocatore
+		messaggio = new Messaggio("Il giocatore " + giocatore
 				+ " ha spostato la pecora nera in " + posizione);
-		messaggio.setLocation(new Point(20,0));
-		this.add(messaggio,0);
-		timer=new Timer(3000,new TimerTask(messaggio,this));
+		messaggio.setLocation(new Point(20, 0));
+		this.add(messaggio, 0);
+		timer = new Timer(3000, new TimerTask(messaggio, this));
 		timer.start();
 		pecoraNera.setLocation(
 				(int) mappaturaPosizione.getLocalizzazione(
@@ -2073,23 +2105,21 @@ public class Map extends JFrame {
 		pecoraNera.repaint();
 	}
 
-	
-	
-	class TimerTask implements ActionListener{
+	class TimerTask implements ActionListener {
 
 		private Messaggio messaggio;
 		private Container c;
-		
-		public TimerTask(Messaggio m,JFrame c){
-			this.messaggio=m;
-			this.c=c;
+
+		public TimerTask(Messaggio m, Container c) {
+			this.messaggio = m;
+			this.c = c;
 		}
-		
+
 		public void actionPerformed(ActionEvent arg0) {
 			c.remove(messaggio);
 			c.repaint();
 		}
-		
+
 	}
-	
+
 }

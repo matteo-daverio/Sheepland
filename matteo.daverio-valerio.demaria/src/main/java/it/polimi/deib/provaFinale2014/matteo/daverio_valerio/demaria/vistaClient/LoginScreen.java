@@ -1,11 +1,12 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 
@@ -25,6 +26,7 @@ public class LoginScreen extends JFrame {
 
 	private JFrame loginFrame = new JFrame();
 	private Toolkit toolkit = Toolkit.getDefaultToolkit();
+	private static final Logger LOG=Logger.getLogger(LoginScreen.class.getName());
 
 	// dimensione dello schermo
 	private Dimension screenSize = toolkit.getScreenSize();
@@ -182,7 +184,7 @@ public class LoginScreen extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							"Errore di connessione", "Errore",
 							JOptionPane.ERROR_MESSAGE);
-					LOGGER.log("Errore di connessione", e1);
+					LOG.log(Level.SEVERE,"errore di connessione", e);
 				}
 
 			}

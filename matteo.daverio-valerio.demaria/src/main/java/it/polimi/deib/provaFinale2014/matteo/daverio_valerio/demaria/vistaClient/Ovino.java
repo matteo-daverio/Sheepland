@@ -1,12 +1,12 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient;
 
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.LOGGER;
-
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
@@ -22,6 +22,7 @@ public class Ovino extends JPanel {
 	private int xSize=34;
 	private int ySize=24;
 	private Image image;
+	private static final Logger LOG=Logger.getLogger(Ovino.class.getName());
 	
 	public Ovino(String path) {
 		image=Toolkit.getDefaultToolkit().createImage(path);
@@ -38,7 +39,7 @@ public class Ovino extends JPanel {
 			tracker.addImage(image, 0);
 			tracker.waitForID(0);
 		} catch(InterruptedException e) {
-			LOGGER.log("Caricamento immagine errato", e);
+			LOG.log(Level.SEVERE,"Caricamento immagine errato", e);
 		}
 	}
 	
