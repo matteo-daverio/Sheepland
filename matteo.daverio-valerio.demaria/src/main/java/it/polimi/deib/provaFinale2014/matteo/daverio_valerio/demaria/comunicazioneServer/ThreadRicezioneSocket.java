@@ -30,6 +30,11 @@ public class ThreadRicezioneSocket implements Runnable {
 		}
 		
 	}
+	
+	public void chiudiConnesione(){
+		
+		
+	}
 
 	public void run() {
 

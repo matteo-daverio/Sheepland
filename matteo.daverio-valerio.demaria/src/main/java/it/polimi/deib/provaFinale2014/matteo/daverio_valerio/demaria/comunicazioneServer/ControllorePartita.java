@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite.CreatorePartite;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
@@ -15,6 +16,8 @@ import java.net.Socket;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -47,6 +50,8 @@ public class ControllorePartita implements Runnable {
 	private List<Boolean> giocatoriConnessi = new ArrayList<Boolean>();
 
 	private GestorePartite gestore;
+	
+	private int numeroTurni;
 
 	/**
 	 * COSTRUTTORE
@@ -578,8 +583,8 @@ public class ControllorePartita implements Runnable {
 
 	private void controlloFinePartita() {
 
-		if ((partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI)
-				&& !faseFinale) {
+		if (((partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI)
+				&& !faseFinale)||(numeroTurni==6)) {
 			comunicaFaseFinale();
 			faseFinale = true;
 		}
@@ -592,6 +597,8 @@ public class ControllorePartita implements Runnable {
 	private void giocaTurno() {
 
 		controlloFinePartita();
+		
+		numeroTurni++;
 
 		// aggiorno i giocatori sul turno attuale
 		inviaTurno();
@@ -609,12 +616,26 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	private void chiudiConnessioni(){
+		
+	for(InterfacciaComunicazioneToClient x:giocatori){
+		x.chiudiConnessione();
+	}
+	
+	for(ThreadRicezioneSocket y:ascoltatoriSocket){
+		y.chiudiConnesione();
+	}
+		
+	}
+	
 	private void finePartita() {
 
 		System.out.println("la partita è finita, conto i punti");
 		conteggioPunti();
 
 		comunicaPunteggiFinali(punteggiFinali);
+		
+		chiudiConnessioni();
 
 		gestore.rimuoviPartitaInCorso(this);
 	}
@@ -747,14 +768,34 @@ public class ControllorePartita implements Runnable {
 		}
 
 	}
+	
+	class ControlloDisconnessione extends TimerTask{
 
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	private void creazioneTimerDisconnessione(){
+		
+		Timer timer = new Timer();
+		ControlloDisconnessione task = new ControlloDisconnessione();
+		timer.schedule(task, 0);
+		
+	}
+	
 	/**
 	 * ciclo principale della partita
 	 * 
 	 * @author Valerio De Maria
 	 */
 	public void run() {
-
+		
+ 
+		creazioneTimerDisconnessione();
+		
 		inizializza();
 
 		// inizializzo l'array delle strade disponibili che serve per

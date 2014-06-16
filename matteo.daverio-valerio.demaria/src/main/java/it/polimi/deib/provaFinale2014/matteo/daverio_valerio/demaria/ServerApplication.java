@@ -1,5 +1,6 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.Gestione;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestioneSocket;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite;
@@ -13,6 +14,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * faccio partire il thread di gestione delle partite, pubblico
@@ -28,6 +31,8 @@ public class ServerApplication {
 	public final static int SERVER_PORT_RMI = Costanti.PORTA_RMI;
 	// porta su cui il server socket si mette in ascolto
 	public final static int SERVER_PORT_SOCKET = Costanti.PORTA_SOCKET;
+	
+	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	public static void main(String[] args) {
 
@@ -57,7 +62,7 @@ public class ServerApplication {
 
 		} catch (RemoteException e) {
 			System.err.println("errore esportazione RMI");
-			LOGGER.log("errore esportazione RMI", e);
+			LOG.log(Level.SEVERE,"errore esportazione RMI", e);
 			return;
 		}
 
