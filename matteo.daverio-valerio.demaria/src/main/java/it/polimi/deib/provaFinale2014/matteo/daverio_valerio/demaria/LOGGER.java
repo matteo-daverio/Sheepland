@@ -18,4 +18,9 @@ public class LOGGER {
 		
 	}
 
+	public static void log(String string, InterruptedException e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

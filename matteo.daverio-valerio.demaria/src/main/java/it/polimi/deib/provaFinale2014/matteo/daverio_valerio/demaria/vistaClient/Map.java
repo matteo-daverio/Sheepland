@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -29,6 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import java.util.List;
 
@@ -49,6 +52,10 @@ public class Map extends JFrame {
 	private int posizioneDiArrivo = -1;
 	private int mioTurnoDiGioco;
 	private boolean scegliPastore = false;
+	
+	private Timer timer;
+	private Messaggio messaggio;
+	
 
 	// Immagini presenti a schermo
 	private ImageIcon mappa = new ImageIcon("./img/Game_Board.jpg");
@@ -858,11 +865,18 @@ public class Map extends JFrame {
 		pedina.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent me) {
+				int i;
 				puntoAttuale.setLocation(p.getX(), p.getY());
 				posizioneAttuale = significatoColori
 						.getPosizione(calcoloColore(p.getX(), p.getY()));
 				oggettoMosso = "pedina";
-				posizioneDiPartenza = posizioneAttuale.getPosizione();
+				for(i=0;i<player.length;i++){
+					if(player[i].getLocation().equals(puntoAttuale)){
+						posizioneDiPartenza = i;
+						break;
+					}
+				}
+				
 			}
 
 			@Override
@@ -1196,7 +1210,7 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	private void decrementaContatore(JLabel label) {
-		label.setText(String.valueOf(Integer.valueOf(label.getText()) + 1));
+		label.setText(String.valueOf(Integer.valueOf(label.getText()) - 1));
 	}
 
 	/**
@@ -1804,8 +1818,12 @@ public class Map extends JFrame {
 	 */
 	public void richiestaPosizionamentoPastore() {
 		richiestaPosizionamentoPastore = true;
-//		JOptionPane.showMessageDialog(null, "Posiziona il tuo pastore",
-//				"Posiziona il pastore", JOptionPane.INFORMATION_MESSAGE);
+		messaggio=new Messaggio("Posiziona il tuo pastore");
+		messaggio.setLocation(new Point(20,0));
+		this.add(messaggio,0);
+		repaint();
+		timer=new Timer(3000,new TimerTask(messaggio,this));
+		timer.start();
 				
 	}
 
@@ -1846,8 +1864,8 @@ public class Map extends JFrame {
 	}
 
 	public void mossaSbagliata() {
-		JOptionPane.showMessageDialog(null, "Mossa errata", "Errore",
-				JOptionPane.ERROR_MESSAGE);
+//		JOptionPane.showMessageDialog(null, "Mossa errata", "Errore",
+//				JOptionPane.ERROR_MESSAGE);
 		if (oggettoMosso.equals("pecora")) {
 			muoviPecora(Costanti.TIPO_PECORA_PECORA, posizioneDiArrivo,
 					posizioneDiPartenza);
@@ -2030,6 +2048,7 @@ public class Map extends JFrame {
 	public void segnalaDisconnessione() {
 		JOptionPane.showMessageDialog(null, "Connessione con il server caduta",
 				"Disconnessione", JOptionPane.ERROR_MESSAGE);
+		
 	}
 
 	public void impostaGuiImpl(GuiImpl guiImpl) {
@@ -2037,9 +2056,12 @@ public class Map extends JFrame {
 	}
 
 	public void spostamentoPecoraNera(String giocatore, int posizione) {
-//		JOptionPane.showMessageDialog(null, "Il giocatore " + giocatore
-//				+ " ha spostato la pecora nera in " + posizione,
-//				"Movimento pecora nera", JOptionPane.INFORMATION_MESSAGE);
+		messaggio=new Messaggio("Il giocatore " + giocatore
+				+ " ha spostato la pecora nera in " + posizione);
+		messaggio.setLocation(new Point(20,0));
+		this.add(messaggio,0);
+		timer=new Timer(3000,new TimerTask(messaggio,this));
+		timer.start();
 		pecoraNera.setLocation(
 				(int) mappaturaPosizione.getLocalizzazione(
 						new Posizione("Regione", posizione)).getX()
@@ -2051,4 +2073,23 @@ public class Map extends JFrame {
 		pecoraNera.repaint();
 	}
 
+	
+	
+	class TimerTask implements ActionListener{
+
+		private Messaggio messaggio;
+		private Container c;
+		
+		public TimerTask(Messaggio m,JFrame c){
+			this.messaggio=m;
+			this.c=c;
+		}
+		
+		public void actionPerformed(ActionEvent arg0) {
+			c.remove(messaggio);
+			c.repaint();
+		}
+		
+	}
+	
 }
