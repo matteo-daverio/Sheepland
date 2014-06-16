@@ -168,7 +168,9 @@ public class ControllorePartita implements Runnable {
 	 */
 
 	private List<MosseEnum> calcolaMosseDisponibili(List<MosseEnum> mosseFatte) {
+		
 		List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
+		
 		// se è l'ultima mossa del turno e non ho ancora mosso il pastore
 		if ((mosseFatte.size() == Costanti.NUMERO_MOSSE_GIOCATORE - 1)
 				&& (mosseFatte.get(0) != MosseEnum.MUOVI_PASTORE)
@@ -232,6 +234,7 @@ public class ControllorePartita implements Runnable {
 				default:
 					break;
 				}// fine switch
+				
 			}// fine if numero mosse fatte maggiore di zero
 			else {
 				// la mia prima mossa può essere una qualsiasi
@@ -241,7 +244,7 @@ public class ControllorePartita implements Runnable {
 				mosseDisponibili.add(MosseEnum.MUOVI_PASTORE);
 				mosseDisponibili.add(MosseEnum.MUOVI_PECORA);
 				mosseDisponibili.add(MosseEnum.MUOVI_PECORA_NERA);
-				
+			   	
 			}
 			return mosseDisponibili;
 		}
@@ -569,8 +572,6 @@ public class ControllorePartita implements Runnable {
 
 			mosseDisponibili = calcolaMosseDisponibili(mosseFatte);
 
-			System.out.println("dimensione mosse disponibili=>"
-					+ mosseDisponibili.size());
 
 			// dico al client che deve inviarmi una mossa
 			giocatori.get(partita.getTurno() - 1).inviaRichiestaMossa(

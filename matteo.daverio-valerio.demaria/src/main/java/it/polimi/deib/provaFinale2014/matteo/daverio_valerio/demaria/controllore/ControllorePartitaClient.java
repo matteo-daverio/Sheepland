@@ -305,7 +305,9 @@ public class ControllorePartitaClient {
 	}
 
 	/**
-	 * do alla grafica una serie di mosse disponibili e chiedo di effettuare una mossa
+	 * do alla grafica una serie di mosse disponibili e chiedo di effettuare una
+	 * mossa
+	 * 
 	 * @param mosseDisponibili
 	 * @author Valerio De Maria
 	 */
@@ -323,6 +325,7 @@ public class ControllorePartitaClient {
 
 	/**
 	 * comunico che la mossa fatta era sbagliata
+	 * 
 	 * @author Valerio De Maria
 	 */
 	public void mossaSbagliata() {
@@ -331,6 +334,7 @@ public class ControllorePartitaClient {
 
 	/**
 	 * comunico che la mossa fatta era corretta
+	 * 
 	 * @author Valerio De Maria
 	 */
 	public void mossaCorretta() {
@@ -382,14 +386,14 @@ public class ControllorePartitaClient {
 
 		for (Integer x : this.stradeDisponibili) {
 			if (posizione == x) {
-				schermo.posizionamentoPastoreCorretto();
-				client.inviaPosizionePastore(posizione);
 				pastorePosizionato = true;
 			}
 		}
 
-		if (!pastorePosizionato) {
-
+		if (pastorePosizionato) {
+			schermo.posizionamentoPastoreCorretto();
+			client.inviaPosizionePastore(posizione);
+		} else {
 			schermo.posizionamentoPastoreErrato();
 			schermo.richiestaPosizionamentoPastore();
 		}
