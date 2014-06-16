@@ -4,26 +4,20 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.InterfacciaClientRMI;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite.CreatorePartite;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
-import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.exception.GameException;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Strada;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Tessera;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa;
 
-import java.io.IOException;
 import java.net.Socket;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +39,7 @@ public class ControllorePartita implements Runnable {
 	List<Integer> stradeDisponibili = new ArrayList<Integer>();
 	private int numeroMosse;
 	private InterfacciaServerRMI stubServerRMI;
-	private boolean primoPastore = true,pastoriPosizionati=false;
+	private boolean primoPastore = true, pastoriPosizionati = false;
 	private List<Integer> denaroPastori = new ArrayList<Integer>();
 	// pool di thread
 	ExecutorService ricezioniSocket = Executors.newCachedThreadPool();
@@ -54,10 +48,10 @@ public class ControllorePartita implements Runnable {
 
 	private List<Boolean> giocatoriConnessi = new ArrayList<Boolean>();
 	private List<Boolean> giocatoriEsclusi = new ArrayList<Boolean>();
-	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
+	private static final Logger LOG = Logger.getLogger(ClientRMI.class
+			.getName());
 
 	private GestorePartite gestore;
-
 
 	/**
 	 * COSTRUTTORE
@@ -83,23 +77,6 @@ public class ControllorePartita implements Runnable {
 		this.gestore = gestore;
 
 	}
-
-	// //// METODI DA RIVEDERE ////////////////7//////
-	/*
-	 * private void controllaConnessioneClients(List<MosseEnum>
-	 * mosseDisponibili) { Mossa mossa; for (InterfacciaComunicazioneToClient x
-	 * : giocatori) { mossa = x.riceviMossa(mosseDisponibili); } }
-	 */
-
-	/*
-	 * private int selezionaPastore() {
-	 * 
-	 * if (giocatori.size() > 2) { return partita.getTurno() - 1; }
-	 * 
-	 * else { if ((partita.getTurno() - 1) == 0) { return
-	 * giocatori.get(0).selezionaPastore(0, 1); } else return
-	 * giocatori.get(1).selezionaPastore(2, 3); } }
-	 */
 
 	// /// METODI CHIAMATI DAL GESTORE PARTITE /////////////////////////
 
@@ -160,6 +137,12 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * invia i dati di aggiornamento al client che si era disconnesso
+	 * 
+	 * @param i
+	 * @author Valerio De Maria
+	 */
 	public void aggiornaGiocatoreDisconnesso(int i) {
 
 		System.out.println("Invio i dati di aggiornamento a: "
@@ -281,6 +264,12 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * al client di turno dico che è il suo turno agli altro comunico di chi è
+	 * il turno
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void inviaTurno() {
 
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
@@ -297,6 +286,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * invio la lista del denaro di ogni pastore
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void comunicaDenaro() {
 
 		// creo la lista aggiornata del denaro dei pastori
@@ -316,6 +310,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * comunico ai client il numero di recinti usati nella partita
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void comunicaNumRecinti() {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatoriConnessi.get(i).booleanValue() == true) {
@@ -325,14 +324,22 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * conteggio dei punti finali
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void conteggioPunti() {
 
 		int punteggioTotale;
 
+		// nessuna pecora rimasta
 		if (partita.getPecore().size() == 0 && partita.getPecoraNera() == null) {
 			for (InterfacciaComunicazioneToClient x : giocatori) {
+				// tutti i giocatori hanno zero punti
 				punteggiFinali.add(0);
 			}
+			// almeno una pecora
 		} else {
 			if (giocatori.size() > 2) {
 				for (int i = 0; i <= giocatori.size() - 1; i++) {
@@ -365,6 +372,12 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * invio ai client i punteggi finali
+	 * 
+	 * @param punteggiFinali
+	 * @author Valerio De Maria
+	 */
 	private void comunicaPunteggiFinali(List<Integer> punteggiFinali) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatoriConnessi.get(i).booleanValue() == true) {
@@ -375,6 +388,15 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * dall'array di connessioni mi creo l'array di giocatori che contiene le
+	 * classi di comunicazione RMI o socket specifiche per ogni giocatore
+	 * 
+	 * creo i thread socket che rimangon in ascolto di messaggi da client, la
+	 * lista dei giocatori connessi e quella di quelli esclusi dalla partita
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void trasferisciGestioneComunicazione() {
 
 		for (int i = 0; i <= connessioni.size() - 1; i++) {
@@ -405,6 +427,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * invio inizialmente i nomi i soldi e le tessere iniziali
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void inviaDatiGiocatori() {
 
 		List<Integer> soldi = new ArrayList<Integer>();
@@ -438,6 +465,11 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * imposto il denaro iniziale di ogni pastore
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void impostaDenaro() {
 		if (giocatori.size() > 2) {
 			for (Pastore x : partita.getPastori()) {
@@ -451,6 +483,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * imposto la tessera iniziale di ogni giocatore
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void impostaTesseraIniziale() {
 
 		List<Tessera> tessereIniziali = new ArrayList<Tessera>();
@@ -490,6 +527,11 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * invio inizialmente l'array di pecore
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void inviaPosizioneInizialePecore() {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatoriConnessi.get(i).booleanValue() == true) {
@@ -498,6 +540,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * invio l'array di strade
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void inviaStrade() {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatoriConnessi.get(i).booleanValue() == true) {
@@ -507,6 +554,12 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * aggiungo i pastori all'array di pastori di partita in base ai giocatori
+	 * che ho
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void aggiungiPastori() {
 
 		if (giocatori.size() > 2) {
@@ -526,6 +579,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * metodo che fa le prime inizializzazioni preliminari
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void inizializza() {
 
 		// creo le classi di comunicazione che si occuperrano di comunicare con
@@ -550,12 +608,21 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * dico ai client non di turno che il client di turno ha posizionato il suo
+	 * pastore
+	 * 
+	 * @param turno
+	 * @param pastore
+	 * @param posizione
+	 * @author Valerio De Maria
+	 */
 	private void aggiornaPosizionamentoPastori(int turno, int pastore,
 			int posizione) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 
 			// non invio l'aggiornamento al giocatore che ha effettuato il
-			// posizionamento
+			// posizionamento e a quelli disconnessi
 			if ((i != (turno - 1))
 					&& (giocatoriConnessi.get(i).booleanValue() == true)) {
 				giocatori.get(i).comunicaPosizionamentoPastore(turno, pastore,
@@ -565,6 +632,11 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * avviso i client che sono entrato nella fase finale
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void comunicaFaseFinale() {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatoriConnessi.get(i).booleanValue() == true) {
@@ -574,6 +646,12 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * creo un array di strade disponibili, inizialmente uguale a strade, che
+	 * verrà poi modificato in seguito ai posizionamenti dei pastori
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void creaStradeDisponibili() {
 
 		for (Strada x : partita.getStrade()) {
@@ -581,6 +659,9 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * se il giocatore di turn
+	 */
 	private void inviaRichiestaPosizionamentoPastore() {
 		if (giocatoriConnessi.get(partita.getTurno() - 1).booleanValue() == true) {
 			giocatori.get(partita.getTurno() - 1).inviaRichiestaPosizionamento(
@@ -625,7 +706,7 @@ public class ControllorePartita implements Runnable {
 			// dico al client che deve inviarmi una mossa
 			if (giocatoriConnessi.get(partita.getTurno() - 1).booleanValue() == true) {
 				giocatori.get(partita.getTurno() - 1).inviaRichiestaMossa(
-						mosseDisponibili);				
+						mosseDisponibili);
 			} else {
 
 				// cambio il turno
@@ -726,7 +807,8 @@ public class ControllorePartita implements Runnable {
 
 			// dico a tutti i client la mossa fatta
 
-			mossa.aggiornaClients(giocatori, partita.getTurno(),giocatoriConnessi);
+			mossa.aggiornaClients(giocatori, partita.getTurno(),
+					giocatoriConnessi);
 
 			// aggiorno l'array di mosse fatte
 
@@ -742,8 +824,8 @@ public class ControllorePartita implements Runnable {
 			numeroMosse++;
 
 		} catch (Exception e) {
-            //LOG.log(Level.SEVERE,"ECCEZZIONE",e); 
-			
+			// LOG.log(Level.SEVERE,"ECCEZZIONE",e);
+
 			// dico al client che ha eseguito la mossa che essa non era valida e
 			// di conseguenza non aggiorno il contatore delle mosse
 			giocatori.get(partita.getTurno() - 1).comunicaMossaSbagliata();
@@ -777,10 +859,10 @@ public class ControllorePartita implements Runnable {
 			}
 
 		}
-		
+
 		// aggiorno le strade disponibili per il posizionamento dei pastori
 		stradeDisponibili.remove(stradeDisponibili.indexOf(posizioneScelta));
-		
+
 		// invio ai client l'aggiornamento sul posizionamento pastore
 		if (giocatori.size() > 2) {
 			aggiornaPosizionamentoPastori(partita.getTurno(),
@@ -809,20 +891,22 @@ public class ControllorePartita implements Runnable {
 		if (partita.getNumeroGiocatori() > 2) {
 			// se tutti hanno posizionato i propri pastori
 			if (partita.getTurno() == giocatori.size()) {
-				System.out.println("ho ricevuto il posizionamento dell'ultimo giocatore");
+				System.out
+						.println("ho ricevuto il posizionamento dell'ultimo giocatore");
 				do {
 					partita.incrementaTurno();
 				} while (giocatoriConnessi.get(partita.getTurno() - 1)
 						.booleanValue() == false);
-				
-				pastoriPosizionati=true;
+
+				pastoriPosizionati = true;
 				giocaTurno();
 			}
 			// manca qualche posizionamento
 			else {
-				do{
-				partita.incrementaTurno();
-				}while(giocatoriConnessi.get(partita.getTurno()-1).booleanValue()==false);
+				do {
+					partita.incrementaTurno();
+				} while (giocatoriConnessi.get(partita.getTurno() - 1)
+						.booleanValue() == false);
 				// chiedo al client del turno di posizionare il pastore
 				inviaRichiestaPosizionamentoPastore();
 			}
@@ -832,7 +916,7 @@ public class ControllorePartita implements Runnable {
 				do {
 					partita.incrementaTurno();
 				} while (giocatoriConnessi.get(partita.getTurno() - 1) == false);
-				pastoriPosizionati=true;
+				pastoriPosizionati = true;
 				giocaTurno();
 			}
 			// manca qualche posizionamento
@@ -854,26 +938,30 @@ public class ControllorePartita implements Runnable {
 
 	public void comunicaEsclusione(int turno) {
 
-		for(int i=0;i<=giocatori.size()-1;i++){
-			if(giocatoriConnessi.get(i).booleanValue()==true){
-				giocatori.get(i).comunicaEsclusione(giocatori.get(turno-1).getNome());
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			if (giocatoriConnessi.get(i).booleanValue() == true) {
+				giocatori.get(i).comunicaEsclusione(
+						giocatori.get(turno - 1).getNome());
 			}
 		}
 
 	}
-	
-	public void comunicaDisconnessione(int turno){
-		for(int i=0;i<=giocatori.size()-1;i++){
-			if(giocatoriConnessi.get(i).booleanValue()==true){
-				giocatori.get(i).comunicaDisconnessione(giocatori.get(turno-1).getNome());
+
+	public void comunicaDisconnessione(int turno) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			if (giocatoriConnessi.get(i).booleanValue() == true) {
+				giocatori.get(i).comunicaDisconnessione(
+						giocatori.get(turno - 1).getNome());
 			}
 		}
 	}
-	
-	public void comunicaRiconnessione(int turno){
-		for(int i=0;i<=giocatori.size()-1;i++){
-			if((giocatoriConnessi.get(i).booleanValue()==true)&&(i!=(turno-1))){
-				giocatori.get(i).comunicaRiconnessione(giocatori.get(turno-1).getNome());
+
+	public void comunicaRiconnessione(int turno) {
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			if ((giocatoriConnessi.get(i).booleanValue() == true)
+					&& (i != (turno - 1))) {
+				giocatori.get(i).comunicaRiconnessione(
+						giocatori.get(turno - 1).getNome());
 			}
 		}
 	}
@@ -891,8 +979,8 @@ public class ControllorePartita implements Runnable {
 		@Override
 		public void run() {
 			if (p.giocatoriConnessi.get(turno - 1).booleanValue() == false) {
-				 System.out
-				 .println("Escludo il client di turno dalla partita perchè è disconnesso da troppo tempo");
+				System.out
+						.println("Escludo il client di turno dalla partita perchè è disconnesso da troppo tempo");
 				p.giocatoriEsclusi.set(turno - 1, true);
 				p.comunicaEsclusione(turno);
 			} else {
@@ -907,15 +995,15 @@ public class ControllorePartita implements Runnable {
 
 		giocatoriConnessi.set(turno - 1, false);
 		comunicaDisconnessione(turno);
-		if(turno==partita.getTurno()){
-			do{
+		if (turno == partita.getTurno()) {
+			do {
 				partita.incrementaTurno();
-				
-			}while(giocatoriConnessi.get(partita.getTurno()-1).booleanValue()==false);
-			if(pastoriPosizionati){
+
+			} while (giocatoriConnessi.get(partita.getTurno() - 1)
+					.booleanValue() == false);
+			if (pastoriPosizionati) {
 				giocaTurno();
-			}
-			else{
+			} else {
 				inviaRichiestaPosizionamentoPastore();
 			}
 		}

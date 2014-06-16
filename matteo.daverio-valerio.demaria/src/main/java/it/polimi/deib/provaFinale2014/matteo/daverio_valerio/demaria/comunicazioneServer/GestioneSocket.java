@@ -28,7 +28,7 @@ public class GestioneSocket implements Gestione {
 	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
 
 	/**
-	 * costruttore
+	 * COSTRUTTORE
 	 * 
 	 * @param socket
 	 * @author Valerio De Maria
@@ -143,8 +143,11 @@ public class GestioneSocket implements Gestione {
 		return partita;
 	}
 
+	/**
+	 * chiedo nome e password
+	 * @author Valerio De Maria
+	 */
 	public void chiediDati() {
-		System.out.println("provo a chiedere nome e password");
 		try {
 
 			// dichiaro PRIMA quello d'uscita e DOPO quello d'ingresso perchè il
@@ -168,7 +171,6 @@ public class GestioneSocket implements Gestione {
 			out.writeObject(ComandiSocket.RICHIESTA_NOME);
 			out.flush();
 			String nome = new String();
-			System.out.println("aspetto il nome");
 			try {
 			
 					nome = (String) in.readObject();
@@ -177,15 +179,12 @@ public class GestioneSocket implements Gestione {
 				LOG.log(Level.SEVERE,"errore in lettura nome", e);
 			}
 			this.nome = nome;
-			System.out.println("il nome è " + nome);
-	
-
+			
 			// chiedo la password
 			out.reset();
 			out.writeObject(ComandiSocket.RICHIESTA_PASSWORD);
 			out.flush();
 			String password = new String();
-			System.out.println("aspetto la password");
 			try {
 			
 					password = (String) in.readObject();
@@ -195,7 +194,7 @@ public class GestioneSocket implements Gestione {
 			}
 
 			this.password = password;
-			System.out.println("la passw è " + password);
+			
 
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE,"non comunica il socket", e);

@@ -19,15 +19,32 @@ public class GestioneRMI implements Gestione {
 	private InterfacciaClientRMI client;
 	private Partita partita;
 
-	public GestioneRMI(){
-		
+	/**
+	 * COSTRUTTORE vuoto
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public GestioneRMI() {
+
 	}
-	public GestioneRMI(String nome, String password, String tipo,InterfacciaClientRMI client,Partita partita){
-		this.nomeClient=nome;
-		this.password=password;
-		this.tipo=tipo;
-		this.client=client;
-		this.partita=partita;
+
+	/**
+	 * COSTRUTTORE
+	 * 
+	 * @param nome
+	 * @param password
+	 * @param tipo
+	 * @param client
+	 * @param partita
+	 * @author Valerio De Maria
+	 */
+	public GestioneRMI(String nome, String password, String tipo,
+			InterfacciaClientRMI client, Partita partita) {
+		this.nomeClient = nome;
+		this.password = password;
+		this.tipo = tipo;
+		this.client = client;
+		this.partita = partita;
 	}
 
 	/**
@@ -112,12 +129,14 @@ public class GestioneRMI implements Gestione {
 	public void autenticazione(boolean riuscita) {
 
 	}
-/**
- * utile solo per socket
- * @author Valerio De Maria
- */
+
+	/**
+	 * utile solo per socket
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void chiediDati() {
-		
+
 	}
 
 }

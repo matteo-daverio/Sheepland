@@ -17,34 +17,82 @@ public interface Gestione {
 
 	/**
 	 * getter partita
+	 * 
 	 * @return
 	 * @author Valerio De Maria
 	 */
 	public Partita getPartita();
-	
+
+	/**
+	 * getter nome
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public String getNome();
 
+	/**
+	 * getter tipo connessione
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public String getTipoConnessione();
 
+	/**
+	 * getter password
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public String getPassword();
 
-	//utile solo per GestioneSocket
+	/**
+	 * solo per socket getter Socket
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public Socket getSocket();
-	
-	//utile solo per GestioneSocket
+
+	/**
+	 * solo per socket getter buffer in
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public ObjectInputStream getBufferIn();
-	
-	//utile solo per GestioneSocket
+
+	/**
+	 * solo per socket getter buffer out
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public ObjectOutputStream getBufferOut();
-	
-	//utile solo per GestioneRMI
+
+	/**
+	 * solo RMI getter interfaccia client serve al server per poter poi eseguire
+	 * i metodi su quella interfaccia
+	 * 
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public InterfacciaClientRMI getInterfacciaClient();
-	
-	//utile solo per GestioneSocket
+
+	/**
+	 * solo socket restituisce l'esito dell'autenticazione
+	 * 
+	 * @param riuscita
+	 * @author Valerio De Maria
+	 */
 	public void autenticazione(boolean riuscita);
-	
-	//utile solo per GestioneSocket
+
+	/**
+	 * solo socket chiede nome e password
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void chiediDati();
-	
-	
+
 }
