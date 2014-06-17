@@ -45,7 +45,8 @@ public class PartitaDueGiocatoriTest {
 
 		autenticato = giocatore2.login("valerio", "bgbfbfg");
 		assertTrue(autenticato);
-
+		
+		giocatore1.posizionamento(3);
 	}
 
 }
@@ -78,6 +79,10 @@ class Client {
 	
 	public boolean login(String user, String psw) throws IOException {
 		return controllore.logIn(user, psw);
+	}
+	
+	public void posizionamento(int pos) {
+		controllore.posizioneInserita(pos);
 	}
 	
 	
