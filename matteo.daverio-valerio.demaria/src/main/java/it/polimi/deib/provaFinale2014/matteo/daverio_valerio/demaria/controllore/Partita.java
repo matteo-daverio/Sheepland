@@ -25,7 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
+/**
+ * controllore della meccanica di gioco
+ * 
+ * @author Matteo Daverio
+ *
+ */
 public class Partita implements Serializable {
 
 	/**
@@ -44,9 +49,12 @@ public class Partita implements Serializable {
 	private static final Map<Integer, TipoTerreno> mappaRegioni = new HashMap<Integer, TipoTerreno>();
 	private Random random = new Random();
 
-	// costruttori
+	/**
+	 * COSTRUTTORE VUOTO
+	 * @author Matteo Daverio
+	 */
 
-	public Partita() { // costruttore vuoto
+	public Partita() { 
 
 		this.turno = 1;
 		this.contatoreRecinti = 0;
@@ -60,46 +68,102 @@ public class Partita implements Serializable {
 
 	// getter e setter
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public int getTurno() {
 		return turno;
 	}
 
+	/**
+	 * 
+	 * @param turno
+	 * @author Matteo Daverio
+	 */
 	public void setTurno(int turno) {
 		this.turno = turno;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 * 
+	 */
 	public int getContatoreRecinti() {
 		return contatoreRecinti;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public PecoraNera getPecoraNera() {
 		return pecoraNera;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public Map<Integer, TipoTerreno> getMappaRegioni() {
 		return mappaRegioni;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public Lupo getLupo() {
 		return lupo;
 	}
 
+	/**
+	 * 
+	 * @param numeroGiocatori
+	 * @author Matteo Daverio
+	 */
 	public void setNumeroGiocatori(int numeroGiocatori) {
 		this.numeroGiocatori = numeroGiocatori;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public int getNumeroGiocatori() {
 		return numeroGiocatori;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public List<Strada> getStrade() {
 		return strade;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public List<Pecora> getPecore() {
 		return pecore;
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @author Matteo Daverio
+	 */
 	public List<Pastore> getPastori() {
 		return pastori;
 	}
@@ -111,16 +175,27 @@ public class Partita implements Serializable {
 	 * METODI DI PARTITA
 	 */
 
+	/**
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void start() {
 		inizializza();
 	}
 
-	// inizializzazione della classe
+	/**
+	 * inizializza la classe
+	 * @author Valerio De Maria
+	 */
 	private void inizializza() {
 		creaMappa();
 		creaPecore();
 	}
 
+	/**
+	 * hash map di strade e regioni
+	 * @author Valerio De Maria
+	 */
 	private void creaMappa() {
 		// strade
 		strade.add(new Strada(0, 9, 8, 1));
@@ -447,8 +522,7 @@ public class Partita implements Serializable {
 			}
 		} else {
 			// movimento invalido
-			// TODO ogni tanto nei test da questa eccezione inattesa, verificare
-			// la motivazione
+
 			throw new GameException(EccezioniDiGioco.MOVIMENTO_INVALIDO);
 		}
 
@@ -568,7 +642,7 @@ public class Partita implements Serializable {
 	 * @throws NoMoneyException
 	 * @author Valerio De Maria
 	 */
-	// TODO da testare
+
 	public void compraTessera(TipoTerreno terreno, int pastoreInGioco)
 			throws GameException {
 		if (tipoRegioneAdiacenteCorrispondente(terreno, pastoreInGioco)) {
@@ -594,7 +668,7 @@ public class Partita implements Serializable {
 		}
 	}
 
-	// TODO da testare
+
 	/**
 	 * effettua il movimento della pecora, se è realizzabile
 	 * 
