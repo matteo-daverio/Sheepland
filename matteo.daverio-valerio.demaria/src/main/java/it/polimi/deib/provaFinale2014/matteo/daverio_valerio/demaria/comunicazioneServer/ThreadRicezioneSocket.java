@@ -6,6 +6,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.mosse.Mossa
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class ThreadRicezioneSocket implements Runnable {
 	private ControllorePartita gameManager;
 	private int turno;
 	private boolean connesso = true;
+	private ObjectOutputStream out;
 
 	private static final Logger LOG = Logger.getLogger(ClientRMI.class
 			.getName());
@@ -52,9 +54,18 @@ public class ThreadRicezioneSocket implements Runnable {
 	 * @author Valerio De Maria
 	 */
 	public void aggiornaSocket(Socket socket) {
-
+       
 		try {
+			if(socket!=null){
+				System.out.println("la socket non è nulla");
+			}
+			out =new ObjectOutputStream(socket.getOutputStream());
+			out.flush();
+			System.out.println("ho fatto la flush");
 			in = new ObjectInputStream(socket.getInputStream());
+			
+			System.out.println("ho aggiornato il buffer in");
+			
 			connesso = true;
 		} catch (IOException e) {
 

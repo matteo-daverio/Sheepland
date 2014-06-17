@@ -103,10 +103,6 @@ public class ControllorePartita implements Runnable {
 
 	}
 
-	public void comunicaEsclusioneDallaPartita() {
-
-	}
-
 	/**
 	 * aggiorno i parametri di comunicazione client e reinvio la partita in
 	 * corso al client disconnesso
@@ -878,6 +874,7 @@ public class ControllorePartita implements Runnable {
 		conteggioPunti();
 
 		comunicaPunteggiFinali(punteggiFinali);
+		System.out.println("ho inviato la lista dei punteggi finali");
 
 		chiudiConnessioni();
 

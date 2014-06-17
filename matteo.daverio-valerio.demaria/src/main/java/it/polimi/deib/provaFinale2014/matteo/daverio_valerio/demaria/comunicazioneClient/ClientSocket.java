@@ -60,9 +60,10 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 			socket = new Socket(ip, port);
 
 			// creo i buffer per ricevere/inviare dati con il server
+			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
 			out.flush();
-			in = new ObjectInputStream(socket.getInputStream());
+			
 
 		} catch (UnknownHostException e) {
 			LOG.log(Level.SEVERE,"UnknowHostException", e);

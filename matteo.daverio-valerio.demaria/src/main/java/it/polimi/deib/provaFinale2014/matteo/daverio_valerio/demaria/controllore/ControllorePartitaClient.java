@@ -3,6 +3,8 @@ package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllor
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
@@ -39,6 +41,8 @@ public class ControllorePartitaClient {
 	private List<Integer> stradeDisponibili = new ArrayList<Integer>();
 	private List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
 	private boolean test = false;
+	private static final Logger LOG = Logger.getLogger(ClientRMI.class
+			.getName());
 
 	/**
 	 * COSTRUTTORE
@@ -347,30 +351,64 @@ public class ControllorePartitaClient {
 		schermo.mossaCorretta();
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void faseFinale() {
 		schermo.faseFinale();
 	}
 
+	/**
+	 * 
+	 * @param punteggiFinali
+	 * @param nomi
+	 * @author Valerio De Maria
+	 */
 	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
 		schermo.punteggiFinali(punteggiFinali, nomi);
 	}
 
+	/**
+	 * 
+	 * @param denaroPastori
+	 * @author Valerio De Maria
+	 */
 	public void comunicaDenaro(List<Integer> denaroPastori) {
 		schermo.comunicaDenaro(denaroPastori);
 	}
 
+	/**
+	 * 
+	 * @param recinti
+	 * @author Valerio De Maria
+	 */
 	public void comunicaNumeroRecinti(int recinti) {
 		schermo.comunicaNumeroRecinti(recinti);
 	}
 
+	/**
+	 * 
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
 	public void disconnessione(String nome) {
 		schermo.disconnessione(nome);
 	}
 
+	/**
+	 * 
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
 	public void riconnessione(String nome) {
 		schermo.riconnessione(nome);
 	}
 
+	/**
+	 * 
+	 * @param nome
+	 * @author Valerio De Maria
+	 */
 	public void esclusione(String nome) {
 		schermo.esclusione(nome);
 	}
@@ -397,7 +435,12 @@ public class ControllorePartitaClient {
 		return autenticato;
 	}
 
-	// la grafica invia la posizione al controllore client
+	/**
+	 * la grafica invia la posizione al controllore client
+	 * 
+	 * @param posizione
+	 * @author Valerio De Maria
+	 */
 	public void posizioneInserita(int posizione) {
 
 		boolean pastorePosizionato = false;
@@ -418,18 +461,43 @@ public class ControllorePartitaClient {
 
 	}
 
+	/**
+	 * 
+	 * @param posizione
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void muoviPastore(int posizione, int pastoreTurno) {
 		client.inviaMossa(new MuoviPastore(posizione), pastoreTurno);
 	}
 
+	/**
+	 * 
+	 * @param strada
+	 * @param pecoraScelta
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void muoviPecora(int strada, int pecoraScelta, int pastoreTurno) {
 		client.inviaMossa(new MuoviPecora(strada, pecoraScelta), pastoreTurno);
 	}
 
+	/**
+	 * 
+	 * @param strada
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void spostaPecoraNera(int strada, int pastoreTurno) {
 		client.inviaMossa(new MuoviPecoraNera(strada), pastoreTurno);
 	}
 
+	/**
+	 * 
+	 * @param tipoTerreno
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void compraTessera(int tipoTerreno, int pastoreTurno) {
 
 		switch (tipoTerreno) {
@@ -458,28 +526,45 @@ public class ControllorePartitaClient {
 
 	}
 
+	/**
+	 * 
+	 * @param regione
+	 * @param pScelta
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void abbatti(int regione, int pScelta, int pastoreTurno) {
 		client.inviaMossa(new Abbatti(regione, pScelta), pastoreTurno);
 	}
 
+	/**
+	 * 
+	 * @param regione
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void accoppia(int regione, int pastoreTurno) {
 		client.inviaMossa(new Accoppia(regione), pastoreTurno);
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void riceviAggiornamenti() {
 		try {
 			client.riceviAggiornamenti();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Errore connesione", e);
 		} catch (GameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Errore connesione", e);
 		}
 	}
 
+	/**
+	 * @author Matteo Daverio
+	 */
 	public void setTest() {
-		test=true;
+		test = true;
 	}
 
 }
