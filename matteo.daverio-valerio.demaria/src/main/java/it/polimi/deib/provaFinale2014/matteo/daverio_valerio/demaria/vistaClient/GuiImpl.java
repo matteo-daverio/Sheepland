@@ -20,6 +20,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	List<Strada> strade = new ArrayList<Strada>();
 	int posizionePecoraNera = 0;
 	int numeroDiGiocatori;
+	boolean test=false;
 
 	/**
 	 * costruttore
@@ -37,8 +38,10 @@ public class GuiImpl implements InterfacciaGrafica {
 	 * @author Matteo Daverio
 	 */
 	public void start() {
+		if(!test){
 		loginScreen = new LoginScreen(controllorePartita, this);
 		loginScreen.createAndShowGui();
+		}
 	}
 
 	/**
@@ -450,5 +453,10 @@ public class GuiImpl implements InterfacciaGrafica {
 	 */
 	public void esclusione(String nome) {
 		mappa.esclusione(nome);
+	}
+	
+
+	public void setTest() {
+		test=true;
 	}
 }

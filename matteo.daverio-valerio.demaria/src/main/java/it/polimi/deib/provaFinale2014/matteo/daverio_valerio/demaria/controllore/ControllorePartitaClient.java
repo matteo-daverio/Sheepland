@@ -38,6 +38,7 @@ public class ControllorePartitaClient {
 	private InterfacciaGrafica schermo;
 	private List<Integer> stradeDisponibili = new ArrayList<Integer>();
 	private List<MosseEnum> mosseDisponibili = new ArrayList<MosseEnum>();
+	private boolean test = false;
 
 	/**
 	 * COSTRUTTORE
@@ -74,7 +75,12 @@ public class ControllorePartitaClient {
 			schermo = new CommandLine(this);
 		}
 
-		schermo.start();
+		if (!test) {
+			schermo.start();
+		} else {
+			schermo.setTest();
+			schermo.start();
+		}
 
 	}
 
@@ -357,17 +363,18 @@ public class ControllorePartitaClient {
 		schermo.comunicaNumeroRecinti(recinti);
 	}
 
-	public void disconnessione(String nome){
+	public void disconnessione(String nome) {
 		schermo.disconnessione(nome);
 	}
-	
-	public void riconnessione(String nome){
+
+	public void riconnessione(String nome) {
 		schermo.riconnessione(nome);
 	}
-	
-	public void esclusione(String nome){
+
+	public void esclusione(String nome) {
 		schermo.esclusione(nome);
 	}
+
 	// METODI ESEGUITI DALLA GRAFICA
 
 	/**
@@ -469,6 +476,10 @@ public class ControllorePartitaClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setTest() {
+		test=true;
 	}
 
 }

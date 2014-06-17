@@ -301,4 +301,10 @@ public interface InterfacciaGrafica {
 	 */
 	public void esclusione(String nome);
 
+	/**
+	 * testa il gioco
+	 * 
+	 * @author Matteo Daverio
+	 */
+	public void setTest();
 }
