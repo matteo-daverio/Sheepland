@@ -28,7 +28,6 @@ public class PartitaDueGiocatoriTest {
 	Client giocatore1;
 	Client giocatore2;
 	
-	Comunicazione client1, client2;
 
 	@Before
 	public void setUp() throws InterruptedException {
@@ -86,194 +85,13 @@ class Client {
 	}
 	
 	public void connetti(){
-		InterfacciaGrafica schermo;
 		controllore=new ControllorePartitaClient(protocollo, tipo, ip);
 		controllore.setTest();
-		schermo=new Comunicazione(controllore);
 		controllore.start();
-		controllore.setSchermo(schermo);
 	}
 	
 	public boolean login(String user,String pass) throws IOException{
 		return controllore.logIn(user, pass);
-	}
-}
-
-class Comunicazione implements InterfacciaGrafica{
-
-	ControllorePartitaClient controllorePartita;
-	
-	public Comunicazione(ControllorePartitaClient controllore){
-		controllorePartita=controllore;
-	}
-	
-	public void start() {
-		
-	}
-
-	public void nomiGiocatori(List<String> nomi) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void soldiPastori(List<Integer> soldi) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void tesseraIniziale(Tessera tesseraIniziale) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void settaPecore(List<Pecora> pecore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void riceviStrade(List<Strada> strade) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void richiestaPosizionamentoPastore() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void posizionamentoPastoreCorretto() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void posizionamentoPastoreErrato() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void aggiornamentoPosizionePastore(int turno, int pastore,
-			int posizione) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void movimentoPastore(int posizione, String giocatore, int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void acquistoTessera(TipoTerreno terreno, String giocatore,
-			int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void movimentoPecora(int pecora, int strada, String giocatore,
-			int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void abbattimento(int regione, int pecora, String giocatore,
-			int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void accoppiamento(int regione, String giocatore, int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void spostamentoPecoraNera(int strada, String giocatore, int pastore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void iniziaTurno(List<Pecora> pecore, int turno) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void cambioTurno(String giocatore, List<Pecora> pecore) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void muoviPecoraNera(int posizione) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void muoviLupo(int posizione) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mossaSbagliata() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mossaCorretta() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void faseFinale() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void comunicaDenaro(List<Integer> denaroPastori) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void comunicaNumeroRecinti(int recinti) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
-			int posPecoraNera, int posLupo, List<Pastore> pastori) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void segnalaDisconnessione() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void disconnessione(String nome) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void riconnessione(String nome) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void esclusione(String nome) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setTest() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
