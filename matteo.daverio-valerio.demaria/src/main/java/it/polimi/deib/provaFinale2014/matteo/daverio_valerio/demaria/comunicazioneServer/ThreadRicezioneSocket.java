@@ -41,7 +41,7 @@ public class ThreadRicezioneSocket implements Runnable {
 		this.in = in;
 		this.gameManager = gameManager;
 		this.turno = turno;
-		System.out.println("turno thread socket: "+turno);
+
 
 	}
 

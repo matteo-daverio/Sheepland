@@ -13,6 +13,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * grafica con linea di comando
+ * 
+ * @author Valerio De Maria
+ * 
+ */
 public class CommandLine implements InterfacciaGrafica {
 
 	private Scanner in = new Scanner(System.in);
@@ -21,11 +27,22 @@ public class CommandLine implements InterfacciaGrafica {
 	private int numGiocatori, turno, pastoreScelto, p1, p2, pastoreTurno;
 	ControllorePartitaClient controllore;
 
+	/**
+	 * COSTRUTTORE
+	 * 
+	 * @param controllore
+	 * @author Valerio De Maria
+	 */
 	public CommandLine(ControllorePartitaClient controllore) {
 
 		this.controllore = controllore;
 	}
 
+	/**
+	 * metodo di inizio che chiede nome e cognome
+	 * 
+	 * @author Valerio De Maria
+	 */
 	public void start() {
 		System.out.println("Benvenuto in Sheepland!");
 
@@ -52,6 +69,10 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 * @return
+	 */
 	public int posizionaPastore() {
 		System.out
 				.println("Dove vuoi posizionare inizialmente il tuo pastore?");
@@ -64,10 +85,14 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void iniziaTurno(List<Pecora> pecore, int turno) {
 		System.out.println("Ora è il tuo turno!");
 		this.turno = turno;
-
+		// nel caso di due giocatori l'utente sceglie il pastore da usare ad
+		// ogni turno
 		if (numGiocatori == 2) {
 			if (turno == 1) {
 				p1 = 0;
@@ -100,6 +125,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void cambioTurno(String giocatore, List<Pecora> pecore) {
 		System.out.println("Ora è il turno di " + giocatore);
 
@@ -151,6 +179,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void nomiGiocatori(List<String> nomi) {
 		for (int i = 0; i <= nomi.size() - 1; i++) {
 			System.out.println("Il giocatore del turno " + i + " è "
@@ -161,6 +192,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void soldiPastori(List<Integer> soldi) {
 		for (int i = 0; i <= soldi.size() - 1; i++) {
 			System.out.println("Il pastore " + i + " ha " + soldi.get(i)
@@ -169,23 +203,35 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void tesseraIniziale(Tessera tesseraIniziale) {
 		System.out.println("La tua tessera iniziale è:  "
 				+ tesseraIniziale.getTipo());
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void posizionamentoPastoreCorretto() {
 		System.out.println("hai posizionato il pastore in maniera corretta");
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void posizionamentoPastoreErrato() {
 		System.out
 				.println("la strada che hai inserito non è valida o è occupata!");
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void aggiornamentoPosizionePastore(int turno, int pastore,
 			int posizione) {
 		System.out.println("Il giocatore del turno " + turno
@@ -194,6 +240,11 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * 
+	 * @param mosseDisponibili
+	 * @author Valerio De Maria
+	 */
 	public void visualizzaMosseDisponibili(List<MosseEnum> mosseDisponibili) {
 		System.out.println("Puoi effettuare le seguenti mosse:");
 		for (int i = 0; i <= mosseDisponibili.size() - 1; i++) {
@@ -202,6 +253,13 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * 
+	 * @param primo
+	 * @param secondo
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public int selezionaPastore(int primo, int secondo) {
 		System.out
 				.println("decidi quale pastore vuoi usare per giocare il tuo turno: "
@@ -220,6 +278,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void acquistoTessera(TipoTerreno terreno, String giocatore,
 			int pastore) {
 		System.out.println(giocatore + " ha acquistato una tessera " + terreno
@@ -227,6 +288,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void movimentoPecora(int pecora, int strada, String giocatore,
 			int pastore) {
 		System.out.println(giocatore + " ha mosso la pecora " + pecora
@@ -235,6 +299,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void abbattimento(int regione, int pecora, String giocatore,
 			int pastore) {
 		System.out.println(giocatore + " ha abbattuto la pecora " + pecora
@@ -243,6 +310,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void accoppiamento(int regione, String giocatore, int pastore) {
 		System.out.println(giocatore
 				+ " ha fatto accoppiare due ovini nella regione " + regione
@@ -250,6 +320,12 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * 
+	 * @param max
+	 * @return
+	 * @author Valerio De Maria
+	 */
 	public int chiediMossa(int max) {
 		System.out.println("scrivi il numero della mossa che vuoi fare:");
 		System.out.println("il max è " + max);
@@ -263,20 +339,32 @@ public class CommandLine implements InterfacciaGrafica {
 		return scelta;
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void mossaSbagliata() {
 		System.out.println("La mossa che hai fatto è sbagliata");
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void mossaCorretta() {
 		System.out.println("La mossa è stata eseguita correttamente");
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void faseFinale() {
 		System.out.println("Da ora inizia la fase finale del gioco!");
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void punteggiFinali(List<Integer> punteggiFinali, List<String> nomi) {
 		System.out.println("I punteggi finali sono i seguenti:");
 		for (int i = 0; i <= punteggiFinali.size() - 1; i++) {
@@ -286,6 +374,9 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void comunicaDenaro(List<Integer> denaroPastori) {
 
 		for (int i = 0; i <= denaroPastori.size() - 1; i++) {
@@ -295,11 +386,17 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void comunicaNumeroRecinti(int recinti) {
 		System.out.println("I recinti usati sono: " + recinti);
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void richiestaPosizionamentoPastore() {
 		System.out.println("Posiziona pastore");
 
@@ -307,9 +404,12 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
 
-		System.out.println("Le mose che puoi fare sono le seguenti:");
+		System.out.println("Le mosse che puoi fare sono le seguenti:");
 		for (int i = 0; i <= mosseDisponibili.size() - 1; i++) {
 
 			System.out.println(i + ") " + mosseDisponibili.get(i));
@@ -365,10 +465,10 @@ public class CommandLine implements InterfacciaGrafica {
 					.println("Inc che regione vuoi fare accoppiare loe pecore?");
 			controllore.accoppia(in.nextInt(), pastoreTurno);
 			break;
-			
+
 		case MUOVI_PECORA_NERA:
 			System.out.println("Su quale strada vuoi muovere la pecora nera?");
-			controllore.spostaPecoraNera(in.nextInt(),pastoreTurno);
+			controllore.spostaPecoraNera(in.nextInt(), pastoreTurno);
 			break;
 
 		default:
@@ -380,11 +480,17 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void muoviLupo(int posizione) {
 		System.out.println("Il lupo si è mosso nella regione: " + posizione);
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void aggiornamentoPostDisconnessione(List<Pecora> pecore,
 			int posPecoraNera, int posLupo, List<Pastore> pastori) {
 		System.out.println("Bentornato!");
@@ -412,15 +518,23 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void segnalaDisconnessione() {
 		System.out.println("!!CONNESSIONE CON IL SERVER CADUTA!!");
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void riceviStrade(List<Strada> strade) {
 
 	}
-
+/**
+ * @author Valerio De Maria
+ */
 	public void spostamentoPecoraNera(int strada, String giocatore, int pastore) {
 		System.out.println(giocatore
 				+ " ha mosso la pecora nera lungo la strada " + strada
@@ -429,19 +543,28 @@ public class CommandLine implements InterfacciaGrafica {
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void disconnessione(String nome) {
-		System.out.println(nome+" si è disconnesso");
-		
+		System.out.println(nome + " si è disconnesso");
+
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void riconnessione(String nome) {
-		System.out.println(nome+" si è riconnesso");
-		
+		System.out.println(nome + " si è riconnesso");
+
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	public void esclusione(String nome) {
-		System.out.println(nome+" è stato escluso dalla partita");
-		
+		System.out.println(nome + " è stato escluso dalla partita");
+
 	}
 
 }

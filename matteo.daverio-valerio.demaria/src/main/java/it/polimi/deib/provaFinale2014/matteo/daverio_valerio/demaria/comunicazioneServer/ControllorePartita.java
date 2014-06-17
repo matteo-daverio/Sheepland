@@ -525,7 +525,7 @@ public class ControllorePartita implements Runnable {
 			top = 1;
 			step = 1;
 		}
-		System.out.println(top + " e " + step);
+		
 		for (int i = 0; i <= top; i++) {
 
 			// scelgo un numero casuale tra 0 ed il numero di tessere iniziali
@@ -533,7 +533,7 @@ public class ControllorePartita implements Runnable {
 			do {
 				scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
 			} while (scelta >= tessereIniziali.size());
-			System.out.println("scelta vale: " + scelta);
+			
 			// aggiungo la tessera iniziale scelta alle tessere del pastore
 			partita.getPastori().get(i + step * i)
 					.aggiungiTessera(tessereIniziali.get(scelta));
@@ -897,7 +897,6 @@ public class ControllorePartita implements Runnable {
 	 */
 	public void riceviPosizionamentoPastore(int posizioneScelta) {
 
-		System.out.println("turno attuale: "+partita.getTurno());
 		// // setto posizione pastore
 		if (giocatori.size() > 2) {
 
