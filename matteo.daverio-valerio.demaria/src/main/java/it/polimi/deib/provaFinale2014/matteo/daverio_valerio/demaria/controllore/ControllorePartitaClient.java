@@ -73,10 +73,12 @@ public class ControllorePartitaClient {
 		} else
 			client = new ClientSocket(IP, Costanti.PORTA_SOCKET, this);
 
-		if (grafica.equals("gui")) {
-			schermo = new GuiImpl(this);
-		} else {
-			schermo = new CommandLine(this);
+		if (!test) {
+			if (grafica.equals("gui")) {
+				schermo = new GuiImpl(this);
+			} else {
+				schermo = new CommandLine(this);
+			}
 		}
 
 		if (!test) {
@@ -86,6 +88,16 @@ public class ControllorePartitaClient {
 			schermo.start();
 		}
 
+	}
+	
+	/**
+	 * aggiorna l'oggetto schermo
+	 * 
+	 * @param schermo
+	 * @author Matteo Daverio
+	 */
+	public void setSchermo(InterfacciaGrafica schermo) {
+		this.schermo=schermo;
 	}
 
 	// / METODI CHE ESEGUONO I METODI DELL'INTERFACCIA GRAFICA //////
