@@ -9,8 +9,23 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-
+/**
+ * classe per i disegni
+ * 
+ * @author Matteo
+ * 
+ */
 public class Disegno {
+
+	/**
+	 * disegna un immagine
+	 * 
+	 * @param imageToDraw
+	 * @param width
+	 * @param height
+	 * @return JLabel con immagine
+	 * @author Matteo Daverio
+	 */
 	public static JLabel disegnaImmagine(final ImageIcon imageToDraw,
 			final int width, final int height) {
 		JLabel immagine = new JLabel() {
@@ -30,11 +45,16 @@ public class Disegno {
 		immagine.setSize(width, height);
 		return immagine;
 	}
-	
-	
-	
-	
 
+	/**
+	 * scala un'immagine
+	 * 
+	 * @param src
+	 * @param w
+	 * @param h
+	 * @return l'immagine ridimensionata
+	 * @author Matteo Daverio
+	 */
 	public static BufferedImage getScaledImage(BufferedImage src, int w, int h) {
 		int finalw = w;
 		int finalh = h;
@@ -57,6 +77,18 @@ public class Disegno {
 		return resizedImg;
 	}
 
+	/**
+	 * crea un contatore
+	 * 
+	 * @param value
+	 * @param width
+	 * @param height
+	 * @param posX
+	 * @param posY
+	 * @param color
+	 * @return il contatore
+	 * @author Matteo Daverio
+	 */
 	public static JLabel creaContatore(String value, int width, int height,
 			int posX, int posY, Color color) {
 

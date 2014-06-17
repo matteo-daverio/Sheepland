@@ -2218,24 +2218,48 @@ public class Map extends JFrame {
 	 * @author Matteo Daverio
 	 */
 	public void mossaSbagliata() {
-		messaggio = new Messaggio("Mossa errata");
-		messaggio.setLocation(new Point(formWidth / 10, 10));
-		messaggio.setForeground(Color.RED);
-		c.add(messaggio, 0);
-		repaint();
-		messaggio.repaint();
-		timer = new Timer(2000, new TimerTask(messaggio, c));
-		timer.start();
 		if (oggettoMosso.equals("pecora")) {
+			messaggio = new Messaggio("Movimento pecora errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			muoviPecora(Costanti.TIPO_PECORA_PECORA, posizioneDiArrivo,
 					posizioneDiPartenza);
 		} else if (oggettoMosso.equals("montone")) {
+			messaggio = new Messaggio("Movimento montone errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			muoviPecora(Costanti.TIPO_PECORA_MONTONE, posizioneDiArrivo,
 					posizioneDiPartenza);
 		} else if (oggettoMosso.equals(agnello)) {
+			messaggio = new Messaggio("Movimento agnello errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			muoviPecora(Costanti.TIPO_PECORA_AGNELLO, posizioneDiArrivo,
 					posizioneDiPartenza);
 		} else if (oggettoMosso.equals("pecoranera")) {
+			messaggio = new Messaggio("Movimento pecora nera errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			pecoraNera.setLocation(
 					(int) mappaturaPosizione.getLocalizzazione(
 							new Posizione("Regione", posizioneDiPartenza))
@@ -2248,6 +2272,14 @@ public class Map extends JFrame {
 			pecoraNera.revalidate();
 			pecoraNera.repaint();
 		} else if (oggettoMosso.equals("pedina")) {
+			messaggio = new Messaggio("Movimento giocatore errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			player[posizioneDiPartenza].setLocation(
 					(int) mappaturaPosizione.getLocalizzazione(
 							new Posizione("Strada", posizioneAttuale
@@ -2262,6 +2294,14 @@ public class Map extends JFrame {
 			incrementaContatore(contatoreRecintiRimanenti);
 			recintoDaTogliere.setVisible(false);
 		} else if (oggettoMosso.equals("acquistotessera")) {
+			messaggio = new Messaggio("Acquisto errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			switch (posizioneDiPartenza) {
 			case 3:
 				decrementaContatore(contatoreTessereGrano);
@@ -2291,8 +2331,24 @@ public class Map extends JFrame {
 				break;
 			}
 		} else if (oggettoMosso.equals("accoppia")) {
+			messaggio = new Messaggio("Accoppiamento errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			decrementaContatoreAgnello(posizioneDiPartenza);
 		} else if (oggettoMosso.equals("abbatti")) {
+			messaggio = new Messaggio("Abbattimento errato");
+			messaggio.setLocation(new Point(formWidth / 10, 10));
+			messaggio.setForeground(Color.RED);
+			c.add(messaggio, 0);
+			repaint();
+			messaggio.repaint();
+			timer = new Timer(2000, new TimerTask(messaggio, c));
+			timer.start();
 			// posizioneDiPartenza - tipo di pecora
 			// posizioneDiArrivo - regione su cui è effettuato l'abbattimento
 			if (posizioneDiPartenza == Costanti.TIPO_PECORA_AGNELLO) {
