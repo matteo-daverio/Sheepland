@@ -52,6 +52,8 @@ public class ServerApplication {
 			// esporto l'oggetto remoto
 			InterfacciaGestioneRMI stub = (InterfacciaGestioneRMI) UnicastRemoteObject
 					.exportObject(server, 0);
+			
+			//System.setProperty("java.rmi.server.hostname", "131.175.28.158");
 			// creo un registry
 			Registry registry = LocateRegistry.createRegistry(SERVER_PORT_RMI);
 			// associo all'oggetto remoto esportato un nome
