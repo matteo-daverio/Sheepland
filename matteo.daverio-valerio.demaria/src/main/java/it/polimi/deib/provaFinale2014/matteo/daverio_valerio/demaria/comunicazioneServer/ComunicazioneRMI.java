@@ -71,8 +71,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		}
 
 	}
-	
-	
+
 	/**
 	 * @author Valerio De Maria
 	 */
@@ -455,6 +454,21 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		try {
 			client.esclusione(nome);
 		} catch (RemoteException e) {
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
+		}
+
+	}
+
+	/**
+	 * chiama un metodo su client allo solo scopo di verificarne la connessione
+	 * 
+	 * @author Valerio De Maria
+	 */
+	public void ping() {
+		try {
+			client.pong();
+		} catch (RemoteException e) {
+			gameManager.avvioTimerDisconnessione(turno);
 			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		}
 

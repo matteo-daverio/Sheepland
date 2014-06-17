@@ -39,7 +39,8 @@ public class ClientRMI implements InterfacciaClientRMI,
 	private InterfacciaGestioneRMI server;
 	private ControllorePartitaClient controllore;
 	private InterfacciaServerRMI serverRMI;
-	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
+	private static final Logger LOG = Logger.getLogger(ClientRMI.class
+			.getName());
 
 	/**
 	 * COSTRUTTORE
@@ -81,7 +82,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 
 		} catch (RemoteException e) {
 			System.err.println("Remote exception:");
-			LOG.log(Level.SEVERE,"Errore di connessione", e);
+			LOG.log(Level.SEVERE, "Errore di connessione", e);
 		} catch (NotBoundException e) {
 			System.err.println("Name " + "istanza" + " not bound.");
 		}
@@ -353,13 +354,22 @@ public class ClientRMI implements InterfacciaClientRMI,
 
 	}
 
-	// usato solo per socket
+	/**
+	 * usato solo nei socket
+	 * @author Valerio De Maria
+	 */
 	public void riceviAggiornamenti() throws IOException, GameException {
 
 	}
 
-	public boolean pong() {
-		return true;
+	/**
+	 * metodo chiamato dal server per verificare la connessione del client RMI
+	 * 
+	 * @author ValerioDe Maria
+	 */
+	public void pong() {
+		// il server capisce la disconnessione se viene sollevata una
+		// RemoteException nell'invocarlo
 	}
 
 	// // FROM CLIENT TO SERVER
@@ -375,7 +385,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 		} catch (RemoteException e) {
 
 			controllore.segnalaDisconnessione();
-			LOG.log(Level.SEVERE,"Errore in connessione", e);
+			LOG.log(Level.SEVERE, "Errore in connessione", e);
 		}
 
 	}
@@ -390,7 +400,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 			this.serverRMI.riceviMossa(mossa, pastoreTurno);
 		} catch (RemoteException e) {
 			controllore.segnalaDisconnessione();
-			LOG.log(Level.SEVERE,"Errore in connessione", e);
+			LOG.log(Level.SEVERE, "Errore in connessione", e);
 		}
 
 	}
@@ -400,7 +410,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 	 */
 	public void disconnessione(String nome) throws RemoteException {
 		controllore.disconnessione(nome);
-		
+
 	}
 
 	/**
@@ -408,7 +418,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 	 */
 	public void risconnessione(String nome) throws RemoteException {
 		controllore.riconnessione(nome);
-		
+
 	}
 
 	/**
@@ -416,7 +426,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 	 */
 	public void esclusione(String nome) throws RemoteException {
 		controllore.esclusione(nome);
-		
+
 	}
 
 }

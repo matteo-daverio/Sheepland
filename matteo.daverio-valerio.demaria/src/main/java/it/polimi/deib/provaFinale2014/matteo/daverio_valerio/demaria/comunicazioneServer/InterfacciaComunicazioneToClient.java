@@ -84,4 +84,6 @@ public interface InterfacciaComunicazioneToClient {
 	public void comunicaRiconnessione(String nome);
 	
 	public void comunicaEsclusione(String nome);
+	
+	public void ping();
 }

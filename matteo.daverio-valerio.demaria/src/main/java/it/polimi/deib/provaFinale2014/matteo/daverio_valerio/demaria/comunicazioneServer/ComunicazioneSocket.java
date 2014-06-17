@@ -718,4 +718,13 @@ public class ComunicazioneSocket implements InterfacciaComunicazioneToClient {
 
 	}
 
+	/**
+	 * usato in RMI per verificare la connessione del client
+	 * @author Valerio De Maria
+	 */
+	public void ping() {
+		
+		
+	}
+
 }

@@ -9,6 +9,7 @@ public class Costanti {
 	public final static String SERVER_NAME = "compute";
 	public final static String IP ="localhost";
 	public final static int TEMPO_RICONNESSIONE=15*1000;
+	public final static int PERIODO_CONTROLLO_RMI=3*1000;
 
 	// costanti per le pecore
 

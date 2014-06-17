@@ -291,5 +291,11 @@ public interface InterfacciaClientRMI extends Remote {
 	 * @author Valerio De Maria
 	 */
 	public void esclusione(String nome)throws RemoteException;
+	
+	/**
+	 * risponde ad una richiesta di pong
+	 * @author Valerio De Maria
+	 */
+	public void pong()throws RemoteException;
 
 }

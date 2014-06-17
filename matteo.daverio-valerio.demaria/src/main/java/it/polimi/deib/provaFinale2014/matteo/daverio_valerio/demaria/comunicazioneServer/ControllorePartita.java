@@ -4,6 +4,7 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneClient.ClientRMI;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.comunicazioneServer.GestorePartite.CreatorePartite;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.Partita;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pastore;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
@@ -18,6 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -173,6 +175,21 @@ public class ControllorePartita implements Runnable {
 	}
 
 	/**
+	 * comunico a tutti i giocatori il movimento del lupo
+	 * 
+	 * @author Valerio De Maria
+	 */
+	private void comunicaMovimentoLupo() {
+
+		for (int i = 0; i <= giocatori.size() - 1; i++) {
+			if (giocatoriConnessi.get(i).booleanValue() == true) {
+				giocatori.get(i).comunicaMovimentoLupo(
+						partita.getLupo().getPosizione());
+			}
+		}
+	}
+
+	/**
 	 * creo la lista di mosse disponibili da inviare al client
 	 * 
 	 * @param mosseFatte
@@ -296,9 +313,8 @@ public class ControllorePartita implements Runnable {
 		// creo la lista aggiornata del denaro dei pastori
 		denaroPastori.clear();
 		for (int i = 0; i <= partita.getPastori().size() - 1; i++) {
-			if (giocatoriEsclusi.get(i) == false) {
-				denaroPastori.add(partita.getPastori().get(i).getDenaro());
-			}
+
+			denaroPastori.add(partita.getPastori().get(i).getDenaro());
 
 		}
 
@@ -660,26 +676,30 @@ public class ControllorePartita implements Runnable {
 	}
 
 	/**
-	 * se il giocatore di turn
+	 * se il giocatore di turno è connesso gli invio una richiesta di
+	 * posizionamento pastore
+	 * 
+	 * @author Valerio De Maria
 	 */
 	private void inviaRichiestaPosizionamentoPastore() {
 		if (giocatoriConnessi.get(partita.getTurno() - 1).booleanValue() == true) {
 			giocatori.get(partita.getTurno() - 1).inviaRichiestaPosizionamento(
 					stradeDisponibili);
 		}
-
-	}
-
-	private void comunicaMovimentoLupo() {
-
-		for (int i = 0; i <= giocatori.size() - 1; i++) {
-			if (giocatoriConnessi.get(i).booleanValue() == true) {
-				giocatori.get(i).comunicaMovimentoLupo(
-						partita.getLupo().getPosizione());
-			}
+		else{
+		do {
+			partita.incrementaTurno();
+		} while (giocatoriConnessi.get(partita.getTurno() - 1).booleanValue() == false);
 		}
+
 	}
 
+	/**
+	 * dico al giocatore di turno che deve fare una mossa se gli mancano delle
+	 * mosse da fare
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void chiediMosse() {
 		if (numeroMosse == 3) {
 			// cambio il turno
@@ -729,15 +749,24 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * controllo se ci sono i parametri necessari per far finire la partita
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void controlloFinePartita() {
 
+		// condizioni per entrare in fase finale
 		if (((partita.getContatoreRecinti() == Costanti.NUMERO_RECINTI_NORMALI) && !faseFinale)) {
 			comunicaFaseFinale();
 			faseFinale = true;
 		}
+		// condizioni per finire la partita
 		if (faseFinale && partita.getTurno() == connessioni.size()) {
 			finePartita();
 		}
+
+		// controllo che ci sia almeno un giocatore incluso nella partita
 		boolean finePartita = true;
 		for (int i = 0; i <= giocatoriEsclusi.size() - 1; i++) {
 			if (giocatoriEsclusi.get(i).booleanValue() == false) {
@@ -750,6 +779,11 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * inizializzo il turno e faccio partire la sequenza di richiesta mosse
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void giocaTurno() {
 
 		controlloFinePartita();
@@ -770,6 +804,11 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * chiudo le porte socket e connessioni RMI
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void chiudiConnessioni() {
 
 		for (InterfacciaComunicazioneToClient x : giocatori) {
@@ -782,6 +821,11 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * esegue le operazioni da fare una volta finita la partita
+	 * 
+	 * @author Valerio De Maria
+	 */
 	private void finePartita() {
 
 		System.out.println("la partita è finita, conto i punti");
@@ -796,6 +840,15 @@ public class ControllorePartita implements Runnable {
 
 	// ////////METODO CHE VENGONO CHIAMATI DALLE CLASSI CHE RICEVONO INFO DAL
 	// CLIENT/////////
+
+	/**
+	 * chiamato per inviare una mossa al server, quest'ultimo prova ad eseguirla
+	 * e comunica i risultati
+	 * 
+	 * @param mossa
+	 * @param pastoreTurno
+	 * @author Valerio De Maria
+	 */
 	public void riceviMossa(Mossa mossa, int pastoreTurno) {
 
 		try {
@@ -824,7 +877,7 @@ public class ControllorePartita implements Runnable {
 			numeroMosse++;
 
 		} catch (Exception e) {
-			// LOG.log(Level.SEVERE,"ECCEZZIONE",e);
+			LOG.log(Level.SEVERE, "ECCEZZIONE", e);
 
 			// dico al client che ha eseguito la mossa che essa non era valida e
 			// di conseguenza non aggiorno il contatore delle mosse
@@ -835,8 +888,16 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * metodo che riceve il posizionamento di un pastore, la validita di questo
+	 * spostamento viene fatta su client
+	 * 
+	 * @param posizioneScelta
+	 * @author Valerio De Maria
+	 */
 	public void riceviPosizionamentoPastore(int posizioneScelta) {
 
+		System.out.println("turno attuale: "+partita.getTurno());
 		// // setto posizione pastore
 		if (giocatori.size() > 2) {
 
@@ -867,7 +928,7 @@ public class ControllorePartita implements Runnable {
 		if (giocatori.size() > 2) {
 			aggiornaPosizionamentoPastori(partita.getTurno(),
 					partita.getTurno() - 1, posizioneScelta);
-			System.out.println("ho aggiornato il posizionamento");
+
 		} else {
 			if (partita.getTurno() == 1) {
 				if (primoPastore) {
@@ -891,8 +952,7 @@ public class ControllorePartita implements Runnable {
 		if (partita.getNumeroGiocatori() > 2) {
 			// se tutti hanno posizionato i propri pastori
 			if (partita.getTurno() == giocatori.size()) {
-				System.out
-						.println("ho ricevuto il posizionamento dell'ultimo giocatore");
+
 				do {
 					partita.incrementaTurno();
 				} while (giocatoriConnessi.get(partita.getTurno() - 1)
@@ -923,7 +983,9 @@ public class ControllorePartita implements Runnable {
 			else {
 				// incremento turno
 				if (!primoPastore) {
-					partita.incrementaTurno();
+					do {
+						partita.incrementaTurno();
+					} while (giocatoriConnessi.get(partita.getTurno() - 1) == false);
 					primoPastore = true;
 				} else {
 					primoPastore = false;
@@ -936,6 +998,13 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * dico ai miei giocatori che il giocatore di un cert turno è stato escluso
+	 * dalla partita
+	 * 
+	 * @param turno
+	 * @author Valerio De Maria
+	 */
 	public void comunicaEsclusione(int turno) {
 
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
@@ -947,6 +1016,13 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * dico ai miei giocatori che il giocatore di un certo turno si è
+	 * disconnesso
+	 * 
+	 * @param turno
+	 * @author Valerio De Maria
+	 */
 	public void comunicaDisconnessione(int turno) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatoriConnessi.get(i).booleanValue() == true) {
@@ -956,6 +1032,12 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * dico ai miei giocatori che il giocatore di un certo turno si è riconnesso
+	 * 
+	 * @param turno
+	 * @author Valerio De Maria
+	 */
 	public void comunicaRiconnessione(int turno) {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if ((giocatoriConnessi.get(i).booleanValue() == true)
@@ -966,16 +1048,35 @@ public class ControllorePartita implements Runnable {
 		}
 	}
 
+	/**
+	 * inner class che controlla se è il caso di escludere un giocatore in
+	 * seguito ad una lunga disconnessione
+	 * 
+	 * @author Valerio De Maria
+	 * 
+	 */
 	class SegnalaDisconnessione extends TimerTask {
 
 		private ControllorePartita p;
 		private int turno;
 
+		/**
+		 * COSTRUTTORE
+		 * 
+		 * @param p
+		 * @param turno
+		 * @author Valerio De Maria
+		 */
 		public SegnalaDisconnessione(ControllorePartita p, int turno) {
 			this.p = p;
 			this.turno = turno;
 		}
 
+		/**
+		 * run
+		 * 
+		 * @author Valerio De Maria
+		 */
 		@Override
 		public void run() {
 			if (p.giocatoriConnessi.get(turno - 1).booleanValue() == false) {
@@ -991,10 +1092,23 @@ public class ControllorePartita implements Runnable {
 
 	}
 
+	/**
+	 * metodo chiamato dalle classi di comunicazione quando si verifica
+	 * un'eccezione nel collegamento con il client
+	 * 
+	 * @param turno
+	 * @author Valerio De Maria
+	 */
 	public void avvioTimerDisconnessione(int turno) {
 
+		// segno il giocatore del turno relativo alla classe di comunicazione
+		// che ha chiamato questo metodo come disconnesso
 		giocatoriConnessi.set(turno - 1, false);
+
+		// avviso gli altri giocatori che quel giocatore si è disconnesso
 		comunicaDisconnessione(turno);
+
+		// se chi si è disconnesso era di turno devo far procedere il gioco
 		if (turno == partita.getTurno()) {
 			do {
 				partita.incrementaTurno();
@@ -1007,11 +1121,43 @@ public class ControllorePartita implements Runnable {
 				inviaRichiestaPosizionamentoPastore();
 			}
 		}
+
+		// avvio del timer
 		Timer timer = new Timer();
 		SegnalaDisconnessione task = new SegnalaDisconnessione(this, turno);
-		// System.out.println("Parte il timer di segnalazione di disconnessione");
+		System.out.println("Parte il timer di segnalazione di disconnessione");
 		timer.schedule(task, Costanti.TEMPO_RICONNESSIONE);
 
+	}
+
+	private void avvioControlloreDisconnessioniRMI() {
+
+		class ControlloConnessioneRMI extends TimerTask {
+
+			private ControllorePartita p;
+
+			public ControlloConnessioneRMI(ControllorePartita p) {
+				this.p = p;
+			}
+
+			@Override
+			public void run() {
+				for (int i = 0; i <= p.giocatori.size() - 1; i++) {
+					if (p.giocatori.get(i).getTipoConnessione().equals("rmi")
+							&& (p.giocatoriConnessi.get(i).booleanValue() == true)) {
+
+						p.giocatori.get(i).ping();
+					}
+				}
+
+			}
+
+		}
+
+		// inizializzo il timer
+		Timer timer3 = new Timer();
+		ControlloConnessioneRMI task = new ControlloConnessioneRMI(this);
+		timer3.schedule(task, 0, Costanti.PERIODO_CONTROLLO_RMI);
 	}
 
 	/**
@@ -1023,12 +1169,15 @@ public class ControllorePartita implements Runnable {
 
 		inizializza();
 
+		avvioControlloreDisconnessioniRMI();
+
 		// inizializzo l'array delle strade disponibili che serve per
 		// posizionare inizialmente i pastori
 		creaStradeDisponibili();
 
 		// metodo iniziale della "macchina a stati"
 		inviaRichiestaPosizionamentoPastore();
+		
 
 	}
 
