@@ -17,8 +17,14 @@ public class PartitaDueGiocatoriTest {
 	ControllorePartitaClient giocatore2;
 
 	@Before
-	public void setUp() {
-		ServerApplication.main(null);
+	public void setUp() throws InterruptedException {
+		Thread t1;
+		AvvioServer avvioServer;
+		avvioServer=new AvvioServer();
+		t1=new Thread(avvioServer);
+		t1.start();
+		
+		wait(1000);
 		giocatore1 = new ControllorePartitaClient("rmi", "cl", "127.0.0.1");
 		giocatore2 = new ControllorePartitaClient("socket", "cl", "127.0.0.1");
 
@@ -40,3 +46,15 @@ public class PartitaDueGiocatoriTest {
 	}
 
 }
+
+class AvvioServer implements Runnable {
+
+	public void run() {
+		ServerApplication.main(null);
+	}
+
+	
+}
+
+
+

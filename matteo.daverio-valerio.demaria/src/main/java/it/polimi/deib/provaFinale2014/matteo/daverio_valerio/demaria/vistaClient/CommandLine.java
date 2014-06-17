@@ -12,6 +12,8 @@ import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDi
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * grafica con linea di comando
@@ -24,8 +26,10 @@ public class CommandLine implements InterfacciaGrafica {
 	private Scanner in = new Scanner(System.in);
 	private String nome, password;
 	private boolean autenticato = false;
-	private int numGiocatori, turno, pastoreScelto, p1, p2, pastoreTurno;
+	private int numGiocatori, p1, p2, pastoreTurno;
 	ControllorePartitaClient controllore;
+
+	private static final Logger LOG=Logger.getLogger(CommandLine.class.getName());
 
 	/**
 	 * COSTRUTTORE
@@ -59,7 +63,7 @@ public class CommandLine implements InterfacciaGrafica {
 			try {
 				autenticato = controllore.logIn(nome, password);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.log(Level.SEVERE,"errore di connessione", e);
 			}
 		}
 
@@ -90,7 +94,7 @@ public class CommandLine implements InterfacciaGrafica {
 	 */
 	public void iniziaTurno(List<Pecora> pecore, int turno) {
 		System.out.println("Ora è il tuo turno!");
-		this.turno = turno;
+
 		// nel caso di due giocatori l'utente sceglie il pastore da usare ad
 		// ogni turno
 		if (numGiocatori == 2) {

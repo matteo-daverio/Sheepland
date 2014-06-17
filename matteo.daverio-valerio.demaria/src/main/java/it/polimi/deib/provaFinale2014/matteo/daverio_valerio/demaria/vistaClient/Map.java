@@ -504,7 +504,8 @@ public class Map extends JFrame {
 				// alla pressione del mouse, memorizza la posizione attuale
 				puntoAttuale.setLocation(p.getX(), p.getY());
 				posizioneAttuale = significatoColori
-						.getPosizione(calcoloColore(p.getX()+me.getX(), p.getY()+me.getY()));
+						.getPosizione(calcoloColore(p.getX() + me.getX(),
+								p.getY() + me.getY()));
 				oggettoMosso = "pecora";
 				posizioneDiPartenza = posizioneAttuale.getPosizione();
 			}
@@ -515,7 +516,8 @@ public class Map extends JFrame {
 			 * @author Matteo
 			 */
 			public void mouseReleased(MouseEvent e) {
-				Color color = calcoloColore(p.getX()+e.getX(), p.getY()+e.getY());
+				Color color = calcoloColore(p.getX() + e.getX(),
+						p.getY() + e.getY());
 				Posizione posizione = significatoColori.getPosizione(color);
 				// se posso muovere e sposto su una regione
 				if (movimentoPecora && posizione.getTipo().equals("Regione")) {
@@ -664,7 +666,8 @@ public class Map extends JFrame {
 				// alla pressione del mouse, memorizza la posizione attuale
 				puntoAttuale.setLocation(p.getX(), p.getY());
 				posizioneAttuale = significatoColori
-						.getPosizione(calcoloColore(p.getX()+ me.getX(), p.getY()+me.getY()));
+						.getPosizione(calcoloColore(p.getX() + me.getX(),
+								p.getY() + me.getY()));
 				oggettoMosso = "montone";
 				posizioneDiPartenza = posizioneAttuale.getPosizione();
 			}
@@ -675,7 +678,8 @@ public class Map extends JFrame {
 			 * @author Matteo Daverio
 			 */
 			public void mouseReleased(MouseEvent e) {
-				Color color = calcoloColore(p.getX()+e.getX(), p.getY()+e.getY());
+				Color color = calcoloColore(p.getX() + e.getX(),
+						p.getY() + e.getY());
 				Posizione posizione = significatoColori.getPosizione(color);
 				// se posso muovere e sposto su una regione
 				if (movimentoPecora && posizione.getTipo().equals("Regione")) {
@@ -834,7 +838,8 @@ public class Map extends JFrame {
 				// alla pressione del mouse, memorizza la posizione attuale
 				puntoAttuale.setLocation(p.getX(), p.getY());
 				posizioneAttuale = significatoColori
-						.getPosizione(calcoloColore(p.getX()+me.getX(), p.getY()+me.getY()));
+						.getPosizione(calcoloColore(p.getX() + me.getX(),
+								p.getY() + me.getY()));
 				oggettoMosso = "agnello";
 				posizioneDiPartenza = posizioneAttuale.getPosizione();
 			}
@@ -845,7 +850,8 @@ public class Map extends JFrame {
 			 * @author Matteo 
 			 */
 			public void mouseReleased(MouseEvent e) {
-				Color color = calcoloColore(p.getX()+e.getX(), p.getY()+e.getY());
+				Color color = calcoloColore(p.getX() + e.getX(),
+						p.getY() + e.getY());
 				Posizione posizione = significatoColori.getPosizione(color);
 				// se posso muovere e sposto su una regione
 				if (movimentoPecora && posizione.getTipo().equals("Regione")) {
@@ -1076,16 +1082,15 @@ public class Map extends JFrame {
 							.getPosizione(calcoloColore(p.getX() + e.getX(),
 									p.getY() + e.getY()));
 
-					
 					for (int i = 0; i < 4; i++) {
-						if ((int)player[i]
-								.getLocation().getX()
-								==(int)mappaturaPosizione
-										.getLocalizzazione(posizionePastoreUsabile).getX()* formWidth / 1452 && (int)player[i]
-												.getLocation().getY()
-												==(int)mappaturaPosizione
-														.getLocalizzazione(posizionePastoreUsabile).getY()
-														* formHeight / 1292) {
+						if ((int) player[i].getLocation().getX() == (int) mappaturaPosizione
+								.getLocalizzazione(posizionePastoreUsabile)
+								.getX()
+								* formWidth / 1452
+								&& (int) player[i].getLocation().getY() == (int) mappaturaPosizione
+										.getLocalizzazione(
+												posizionePastoreUsabile).getY()
+										* formHeight / 1292) {
 							pastoreScelto = i;
 							scegliPastore = false;
 							messaggio = new Messaggio("Pastore scelto");
@@ -1155,7 +1160,8 @@ public class Map extends JFrame {
 			 */
 			public void mouseReleased(MouseEvent e) {
 				Posizione posizione = significatoColori
-						.getPosizione(calcoloColore(p.getX()+e.getX(), p.getY()+e.getY()));
+						.getPosizione(calcoloColore(p.getX() + e.getX(),
+								p.getY() + e.getY()));
 				if (movimentoPecora && posizione.getTipo().equals("Regione")) {
 					puntoAttuale.setLocation(
 							(int) mappaturaPosizione.getLocalizzazione(
@@ -2179,7 +2185,7 @@ public class Map extends JFrame {
 			}
 			messaggio = new Messaggio("Il giocatore " + nomi.get(i)
 					+ " ha ottenuto " + punteggiFinali.get(i) + " punti!");
-			messaggio.setLocation(new Point(formWidth / 10, 10+100*i));
+			messaggio.setLocation(new Point(formWidth / 10, 10 + 100 * i));
 			c.add(messaggio, 0);
 			repaint();
 			messaggio.repaint();
@@ -2196,10 +2202,11 @@ public class Map extends JFrame {
 	 */
 	public void aggiornaRecinti(int recintiUsati) {
 		int recintiRimanenti = Costanti.NUMERO_RECINTI_NORMALI - recintiUsati;
-		contatoreRecintiRimanenti.setText(String.valueOf(recintiRimanenti));
-		contatoreRecintiRimanenti.repaint();
+		if (recintiRimanenti >= 0) {
+			contatoreRecintiRimanenti.setText(String.valueOf(recintiRimanenti));
+			contatoreRecintiRimanenti.repaint();
+		}
 	}
-
 
 	/**
 	 * notifica che la mossa è corretta
@@ -2564,11 +2571,11 @@ public class Map extends JFrame {
 		pecoraNera.repaint();
 	}
 
-	/** 
+	/**
 	 * classe timerTask
 	 * 
 	 * @author Matteo
-	 *
+	 * 
 	 */
 	class TimerTask implements ActionListener {
 
@@ -2621,7 +2628,7 @@ public class Map extends JFrame {
 		}
 		repaint();
 	}
-	
+
 	/**
 	 * informa della disconnessione di un client
 	 * 
@@ -2635,14 +2642,14 @@ public class Map extends JFrame {
 		timer = new Timer(3000, new TimerTask(messaggio, this));
 		timer.start();
 	}
-	
+
 	/**
 	 * informa della riconnessione di un client
 	 * 
 	 * @param nome
 	 * @author Matteo Daverio
 	 */
-	public void riconnessione(String nome){
+	public void riconnessione(String nome) {
 		messaggio = new Messaggio("Il giocatore " + nome + " si è riconnesso");
 		messaggio.setLocation(new Point(20, 0));
 		this.add(messaggio, 0);
@@ -2656,8 +2663,9 @@ public class Map extends JFrame {
 	 * @param nome
 	 * @author Matteo Daverio
 	 */
-	public void esclusione(String nome){
-		messaggio = new Messaggio("Il giocatore " + nome + " è stato escluso dalla partita");
+	public void esclusione(String nome) {
+		messaggio = new Messaggio("Il giocatore " + nome
+				+ " è stato escluso dalla partita");
 		messaggio.setLocation(new Point(20, 0));
 		this.add(messaggio, 0);
 		timer = new Timer(3000, new TimerTask(messaggio, this));

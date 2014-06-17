@@ -73,7 +73,6 @@ public class GuiImpl implements InterfacciaGrafica {
 		mappa.tesseraIniziale(tesseraIniziale.getTipo());
 	}
 
-	
 	/**
 	 * setto le pecore iniziali
 	 * 
@@ -147,7 +146,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	 * @author Matteo Daverio
 	 */
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
-		
+
 	}
 
 	/**
@@ -301,7 +300,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	}
 
 	/**
-	 * riceve le strade 
+	 * riceve le strade
 	 * 
 	 * @author Matteo Daverio
 	 */
