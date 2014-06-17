@@ -119,20 +119,26 @@ public class ControllorePartita implements Runnable {
 		for (int i = 0; i <= giocatori.size() - 1; i++) {
 			if (giocatori.get(i).getNome().equals(nome)) {
 
-				if (giocatoriEsclusi.get(i).booleanValue() == false) {
+				if (giocatoriEsclusi.get(i).booleanValue() == true) {
 					System.out.println("ora reintegro il client");
 					// se il client che si è disconesso è Socket aggiorno la
 					// socket
+					
 					if (giocatori.get(i).getTipoConnessione().equals("socket")) {
+						System.out.println("sono entrato");
 						giocatori.get(i).setSocket(socket);
+						System.out.println("ho settato la socket in giocatori");
 						ascoltatoriSocket.get(i).aggiornaSocket(socket);
+						System.out.println("ho settato la socket in ascoltatori");
 						giocatoriConnessi.set(i, true);
+						giocatoriEsclusi.set(i, false);
+						aggiornaGiocatoreDisconnesso(i);
 					}
 					aggiornaGiocatoreDisconnesso(i);
 				} else {
 					System.out
-							.println("Non reintegro il client perchè si è disconnesso per trippo tempo");
-					comunicaEsclusioneDallaPartita();
+							.println("Non reintegro il client perchè sta già giocando");
+					//comunicaEsclusioneDallaPartita();
 				}
 
 			}
@@ -341,6 +347,34 @@ public class ControllorePartita implements Runnable {
 	}
 
 	/**
+	 * calcola i punti nel caso di due giocatori
+	 * 
+	 * @author Valerio De Maria
+	 */
+	private void contaPuntiDueGiocatori(int i) {
+		int punteggio = 0;
+
+		for (Tessera x : partita.getPastori().get(i).getTessere()) {
+			for (Pecora y : partita.getPecore()) {
+				if (partita.getMappaRegioni().get(y.getPosizione()) == x
+						.getTipo()) {
+					punteggio = punteggio + 1;
+				}
+				if (partita.getPecoraNera() != null
+						&& partita.getMappaRegioni().get(
+								partita.getPecoraNera().getPosizione()) == x
+								.getTipo()) {
+					punteggio = punteggio + 2;
+				}
+			}
+
+		}
+
+		punteggiFinali.add(punteggio);
+
+	}
+
+	/**
 	 * conteggio dei punti finali
 	 * 
 	 * @author Valerio De Maria
@@ -382,7 +416,10 @@ public class ControllorePartita implements Runnable {
 					punteggiFinali.add(punteggioTotale);
 				}
 			} else {
-				// TODO caso di partita con due giocatori
+
+				contaPuntiDueGiocatori(0);
+				contaPuntiDueGiocatori(2);
+
 			}
 		}
 
@@ -525,7 +562,7 @@ public class ControllorePartita implements Runnable {
 			top = 1;
 			step = 1;
 		}
-		
+
 		for (int i = 0; i <= top; i++) {
 
 			// scelgo un numero casuale tra 0 ed il numero di tessere iniziali
@@ -533,7 +570,7 @@ public class ControllorePartita implements Runnable {
 			do {
 				scelta = (int) (Math.random() * Costanti.NUMERO_TIPI_TERRENO);
 			} while (scelta >= tessereIniziali.size());
-			
+
 			// aggiungo la tessera iniziale scelta alle tessere del pastore
 			partita.getPastori().get(i + step * i)
 					.aggiungiTessera(tessereIniziali.get(scelta));
@@ -685,11 +722,11 @@ public class ControllorePartita implements Runnable {
 		if (giocatoriConnessi.get(partita.getTurno() - 1).booleanValue() == true) {
 			giocatori.get(partita.getTurno() - 1).inviaRichiestaPosizionamento(
 					stradeDisponibili);
-		}
-		else{
-		do {
-			partita.incrementaTurno();
-		} while (giocatoriConnessi.get(partita.getTurno() - 1).booleanValue() == false);
+		} else {
+			do {
+				partita.incrementaTurno();
+			} while (giocatoriConnessi.get(partita.getTurno() - 1)
+					.booleanValue() == false);
 		}
 
 	}
@@ -761,8 +798,17 @@ public class ControllorePartita implements Runnable {
 			comunicaFaseFinale();
 			faseFinale = true;
 		}
+
+		// calcolo i giocatori attivi
+		int numeroGiocatoriAttivi = 0;
+		for (Boolean x : giocatoriEsclusi) {
+			if (x.booleanValue() == false) {
+				numeroGiocatoriAttivi++;
+			}
+		}
+
 		// condizioni per finire la partita
-		if (faseFinale && partita.getTurno() == connessioni.size()) {
+		if (faseFinale && partita.getTurno() == numeroGiocatoriAttivi) {
 			finePartita();
 		}
 
@@ -1176,7 +1222,6 @@ public class ControllorePartita implements Runnable {
 
 		// metodo iniziale della "macchina a stati"
 		inviaRichiestaPosizionamentoPastore();
-		
 
 	}
 

@@ -191,7 +191,9 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					break;
 
 				case INIZIO_TURNO:
+					
 					List<Pecora> pecorelle = (List<Pecora>) in.readObject();
+					
 					int t = in.readInt();
 					controllore.iniziaTurno(pecorelle, t);
 
