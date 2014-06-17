@@ -1,6 +1,7 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.vistaClient;
 
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.Costanti;
+import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.MosseEnum;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.TipoTerreno;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.controllore.ControllorePartitaClient;
 import it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria.meccanicaDiGioco.Pecora;
@@ -33,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +47,7 @@ public class Map extends JFrame {
 	private static final long serialVersionUID = -3256210950304048274L;
 
 	private static final Logger LOG = Logger.getLogger(Map.class.getName());
+	List<MosseEnum> mosseDisponibili=new ArrayList<MosseEnum>();
 
 	// per verificare se la mossa è corretta, e nel caso non lo sia, ritornare
 	// allo stato di partenza
@@ -1317,7 +1320,7 @@ public class Map extends JFrame {
 					}
 				}
 			} else if (controlloArea(e, bottoneMovimentoPersonaggio)
-					&& mioTurno && !scegliPastore) {
+					&& mioTurno && !scegliPastore && mosseDisponibili.contains(MosseEnum.MUOVI_PASTORE)) {
 				aggiornaVariabili(1);
 				messaggio = new Messaggio("Muovi personaggio");
 				messaggio.setLocation(new Point(formWidth / 10, 10));
@@ -1327,7 +1330,7 @@ public class Map extends JFrame {
 				timer = new Timer(2000, new TimerTask(messaggio, c));
 				timer.start();
 			} else if (controlloArea(e, bottoneMovimentoPecora) && mioTurno
-					&& !scegliPastore) {
+					&& !scegliPastore && mosseDisponibili.contains(MosseEnum.MUOVI_PECORA)) {
 				aggiornaVariabili(2);
 				messaggio = new Messaggio("Muovi pecora");
 				messaggio.setLocation(new Point(formWidth / 10, 10));
@@ -1337,7 +1340,7 @@ public class Map extends JFrame {
 				timer = new Timer(2000, new TimerTask(messaggio, c));
 				timer.start();
 			} else if (controlloArea(e, bottoneAcquistoTessere) && mioTurno
-					&& !scegliPastore) {
+					&& !scegliPastore && mosseDisponibili.contains(MosseEnum.COMPRA_TESSERA)) {
 				aggiornaVariabili(3);
 				messaggio = new Messaggio("Acquista tessera");
 				messaggio.setLocation(new Point(formWidth / 10, 10));
@@ -1347,7 +1350,7 @@ public class Map extends JFrame {
 				timer = new Timer(2000, new TimerTask(messaggio, c));
 				timer.start();
 			} else if (controlloArea(e, bottoneAbbattiPecora) && mioTurno
-					&& !scegliPastore) {
+					&& !scegliPastore && mosseDisponibili.contains(MosseEnum.ABBATTI)) {
 				aggiornaVariabili(4);
 				messaggio = new Messaggio("Abbatti pecore");
 				messaggio.setLocation(new Point(formWidth / 10, 10));
@@ -1357,7 +1360,7 @@ public class Map extends JFrame {
 				timer = new Timer(2000, new TimerTask(messaggio, c));
 				timer.start();
 			} else if (controlloArea(e, bottoneAccoppiaPecore) && mioTurno
-					&& !scegliPastore) {
+					&& !scegliPastore && mosseDisponibili.contains(MosseEnum.ACCOPPIA)) {
 				aggiornaVariabili(5);
 				messaggio = new Messaggio("Accoppia pecore");
 				messaggio.setLocation(new Point(formWidth / 10, 10));
@@ -2673,5 +2676,15 @@ public class Map extends JFrame {
 		this.add(messaggio, 0);
 		timer = new Timer(3000, new TimerTask(messaggio, this));
 		timer.start();
+	}
+	
+	/**
+	 * passo al client la lista di mosse disponibili
+	 * 
+	 * @param listaMosse
+	 * @author Matteo Daverio
+	 */
+	public void richiestaMosse(List<MosseEnum> listaMosse){
+		mosseDisponibili=listaMosse;
 	}
 }

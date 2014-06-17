@@ -172,6 +172,11 @@ public class LoginScreen extends JFrame {
 						mappa = new Map(controllorePartita);
 						guiImpl.creaMappa(mappa);
 						mappa.creaMappa();
+						Thread t1;
+						AvvioRicezioneSocket avvioSocket;
+						avvioSocket=new AvvioRicezioneSocket(controllorePartita);
+						t1=new Thread(avvioSocket);
+						t1.start();
 						// chiusura finestra login
 						loginFrame.dispose();
 					} else {
@@ -195,4 +200,19 @@ public class LoginScreen extends JFrame {
 		 * JOptionPane.INFORMATION_MESSAGE);
 		 */
 	}
+}
+
+
+class AvvioRicezioneSocket implements Runnable{
+
+	private ControllorePartitaClient controlloreClient;
+	
+	public AvvioRicezioneSocket(ControllorePartitaClient controlloreClient){
+		this.controlloreClient=controlloreClient;
+	}
+	
+	public void run() {
+		controlloreClient.riceviAggiornamenti();
+	}
+	
 }
