@@ -116,7 +116,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 			client.movimentoPastore(posizione, giocatore, pastore);
 		} catch (RemoteException e) {
 
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		} catch (GameException e) {
 
 			LOG.log(Level.SEVERE, "erroreConnessione", e);
@@ -133,7 +133,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 			client.acquistoTessera(terreno, giocatore, pastore);
 		} catch (RemoteException e) {
 
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		} catch (GameException e) {
 
 			LOG.log(Level.SEVERE, "erroreConnessione", e);
@@ -150,7 +150,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 			client.abbattimento(regione, pecora, giocatore, pastore);
 		} catch (GameException e) {
 
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		} catch (RemoteException e) {
 
 			LOG.log(Level.SEVERE, "erroreConnessione", e);
@@ -165,7 +165,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		try {
 			client.accoppiamento(regione, giocatore, pastore);
 		} catch (GameException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		} catch (RemoteException e) {
 
 			LOG.log(Level.SEVERE, "erroreConnessione", e);
@@ -181,7 +181,7 @@ public class ComunicazioneRMI implements InterfacciaComunicazioneToClient {
 		try {
 			client.movimentoPecora(pecora, strada, giocatore, pastore);
 		} catch (GameException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		} catch (RemoteException e) {
 			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		}

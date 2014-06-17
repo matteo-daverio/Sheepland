@@ -85,6 +85,7 @@ public class ClientRMI implements InterfacciaClientRMI,
 			LOG.log(Level.SEVERE, "Errore di connessione", e);
 		} catch (NotBoundException e) {
 			System.err.println("Name " + "istanza" + " not bound.");
+			LOG.log(Level.SEVERE, "erroreConnessione", e);
 		}
 		return false;
 	}
