@@ -1688,7 +1688,7 @@ public class Map extends JFrame {
 		} else {
 			messaggio = new Messaggio("E' il tuo turno");
 		}
-		messaggio.setLocation(new Point(formWidth / 10, 10));
+		messaggio.setLocation(new Point(formWidth / 10, 110));
 		c.add(messaggio, 0);
 		repaint();
 		messaggio.repaint();
@@ -2137,7 +2137,7 @@ public class Map extends JFrame {
 	public void cambioTurno(String giocatore) {
 		mioTurno = false;
 		messaggio = new Messaggio("Ora è il turno del giocatore " + giocatore);
-		messaggio.setLocation(new Point(formWidth / 10, 10));
+		messaggio.setLocation(new Point(formWidth / 10, 110));
 		c.add(messaggio, 0);
 		repaint();
 		messaggio.repaint();
