@@ -1062,11 +1062,14 @@ public class Map extends JFrame {
 					p.repaint();
 					controllorePartita.muoviPastore(posizione.getPosizione(),
 							posizioneDiPartenza);
-				} /*
-				 * else { if (!posizione.getTipo().equals("Strada") ||
-				 * posizione.equals(posizioneAttuale)) {
-				 * p.setLocation(puntoAttuale); p.revalidate(); p.repaint(); } }
-				 */
+				} else {
+					if (!posizione.getTipo().equals("Strada")
+							|| posizione.equals(posizioneAttuale)) {
+						p.setLocation(puntoAttuale);
+						p.revalidate();
+						p.repaint();
+					}
+				}
 				movimentoPastore = false;
 
 			}
