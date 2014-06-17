@@ -146,7 +146,7 @@ public class GuiImpl implements InterfacciaGrafica {
 	 * @author Matteo Daverio
 	 */
 	public void richiestaMossa(List<MosseEnum> mosseDisponibili) {
-
+		mappa.richiestaMosse(mosseDisponibili);
 	}
 
 	/**

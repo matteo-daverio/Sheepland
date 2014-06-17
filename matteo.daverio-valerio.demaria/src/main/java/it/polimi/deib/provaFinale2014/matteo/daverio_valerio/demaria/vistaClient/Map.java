@@ -1846,7 +1846,7 @@ public class Map extends JFrame {
 	 */
 	public void muoviLupo(int posizione) {
 		messaggio = new Messaggio("Il lupo si sta muovendo!");
-		messaggio.setLocation(new Point(formWidth / 10, 10));
+		messaggio.setLocation(new Point(formWidth / 10, 60));
 		c.add(messaggio, 0);
 		repaint();
 		messaggio.repaint();
