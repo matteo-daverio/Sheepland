@@ -28,7 +28,6 @@ public class CommandLine implements InterfacciaGrafica {
 	private boolean autenticato = false;
 	private int numGiocatori, p1, p2, pastoreTurno;
 	ControllorePartitaClient controllore;
-	private boolean test=false;
 
 	private static final Logger LOG=Logger.getLogger(CommandLine.class.getName());
 
@@ -573,7 +572,7 @@ public class CommandLine implements InterfacciaGrafica {
 	}
 
 	public void setTest() {
-		test=true;
+		
 	}
 
 }
