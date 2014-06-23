@@ -95,16 +95,16 @@ public class GestorePartite implements Runnable {
 	 */
 	public synchronized static boolean addConnessione(Gestione g) {
 		if (!giocatoreInGioco(g)) {
-			System.out.println("aggiungo " + g.getNome());
+			
 			connessioni.add(g);
 			giocatori.add(g);
 			return true;
 		} else {
-			System.out.println(g.getNome() + " sta giocando");
+			
 			if (passwordSbagliata(g)) {
 				return false;
 			} else {
-				System.out.println("Reintegro " + g.getNome());
+				
 				reintegraClient(g.getNome(), g.getSocket());
 				return true;
 			}
@@ -129,8 +129,8 @@ public class GestorePartite implements Runnable {
 		@Override
 		public void run() {
 
-			System.out.println("controllo se ci sono partite da far partitre");
-			System.out.println("ho "+connessioni.size()+" giocatori in attesa di iniziare");
+			//System.out.println("controllo se ci sono partite da far partitre");
+			//System.out.println("ho "+connessioni.size()+" giocatori in attesa di iniziare");
 			
 			if (connessioni.size() > 1) {
 				Partita p = new Partita();
@@ -162,8 +162,7 @@ public class GestorePartite implements Runnable {
 		// in una partita faccio partire una nuova partita
 		while (true) {
 			if (connessioni.size() == Costanti.NUMERO_MASSIMO_GIOCATORI) {
-				// TODO codice talebano
-				System.out.println("ho raggiunto 4 giocatori!");
+
 				Partita partita = new Partita();
 				ControllorePartita controllore = new ControllorePartita(
 						connessioni, partita,this);

@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,6 +136,9 @@ public class ClientSocket implements InterfacciaComunicazioneToServer {
 					break;
 
 				case RICHIESTA_DI_MOSSA:
+					
+					
+					
 					mosseDisponibili = (List<MosseEnum>) in.readObject();
 						controllore.richiestaMossa(mosseDisponibili);
 					

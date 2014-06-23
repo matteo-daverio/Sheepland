@@ -31,8 +31,15 @@ public class ServerApplication {
 	public final static int SERVER_PORT_RMI = Costanti.PORTA_RMI;
 	// porta su cui il server socket si mette in ascolto
 	public final static int SERVER_PORT_SOCKET = Costanti.PORTA_SOCKET;
+
+	private static final Logger LOG = Logger.getLogger(ClientRMI.class
+			.getName());
+
+	private static boolean test = false;
 	
-	private static final Logger LOG=Logger.getLogger(ClientRMI.class.getName());
+	public static void setTestTrue(){
+		test=true;
+	}
 
 	public static void main(String[] args) {
 
@@ -52,19 +59,18 @@ public class ServerApplication {
 			// esporto l'oggetto remoto
 			InterfacciaGestioneRMI stub = (InterfacciaGestioneRMI) UnicastRemoteObject
 					.exportObject(server, 0);
-			
-			//System.setProperty("java.rmi.server.hostname", "131.175.28.158");
+
+			// System.setProperty("java.rmi.server.hostname", "131.175.28.158");
 			// creo un registry
 			Registry registry = LocateRegistry.createRegistry(SERVER_PORT_RMI);
 			// associo all'oggetto remoto esportato un nome
 			registry.rebind("serverInAttesa", stub);
 
-
-			System.out.println("Il server RMI è pronto a ricevere connessioni");
+			//System.out.println("Il server RMI è pronto a ricevere connessioni");
 
 		} catch (RemoteException e) {
-			System.err.println("errore esportazione RMI");
-			LOG.log(Level.SEVERE,"errore esportazione RMI", e);
+			
+			LOG.log(Level.SEVERE, "errore esportazione RMI", e);
 			return;
 		}
 
@@ -74,24 +80,21 @@ public class ServerApplication {
 		try {
 			serverSocket = new ServerSocket(SERVER_PORT_SOCKET);
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			
 			return;
 		}
 
-		System.out
-				.println("Il server socket si mette in attesa di connessioni");
+		//System.out
+		//		.println("Il server socket si mette in attesa di connessioni");
 
 		while (true) {
 			try {
 				// socket che dedico per la comunicazione con il client
 				Socket socket = serverSocket.accept();
 
-				System.out.println("ho accettato un socket");
-
 				// creo un oggetto di gestioneSocket
 				Gestione connessioneSocket = new GestioneSocket(socket);
 
-				System.out.println("ho creato una gestione socket");
 
 				connessioneSocket.chiediDati();
 
@@ -107,10 +110,13 @@ public class ServerApplication {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
 		}
-		
+
+		if(test){
+		// IMPORTANTE, questa riga serve per usare la variabile server la quale
+		// altrimenti verrebbe eliminata dal garbage collector
 		System.out.println(server.toString());
+		}
 
 	}
 

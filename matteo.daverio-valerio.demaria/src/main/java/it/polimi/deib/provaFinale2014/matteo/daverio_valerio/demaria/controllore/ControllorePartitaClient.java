@@ -514,21 +514,27 @@ public class ControllorePartitaClient {
 		case 1:
 			client.inviaMossa(new CompraTessera(TipoTerreno.ACQUA),
 					pastoreTurno);
+			break;
 		case 2:
 			client.inviaMossa(new CompraTessera(TipoTerreno.FORESTA),
 					pastoreTurno);
+			break;
 		case 3:
 			client.inviaMossa(new CompraTessera(TipoTerreno.GRANO),
 					pastoreTurno);
+			break;
 		case 4:
 			client.inviaMossa(new CompraTessera(TipoTerreno.PRATERIA),
 					pastoreTurno);
+			break;
 		case 5:
 			client.inviaMossa(new CompraTessera(TipoTerreno.ROCCIA),
 					pastoreTurno);
+			break;
 		case 6:
 			client.inviaMossa(new CompraTessera(TipoTerreno.SABBIA),
 					pastoreTurno);
+			break;
 
 		default:
 			break;

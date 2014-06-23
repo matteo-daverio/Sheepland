@@ -94,8 +94,7 @@ public class ControllorePartita implements Runnable {
 
 		for (InterfacciaComunicazioneToClient x : giocatori) {
 			if (x.getNome().equals(nome)) {
-				System.out
-						.println("Io controllore partita contengo quel client");
+
 				return true;
 			}
 		}
@@ -116,24 +115,22 @@ public class ControllorePartita implements Runnable {
 			if (giocatori.get(i).getNome().equals(nome)) {
 
 				if (giocatoriEsclusi.get(i).booleanValue() == true) {
-					System.out.println("ora reintegro il client");
 					// se il client che si è disconesso è Socket aggiorno la
 					// socket
 					
 					if (giocatori.get(i).getTipoConnessione().equals("socket")) {
-						System.out.println("sono entrato");
+						
 						giocatori.get(i).setSocket(socket);
-						System.out.println("ho settato la socket in giocatori");
+						
 						ascoltatoriSocket.get(i).aggiornaSocket(socket);
-						System.out.println("ho settato la socket in ascoltatori");
+						
 						giocatoriConnessi.set(i, true);
 						giocatoriEsclusi.set(i, false);
 						aggiornaGiocatoreDisconnesso(i);
 					}
 					aggiornaGiocatoreDisconnesso(i);
 				} else {
-					System.out
-							.println("Non reintegro il client perchè sta già giocando");
+
 					//comunicaEsclusioneDallaPartita();
 				}
 
@@ -149,8 +146,6 @@ public class ControllorePartita implements Runnable {
 	 */
 	public void aggiornaGiocatoreDisconnesso(int i) {
 
-		System.out.println("Invio i dati di aggiornamento a: "
-				+ giocatori.get(i).getNome());
 		giocatori.get(i).aggiornamento(partita.getPecore(),
 				partita.getPecoraNera().getPosizione(),
 				partita.getLupo().getPosizione(), partita.getPastori());
@@ -870,11 +865,11 @@ public class ControllorePartita implements Runnable {
 	 */
 	private void finePartita() {
 
-		System.out.println("la partita è finita, conto i punti");
+		
 		conteggioPunti();
 
 		comunicaPunteggiFinali(punteggiFinali);
-		System.out.println("ho inviato la lista dei punteggi finali");
+		
 
 		chiudiConnessioni();
 
@@ -1122,13 +1117,10 @@ public class ControllorePartita implements Runnable {
 		@Override
 		public void run() {
 			if (p.giocatoriConnessi.get(turno - 1).booleanValue() == false) {
-				System.out
-						.println("Escludo il client di turno dalla partita perchè è disconnesso da troppo tempo");
 				p.giocatoriEsclusi.set(turno - 1, true);
 				p.comunicaEsclusione(turno);
 			} else {
-				System.out
-						.println("Il giocatore si è riconnesso nel frattempo");
+
 			}
 		}
 
@@ -1167,11 +1159,13 @@ public class ControllorePartita implements Runnable {
 		// avvio del timer
 		Timer timer = new Timer();
 		SegnalaDisconnessione task = new SegnalaDisconnessione(this, turno);
-		System.out.println("Parte il timer di segnalazione di disconnessione");
 		timer.schedule(task, Costanti.TEMPO_RICONNESSIONE);
 
 	}
 
+	/**
+	 * @author Valerio De Maria
+	 */
 	private void avvioControlloreDisconnessioniRMI() {
 
 		class ControlloConnessioneRMI extends TimerTask {

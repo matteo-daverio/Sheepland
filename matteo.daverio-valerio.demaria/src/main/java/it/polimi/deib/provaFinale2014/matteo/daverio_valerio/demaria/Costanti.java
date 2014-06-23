@@ -1,14 +1,20 @@
 package it.polimi.deib.provaFinale2014.matteo.daverio_valerio.demaria;
 
+/**
+ * classe di costanti
+ * 
+ * @author Valerio De Maria
+ * 
+ */
 public class Costanti {
 
 	// costanti per il server
 	public static final int PORTA_SOCKET = 3000;
 	public static final int PORTA_RMI = 12189;
-	public static final long PERIODO_AVVIO_PARTITE = 400*1000;
+	public static final long PERIODO_AVVIO_PARTITE = 40 * 1000;
 	public final static String SERVER_NAME = "compute";
-	public final static int TEMPO_RICONNESSIONE=15*1000;
-	public final static int PERIODO_CONTROLLO_RMI=3*1000;
+	public final static int TEMPO_RICONNESSIONE = 15 * 1000;
+	public final static int PERIODO_CONTROLLO_RMI = 3 * 1000;
 
 	// costanti per le pecore
 
@@ -25,14 +31,14 @@ public class Costanti {
 	// costanti per i terreni
 	public static final int POSIZIONE_SHEEPBURG = 0;
 	public static final int NUMERO_REGIONI = 18;
-	public static final int NUMERO_TIPI_TERRENO=6;
+	public static final int NUMERO_TIPI_TERRENO = 6;
 
 	// costanti per la partita
 	public static final int NUMERO_MOSSE_GIOCATORE = 3;
 	public static final int NUMERO_RECINTI_NORMALI = 20;
-	public static final int NUMERO_MASSIMO_GIOCATORI=4;
-	
-	//per il debug
-	public static boolean toDebug=true;
+	public static final int NUMERO_MASSIMO_GIOCATORI = 4;
+
+	// per il debug
+	public static boolean toDebug = true;
 
 }

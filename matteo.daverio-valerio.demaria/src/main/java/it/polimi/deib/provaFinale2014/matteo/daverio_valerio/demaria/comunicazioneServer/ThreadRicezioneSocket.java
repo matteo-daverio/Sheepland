@@ -56,15 +56,11 @@ public class ThreadRicezioneSocket implements Runnable {
 	public void aggiornaSocket(Socket socket) {
        
 		try {
-			if(socket!=null){
-				System.out.println("la socket non è nulla");
-			}
+			
 			out =new ObjectOutputStream(socket.getOutputStream());
 			out.flush();
-			System.out.println("ho fatto la flush");
 			in = new ObjectInputStream(socket.getInputStream());
 			
-			System.out.println("ho aggiornato il buffer in");
 			
 			connesso = true;
 		} catch (IOException e) {

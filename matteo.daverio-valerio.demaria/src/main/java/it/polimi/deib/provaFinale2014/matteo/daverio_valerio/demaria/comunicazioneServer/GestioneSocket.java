@@ -198,7 +198,7 @@ public class GestioneSocket implements Gestione {
 
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE,"non comunica il socket", e);
-			System.err.println(e.getMessage());
+			
 		}
 	}
 }
